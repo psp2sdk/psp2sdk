@@ -1,0 +1,169 @@
+@ Copyright (C) 2015 PSP2SDK Project
+@
+@ This library is free software; you can redistribute it and/or
+@ modify it under the terms of the GNU Lesser General Public
+@ License as published by the Free Software Foundation; either
+@ version 2.1 of the License.
+@
+@ This library is distributed in the hope that it will be useful,
+@ but WITHOUT ANY WARRANTY; without even the implied warranty of
+@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+@ Lesser General Public License for more details.
+@
+@ You should have received a copy of the GNU Lesser General Public
+@ License along with this library; if not, write to the Free Software
+@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+#include <psp2import.S>
+
+PSP2_IMPORT_HEAD 0x0, SceFios, 0001, 1, 0
+
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x030306f4, sceFiosRenameSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x057252f2, sceFiosIOFilterPsarcDearchiver
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x06d97629, sceFiosSyncSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x0c81d80e, sceFiosOpIsCancelled
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x0df32816, sceFiosSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x125efd34, sceFiosExistsSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x132b6de6, sceFiosFileWriteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x13efe5f0, sceFiosFHOpenWithMode
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x156eafdc, sceFiosGetSuspendCount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x157515cb, sceFiosOpGetPath
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x15857180, sceFiosArchiveGetMountBufferSize
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x159b1fa8, sceFiosDebugDumpDate
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1915052a, sceFiosUpdateParameters
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1b9a575e, sceFiosOpIsDone
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1bc977fa, sceFiosFHReadvSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1c0bcad5, sceFiosOverlayGetList
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1c488b32, sceFiosFileReadSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1e920b1d, sceFiosCancelAllOps
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1e962f57, sceFiosFHPwriteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x1f3cc428, sceFiosDHCloseSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x202079f9, sceFiosOpSyncWaitForIO
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x218a43ee, sceFiosOpGetActualCount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x22e35018, sceFiosIOFilterRemove
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x233b070c, sceFiosFileExistsSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x25e399e5, sceFiosRename
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x267e6ce3, sceFiosFHWritevSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x26d03e20, sceFiosDevctl
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x27ae468b, sceFiosOverlayAdd
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x280d284a, sceFiosDateFromComponents
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x2904b539, sceFiosTerminate
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x29104bf3, sceFiosIsIdle
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x2ac79dfc, sceFiosOpWait
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x2b39453b, sceFiosFHTruncate
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x2b406deb, sceFiosDHGetPath
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x30583fcb, sceFiosGetGlobalDefaultOpAttr
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x30f56704, sceFiosOverlayModify
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x34bc3713, sceFiosDHOpenSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x35a82737, sceFiosTimeIntervalFromNanoseconds
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x37143ae3, sceFiosFHGetPath
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x3904f205, sceFiosOpCancel
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x397bf626, sceFiosTimeIntervalToNanoseconds
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x42c278e5, sceFiosFileWrite
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x44b9f8eb, sceFiosDebugDumpDH
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x45182328, sceFiosFHCloseSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x48d50d97, sceFiosDirectoryExists
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x4d42f95c, sceFiosFHPreadvSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x4e2fd311, sceFiosSetGlobalDefaultOpAttr
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x510953dc, sceFiosSuspend
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x51e677df, sceFiosDebugDumpError
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5506acab, sceFiosDebugDumpFH
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5b8d48c4, sceFiosShutdownAndCancelOps
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5ba4bd6d, sceFiosVprintf
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5c593c1e, sceFiosDateGetCurrent
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5cff6ea0, sceFiosDateToComponents
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x5e75937a, sceFiosPathcmp
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x681184a2, sceFiosGetAllDHs
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x68c436e4, sceFiosOpGetBuffer
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x6a51e688, sceFiosFHPread
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x6e1252b8, sceFiosFileTruncateSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x6ec156da, sceFiosDateFromSceDateTime
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x6f12d8a5, sceFiosExists
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x716bb121, sceFiosArchiveGetDecompressorThreadCount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x726e01be, sceFiosDirectoryExistsSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x72a0a851, sceFiosDHRead
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x742addc4, sceFiosFHPwritevSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x764dfa7a, sceFiosDelete
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x76945919, sceFiosFHReadSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x774c2c05, sceFiosInitialize
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x789215c3, sceFiosFileGetSizeSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x79d9bb50, sceFiosFileGetSize
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x7c4e0c42, sceFiosFHPreadv
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x7c9b14eb, sceFiosIOFilterGetInfo
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x7db0afaf, sceFiosFHReadv
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x7ff33797, sceFiosResolveSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x8179ccfa, sceFiosPathNormalize
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x84080161, sceFiosFileRead
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x8758e62f, sceFiosFileExists
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x8a243e74, sceFiosOverlayResolveSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x8b6cab52, sceFiosFHIoctlSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x8f62832c, sceFiosGetAllOps
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x90ab9195, sceFiosGetAllFHs
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x9198ed8b, sceFiosDirectoryCreate
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x92e76bbd, sceFiosArchiveMount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x94fdffee, sceFiosDateToSceDateTime
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x968cadbd, sceFiosOpReschedule
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x984024e5, sceFiosFHWriteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x988dd7ff, sceFiosFHWritev
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0x9c1084c5, sceFiosOpGetRequestCount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xa2c610e6, sceFiosDirectoryCreateWithModeSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xa75f3c4a, sceFiosFHSeek
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xa88edca8, sceFiosFHClose
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xa909cce3, sceFiosFHSyncSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xaac54b44, sceFiosDeleteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xabfee706, sceFiosOpGetAttr
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xacbaf3e0, sceFiosStatSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xaf7faadf, sceFiosPrintf
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb09afbdf, sceFiosFHRead
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb26dc24d, sceFiosArchiveUnmountSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb309e327, sceFiosIsValidHandle
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb5302e30, sceFiosFileDeleteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb647278b, sceFiosFileDelete
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb66a3dc8, sceFiosFHIoctl
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb7e79cad, sceFiosDHReadSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xb9573146, sceFiosDirectoryDeleteSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xbbc9afd5, sceFiosFHPwritev
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xbf099e16, sceFiosOpGetError
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xbf2d3cc1, sceFiosResume
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xbf699bd4, sceFiosFHOpen
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc3e7c3db, sceFiosFHOpenSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc40600dd, sceFiosDevctlSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc4822276, sceFiosArchiveMountSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc5513e13, sceFiosFileTruncate
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc55db73b, sceFiosFHGetOpenParams
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc5c26581, sceFiosFHGetSize
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc781d7b4, sceFiosChangeStatSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xc897f6a7, sceFiosGetDefaultOpAttr
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xcc21c849, sceFiosPathncmp
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xcc823b47, sceFiosOpWaitUntil
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xcd0e86d0, sceFiosArchiveSetDecompressorThreadCount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xcf1faa6f, sceFiosFHPwrite
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd0b19c9f, sceFiosResolve
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd2466ea5, sceFiosIsSuspended
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd2cd9af2, sceFiosChangeStat
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd55b8555, sceFiosIOFilterAdd
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd7f33130, sceFiosFHTell
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xd97c4df7, sceFiosFHStat
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xda93677c, sceFiosDirectoryDelete
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xddd6bf6b, sceFiosDirectoryCreateWithMode
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xdf3352fc, sceFiosArchiveGetMountBufferSizeSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe037b076, sceFiosDirectoryCreateSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe2805059, sceFiosFHPreadSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe438d4f0, sceFiosDebugDumpOp
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe485f35e, sceFiosFHSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe4ea92fa, sceFiosOpDelete
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe663138e, sceFiosFHWrite
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe6a66c70, sceFiosOpSyncWait
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xe76c8ec3, sceFiosTimeGetCurrent
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xea9855ba, sceFiosDHOpen
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xee681e1d, sceFiosFHOpenWithModeSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf21213b9, sceFiosOpGetOffset
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf3c84d0f, sceFiosOverlayRemove
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf4c6b72a, sceFiosOverlayGetInfo
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf4f54e09, sceFiosIsInitialized
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf6cacfc7, sceFiosDHClose
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf85c208b, sceFiosCloseAllFiles
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xf8beac88, sceFiosFHStatSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xfe1e1d28, sceFiosArchiveUnmount
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xfef940b7, sceFiosFHTruncateSync
+PSP2_IMPORT_FUNC SceFios, 0001, F00, 0xff04af72, sceFiosStat
