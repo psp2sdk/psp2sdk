@@ -16,12 +16,12 @@
 PREFIX = _SceDbg-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x1af3678b 0x6605ab19 0x941622fa 0xed4a00ba
+NIDS = 0x1af3678b 0x6605ab19 0x941622fa 0xed4a00ba 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceDbg_stub.a
-libSceDbg_stub_a_SOURCES = SceDbg_stub.S
+libSceDbg_stub_a_SOURCES = SceDbg_stub.S 
 am_libSceDbg_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
