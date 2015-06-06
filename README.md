@@ -18,7 +18,7 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [SMOKE](https://github.com/SMOKE5)
 
-[josh_axey](mailto:jordevorstenbosch@gmail.com)
+[josh_axey](https://github.com/joshaxey)
 
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
