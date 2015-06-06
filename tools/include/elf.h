@@ -935,44 +935,6 @@ typedef struct
 /* Legal values for vna_flags.  */
 #define VER_FLG_WEAK	0x2		/* Weak version identifier */
 
-
-/* Auxiliary vector.  */
-
-/* This vector is normally only used by the program interpreter.  The
-   usual definition in an ABI supplement uses the name auxv_t.  The
-   vector is not usually defined in a standard <elf.h> file, but it
-   can't hurt.  We rename it to avoid conflicts.  The sizes of these
-   types are an arrangement between the exec server and the program
-   interpreter, so we don't fully specify them here.  */
-
-typedef struct
-{
-  uint32_t a_type;		/* Entry type */
-  union
-    {
-      uint32_t a_val;		/* Integer value */
-      /* We use to have pointer elements added here.  We cannot do that,
-	 though, since it does not work when using 32-bit definitions
-	 on 64-bit platforms and vice versa.  */
-    } a_un;
-} Elf32_auxv_t;
-
-typedef struct
-{
-  uint64_t a_type;		/* Entry type */
-  union
-    {
-      uint64_t a_val;		/* Integer value */
-      /* We use to have pointer elements added here.  We cannot do that,
-	 though, since it does not work when using 32-bit definitions
-	 on 64-bit platforms and vice versa.  */
-    } a_un;
-} Elf64_auxv_t;
-
-#include <bits/auxv.h>
-/* Note section contents.  Each entry in the note section begins with
-   a header of a fixed form.  */
-
 typedef struct
 {
   Elf32_Word n_namesz;			/* Length of the note's name.  */
