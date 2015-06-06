@@ -17,6 +17,6 @@
 
 PSP2_IMPORT_HEAD 0x0, SceSysmodule, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x31d87805 sceSysmoduleUnloadModule
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x53099b7a sceSysmoduleIsLoaded
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x79a0160a sceSysmoduleLoadModule
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x31d87805, sceSysmoduleUnloadModule
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x53099b7a, sceSysmoduleIsLoaded
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x79a0160a, sceSysmoduleLoadModule

@@ -16,12 +16,12 @@
 PREFIX = _SceShutterSound-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x7ffb6d79
+NIDS = 0x7ffb6d79 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceShutterSound_stub.a
-libSceShutterSound_stub_a_SOURCES = SceShutterSound_stub.S
+libSceShutterSound_stub_a_SOURCES = SceShutterSound_stub.S 
 am_libSceShutterSound_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

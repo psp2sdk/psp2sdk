@@ -16,14 +16,14 @@
 PREFIX = _ScePower-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x04b7766e 0x1e490401 0x2085d15d 0x3ce187b6	\
-	0x78a1a796 0x87440f5e 0x8efb3fa2 0x94f5a53f	\
-	0xd3075926 0xdfa8baf8 0xfd18a0ff
+NIDS = 0x04b7766e 0x1e490401 0x2085d15d 0x3ce187b6 	\
+	0x78a1a796 0x87440f5e 0x8efb3fa2 0x94f5a53f 	\
+	0xd3075926 0xdfa8baf8 0xfd18a0ff 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libScePower_stub.a
-libScePower_stub_a_SOURCES = ScePower_stub.S
+libScePower_stub_a_SOURCES = ScePower_stub.S 
 am_libScePower_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
