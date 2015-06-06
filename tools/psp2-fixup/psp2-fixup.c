@@ -22,14 +22,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef R_ARM_TARGET1
-#define R_ARM_TARGET1 38
-#endif
-
-#ifndef R_ARM_TARGET2
-#define R_ARM_TARGET2 41
-#endif
-
 typedef struct {
 		uint8_t size;
 		uint8_t unk0[3];

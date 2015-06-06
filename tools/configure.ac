@@ -9,6 +9,11 @@ AM_INIT_AUTOMAKE(foreign)
 # Checks for programs.
 AC_PROG_CC
 
+CFLAGS="$CFLAGS -I\$(top_srcdir)/include"
+if test "$ac_compiler_gnu" = yes; then
+	CFLAGS="$CFLAGS -Wall"
+fi
+
 # Checks for header files.
 AC_CHECK_HEADERS(stddef.h stdlib.h string.h, ,
 	AC_MSG_ERROR(header files not found.))
