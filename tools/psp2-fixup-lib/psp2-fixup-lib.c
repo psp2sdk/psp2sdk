@@ -15,7 +15,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifdef __APPLE__
+#include <libelf/gelf.h>
+#else
 #include <elf.h>
+#endif
 #include <errno.h>
 #include <stddef.h>
 #include <stdio.h>

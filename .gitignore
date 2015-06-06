@@ -16,3 +16,5 @@ Makefile
 
 psp2-fixup
 psp2-fixup-lib
+
+.DS_Store

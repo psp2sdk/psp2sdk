@@ -20,6 +20,8 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [josh_axey](https://github.com/joshaxey)
 
+[bigboss](https://github.com/psxdev)
+
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
 ## Usage
