@@ -16,8 +16,8 @@
 PREFIX = _SceDeci4p-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x28578fe8 0x63b0c50f 0x73371f35 0x971e1c66 	\
-	0xcda3aaac 
+NIDS = 0x28578fe8 0x3bc66bd8 0x5a4cdf97 0x63b0c50f 	\
+	0x73371f35 0x971e1c66 0xc4e1d86d 0xcda3aaac 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

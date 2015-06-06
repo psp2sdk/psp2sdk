@@ -15,8 +15,9 @@
 
 #include <psp2import.S>
 
-PSP2_IMPORT_HEAD 0x0, SceStdio, 0001, 1, 0
+PSP2_IMPORT_HEAD 0x0, SceCodecEnginePerf, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceStdio, 0001, F00, 0x35ee7cf5, sceKernelStderr
-PSP2_IMPORT_FUNC SceStdio, 0001, F00, 0x54237407, sceKernelStdin
-PSP2_IMPORT_FUNC SceStdio, 0001, F00, 0x9033e9bd, sceKernelStdout
+PSP2_IMPORT_FUNC SceCodecEnginePerf, 0001, F00, 0x0635eb77, sceCodecEnginePmonStart
+PSP2_IMPORT_FUNC SceCodecEnginePerf, 0001, F00, 0x2c9da711, sceCodecEnginePmonGetProcessorLoad
+PSP2_IMPORT_FUNC SceCodecEnginePerf, 0001, F00, 0x5d75df62, sceCodecEnginePmonReset
+PSP2_IMPORT_FUNC SceCodecEnginePerf, 0001, F00, 0xd2efaea1, sceCodecEnginePmonStop

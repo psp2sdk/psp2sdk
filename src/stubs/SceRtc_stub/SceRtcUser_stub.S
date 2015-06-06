@@ -36,13 +36,16 @@ PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x6f193f55, sceRtcTickAddHours
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x70fde8f1, sceRtcGetCurrentClock
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x742250a9, sceRtcFormatRFC3339LocalTime
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x811313b3, sceRtcGetTickResolution
+PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x8148e95c, sceRtcGetLastAdjustedTick
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x8a95e119, sceRtcGetWin32FileTime
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x8de6feb7, sceRtcGetTime_t
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x92abebaf, sceRtcGetDosTime
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0x979afd79, sceRtcTickAddSeconds
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xa6c36b6a, sceRtcSetTime64_t
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xa79a8846, sceRtcSetWin32FileTime
+PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xa8c16615, sceRtcGetLastReincarnatedTick
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xae26d920, sceRtcTickAddMicroseconds
+PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xb5c4e95f, sceRtcGetDayOfYear
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xc7385158, sceRtcCompareTick
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xc995de02, sceRtcGetTime64_t
 PSP2_IMPORT_FUNC SceRtcUser, 0001, F00, 0xccea2b54, sceRtcFormatRFC3339

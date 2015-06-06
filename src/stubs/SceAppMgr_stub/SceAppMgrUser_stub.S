@@ -17,8 +17,7 @@
 
 PSP2_IMPORT_HEAD 0x0, SceAppMgrUser, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0x47e5dd7d, sceAppMgrReceiveEventNum
-PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0x49255c91, sceAppMgrGetRunStatus
-PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0x96cbe713, sceAppMgrReleaseBgmPort
-PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0xcfad5a3a, sceAppMgrReceiveEvent
-PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0xf3d65520, sceAppMgrAcquireBgmPort
+PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0x10b5765f, sceAppMgrReceiveSystemEvent
+PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0x5e86319a, _sceAppMgrGetAppState
+PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0xe352b29c, sceAppMgrSetNetworkDisconnectionWarningDialogState
+PSP2_IMPORT_FUNC SceAppMgrUser, 0001, F00, 0xe6774abc, sceAppMgrLoadExec

@@ -16,12 +16,13 @@
 PREFIX = _SceScreenShot-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x05db59c7 0x50ae9ff9 0x7061665b 0x76e674d1 
+NIDS = 0x05db59c7 0x50ae9ff9 0x7061665b 0x76e674d1 	\
+	0x816633fe 0xbae9e534 0xd509fb08 0xda80a228 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceScreenShot_stub.a
-libSceScreenShot_stub_a_SOURCES = libSceScreenShot_stub.S 
+libSceScreenShot_stub_a_SOURCES = SceScreenShot_stub.S 
 am_libSceScreenShot_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

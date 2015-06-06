@@ -19,6 +19,7 @@ PSP2_IMPORT_HEAD 0x0, SceJpegEncUser, 0001, 1, 0
 
 PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x25d52d97, sceJpegEncoderSetOutputAddr
 PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x2b55844d, sceJpegEncoderGetContextSize
+PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x2e8fe45d, sceJpegEncoderInitWithParam
 PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x2f58b12c, sceJpegEncoderSetHeaderMode
 PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x824a7d4f, sceJpegEncoderCsc
 PSP2_IMPORT_FUNC SceJpegEncUser, 0001, F00, 0x88da92b4, sceJpegEncoderInit

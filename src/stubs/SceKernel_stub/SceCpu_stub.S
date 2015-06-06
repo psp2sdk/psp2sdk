@@ -17,4 +17,3 @@
 
 PSP2_IMPORT_HEAD 0x0, SceCpu, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceCpu, 0001, F00, 0x2704cfee, sceKernelCpuId

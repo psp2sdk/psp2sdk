@@ -16,13 +16,13 @@
 PREFIX = _SceAppMgr-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x47e5dd7d 0x49255c91 0x96cbe713 0xcfad5a3a 	\
-	0xf3d65520 
+NIDS = 0x10b5765f 0x5e86319a 0xe352b29c 0xe6774abc 	\
+	0xad9022a1 0xafceab96 0xf3717e37 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceAppMgr_stub.a
-libSceAppMgr_stub_a_SOURCES = SceAppMgrUser_stub.S 
+libSceAppMgr_stub_a_SOURCES = SceAppMgrUser_stub.S SceAppMgr_stub.S 
 am_libSceAppMgr_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

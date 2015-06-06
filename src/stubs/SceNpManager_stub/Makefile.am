@@ -17,8 +17,8 @@ PREFIX = _SceNpManager-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
 NIDS = 0x04d9f484 0x19e40ae1 0x3b0ae9a9 0x3c94b4b4 	\
-	0x44239c35 0x54060df6 0x60c575b1 0xaf0073b2 	\
-	0xd9e6e56c 0xfe835967 
+	0x43dc48a1 0x44239c35 0x54060df6 0x60c575b1 	\
+	0xaf0073b2 0xd9e6e56c 0xfe835967 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

@@ -15,9 +15,9 @@
 
 #include <psp2import.S>
 
-PSP2_IMPORT_HEAD 0x0, SceCodecEngine, 0001, 1, 0
+PSP2_IMPORT_HEAD 0x0, SceSha512t, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceCodecEngine, 0001, F00, 0x268b1ef5, sceCodecEnginePmonStop
-PSP2_IMPORT_FUNC SceCodecEngine, 0001, F00, 0x3e718890, sceCodecEnginePmonStart
-PSP2_IMPORT_FUNC SceCodecEngine, 0001, F00, 0x859e4a68, sceCodecEnginePmonGetProcessorLoad
-PSP2_IMPORT_FUNC SceCodecEngine, 0001, F00, 0xa097e4c8, sceCodecEnginePmonReset
+PSP2_IMPORT_FUNC SceSha512t, 0001, F00, 0x00e52720, sceSha512tDigest
+PSP2_IMPORT_FUNC SceSha512t, 0001, F00, 0x66425db6, sceSha512tBlockResult
+PSP2_IMPORT_FUNC SceSha512t, 0001, F00, 0x79065bb2, sceSha512tBlockInit
+PSP2_IMPORT_FUNC SceSha512t, 0001, F00, 0xc5359df8, sceSha512tBlockUpdate

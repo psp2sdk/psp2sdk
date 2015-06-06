@@ -30,8 +30,11 @@ PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x5e1ce910, sceVoiceResetPort
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x5f0260f4, sceVoiceDisconnectIPortFromOPort
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x698bdaae, sceVoiceConnectIPortToOPort
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x6e46950e, sceVoiceGetResourceInfo
+PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x73f72940, sceVoiceGetPortAttr
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x805cc20f, sceVoiceInit
+PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x874054ce, sceVoiceCheckTopology
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x875cc80d, sceVoiceGetVolume
+PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0x9b0d3490, sceVoiceSetPortAttr
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0xac98853e, sceVoiceEnd
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0xae46564d, sceVoiceDeletePort
 PSP2_IMPORT_FUNC SceVoice, 0001, F00, 0xb2ed725b, sceVoiceStart

@@ -16,12 +16,12 @@
 PREFIX = _ScePhotoExport-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x70512321 0x84fd9fc5 
+NIDS = 0x5655f971 0x70512321 0x84fd9fc5 0xe6e6afd5 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libScePhotoExport_stub.a
-libScePhotoExport_stub_a_SOURCES = libScePhotoExport_stub.S 
+libScePhotoExport_stub_a_SOURCES = ScePhotoExport_stub.S 
 am_libScePhotoExport_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

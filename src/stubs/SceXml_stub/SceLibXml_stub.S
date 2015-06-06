@@ -46,6 +46,7 @@ PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x1be022ea, _ZN3sce3Xml12MemAllocatorD2Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x1dd41c7a, _ZN3sce3Xml3Dom8DocumentC1ERKS2_
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x22dbb221, _ZNK3sce3Xml3Dom8Document10getDocRootEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x241efc0e, _ZN3sce3Xml3Dom4NodeD2Ev
+PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x243e6731, _ZN3sce3Xml3Dom4Node11appendChildEy
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x26ba1e6e, _ZNK3sce3Xml3Dom4Node13hasAttributesEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x28fd79e3, _ZNK3sce3Xml3Dom8Document11isAvailableEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x29824cd5, _ZN3sce3Xml11Initializer9terminateEv
@@ -93,13 +94,13 @@ PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x67191cc6, _ZN3sce3Xml6StringC1ERKS1_
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x67e0df2b, _ZN3sce3Xml4Attr9terminateEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x684e57b9, _ZN3sce3Xml3Dom8NodeListC2Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x6a16c2ff, _ZN3sce3Xml3Dom8Document10importNodeEyyPKS2_y
+PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x6c1913e9, _ZNK3sce3Xml3Dom4Node13hasChildNodesEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x6e1f1ffb, _ZNK3sce3Xml3Dom13DocumentDebug16getCharTableSizeEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x702492ea, _ZN3sce3Xml3Dom15DocumentBuilderC1Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x70d9fc8e, _ZN3sce3Xml3Sax6Parser5parseEPKNS0_6StringEb
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x7744dd14, _ZN3sce3Xml3Dom15DocumentBuilder5parseEPKNS0_6StringEb
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x779036ab, _ZN3sce3Xml3Dom8Document16removeAttributesEy
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x7834a2f7, _ZNK3sce3Xml4Attr8getValueEv
-PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x79c9322e, _ZN3sce3Xml3Dom15DocumentBuilderD0Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x7a889374, _ZN3sce3Xml3Dom8NodeList10insertLastEy
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x7b0a8f6c, _ZN3sce3Xml3Dom8Document11setWritableEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x7b7107ad, _ZN3sce3Xml3Dom8DocumentC1Ev
@@ -127,6 +128,7 @@ PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x94aaa71d, _ZN3sce3Xml11InitializerC2Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x95077028, _ZN3sce3Xml10SimpleDataC2Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x9531c3cd, _ZNK3sce3Xml3Dom8Document12getAttributeEyPKNS0_6StringE
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x99c58389, _ZN3sce3Xml3Dom15DocumentBuilderD2Ev
+PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x9bd3722b, _ZNK3sce3Xml3Dom4Node13getParentNodeEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0x9cbd82d4, _ZN3sce3Xml13AttributeListC1ERKS1_
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xa11c2aed, _ZN3sce3Xml3Sax6ParserD1Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xa17502c1, _ZN3sce3Xml6StringC1Ev
@@ -156,7 +158,6 @@ PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xbca5e62a, _ZN3sce3Xml3Dom8Document13rec
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xbf13fde6, _ZN3sce3Xml11InitializerC1Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xc09abf87, _ZN3sce3Xml4AttrC1ERKS1_
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xc5e7431a, _ZNK3sce3Xml3Dom8Document13hasChildNodesEy
-PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xc6f4f6a8, _ZN3sce3Xml3Dom4Node13hasChildNodesEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xccee4e7c, _ZN3sce3Xml13AttributeList5clearEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xcd65b91f, _ZNK3sce3Xml3Dom8Document11getAttrNameEy
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xcdd1d418, _ZNK3sce3Xml3Dom8NodeList4itemEj
@@ -173,7 +174,6 @@ PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xd785ba85, _ZN3sce3Xml6StringC2ERKS1_
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xd9217fc8, _ZN3sce3Xml14VarAllocBufferD1Ev
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xd945184a, _ZN3sce3Xml3Dom8Document11resetStatusEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xd95d3824, _ZN3sce3Xml14VarAllocBuffer7copyStrEPKcj
-PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xd9757bc8, _ZNK3sce3Xml3Dom4Node14getParenetNodeEv
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xdac75e49, _ZNK3sce3Xml3Dom8Document13getEntityTypeEy
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xdefeafd2, _ZN3sce3Xml3Dom8Document7setTextEyPKNS0_6StringE
 PSP2_IMPORT_FUNC SceLibXml, 0001, F00, 0xe1100fc0, _ZNK3sce3Xml3Dom13DocumentDebug16getAttrTableSizeEv

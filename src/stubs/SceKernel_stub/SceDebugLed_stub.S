@@ -17,4 +17,5 @@
 
 PSP2_IMPORT_HEAD 0x0, SceDebugLed, 0001, 1, 0
 
+PSP2_IMPORT_FUNC SceDebugLed, 0001, F00, 0x14f582cf, sceKernelGetGPI
 PSP2_IMPORT_FUNC SceDebugLed, 0001, F00, 0x78e702d3, sceKernelSetGPO

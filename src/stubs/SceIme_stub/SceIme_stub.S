@@ -22,3 +22,4 @@ PSP2_IMPORT_FUNC SceIme, 0001, F00, 0x71d6898a, sceImeUpdate
 PSP2_IMPORT_FUNC SceIme, 0001, F00, 0x7b1efaa5, sceImeSetPreeditGeometry
 PSP2_IMPORT_FUNC SceIme, 0001, F00, 0x889a8421, sceImeClose
 PSP2_IMPORT_FUNC SceIme, 0001, F00, 0xd8342d2a, sceImeSetCaret
+PSP2_IMPORT_FUNC SceIme, 0001, F00, 0xf3bd9a76, sceImeSetText
