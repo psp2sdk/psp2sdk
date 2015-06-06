@@ -21,6 +21,4 @@ PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0x10a2ca25, sceTouchGetPanelInfo
 PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0x169a1d58, sceTouchRead
 PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0x1b9c5d14, sceTouchSetSamplingState
 PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0x26531526, sceTouchGetSamplingState
-PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0x41194411, sceTouchDisableTouchForce
-PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0xb18370c2, sceTouchEnableTouchForce
 PSP2_IMPORT_FUNC SceTouch, 0001, F00, 0xff082df0, sceTouchPeek
