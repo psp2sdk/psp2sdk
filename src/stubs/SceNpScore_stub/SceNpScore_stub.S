@@ -32,6 +32,7 @@ PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x53d77883, sceNpScoreSetPlayerCharacter
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x5685f225, sceNpScoreCreateTitleCtx
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x5ef44841, sceNpScoreSetTimeout
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x6fd2041a, sceNpScoreSanitizeComment
+PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x7c68d91b, sceNpScoreChangeModeForOtherSaveDataOwners
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x871f28aa, sceNpScoreGetRankingByNpIdPcId
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0x9f2a7ac9, sceNpScorePollAsync
 PSP2_IMPORT_FUNC SceNpScore, 0001, F00, 0xa0c94d46, sceNpScoreCensorComment

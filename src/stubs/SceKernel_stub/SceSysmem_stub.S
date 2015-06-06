@@ -17,8 +17,9 @@
 
 PSP2_IMPORT_HEAD 0x0, SceSysmem, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0x3b29e0f5, sceKernelRemapMemBlock
+PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0x006f3db4, sceKernelGetMemBlockInfoByRange
 PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0x4010ad65, sceKernelGetMemBlockInfoByAddr
+PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0x87cc580b, sceKernelGetFreeMemorySize
 PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0xa33b99d1, sceKernelFindMemBlockByAddr
 PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0xa91e15ee, sceKernelFreeMemBlock
 PSP2_IMPORT_FUNC SceSysmem, 0001, F00, 0xb8ef5818, sceKernelGetMemBlockBase

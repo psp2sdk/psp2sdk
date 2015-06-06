@@ -17,7 +17,7 @@ PREFIX = _SceIme-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
 NIDS = 0x0e050613 0x71d6898a 0x7b1efaa5 0x889a8421 	\
-	0xd8342d2a 
+	0xd8342d2a 0xf3bd9a76 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

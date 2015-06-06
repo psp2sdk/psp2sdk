@@ -21,6 +21,7 @@ PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x04d9f484, sceNpInit
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x19e40ae1, sceNpTerm
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x3b0ae9a9, sceNpCheckCallback
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x3c94b4b4, sceNpManagerGetNpId
+PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x43dc48a1, sceNpManagerGetCachedParam
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x44239c35, sceNpRegisterServiceStateCallback
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x54060df6, sceNpGetServiceState
 PSP2_IMPORT_FUNC SceNpManager, 0001, F00, 0x60c575b1, sceNpManagerGetChatRestrictionFlag

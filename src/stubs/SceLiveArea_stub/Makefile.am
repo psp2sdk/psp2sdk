@@ -16,7 +16,8 @@
 PREFIX = _SceLiveArea-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x54a395fb 0xa4b506f9 
+NIDS = 0x18066ba9 0x29c65c0b 0x7fe5b83f 0x833f5d0a 	\
+	0xcfcede95 0xd330285d 0xd6ee2214 0xd6fd367f 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

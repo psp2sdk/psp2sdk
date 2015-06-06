@@ -15,7 +15,6 @@
 
 #include <psp2import.S>
 
-PSP2_IMPORT_HEAD 0x0, libScePhotoExport, 0001, 1, 0
+PSP2_IMPORT_HEAD 0x0, SceThreadmgrCoredumpTime, 0001, 1, 0
 
-PSP2_IMPORT_FUNC libScePhotoExport, 0001, F00, 0x70512321, scePhotoExportFromData
-PSP2_IMPORT_FUNC libScePhotoExport, 0001, F00, 0x84fd9fc5, scePhotoExportFromFile
+PSP2_IMPORT_FUNC SceThreadmgrCoredumpTime, 0001, F00, 0x0c8a38e1, sceKernelExitThread

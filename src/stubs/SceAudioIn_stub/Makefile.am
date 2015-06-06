@@ -16,7 +16,8 @@
 PREFIX = _SceAudioIn-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x39b50dc1 0x3a61b8c4 0x566ac433 0x638add2d 
+NIDS = 0x2f940377 0x39b50dc1 0x3a61b8c4 0x566ac433 	\
+	0x638add2d 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

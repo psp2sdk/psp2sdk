@@ -40,7 +40,6 @@ PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x45ce337d, sceNetEpollWait
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x4c30b03c, sceNetHtonl
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x4c8764ac, sceNetEpollControl
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x52db31d5, sceNetSendto
-PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x561dfd03, sceNetEmulationSet
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x658b903b, sceNetShowIfconfig
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x69e50bb5, sceNetShutdown
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x6ab3b74b, sceNetShowRoute
@@ -57,7 +56,6 @@ PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x98839b74, sceNetInetNtop
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x99c579ae, sceNetSendmsg
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0x9fa3207b, sceNetHtons
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0xa86f8fe5, sceNetGetStatisticsInfo
-PSP2_IMPORT_FUNC SceNet, 0001, F00, 0xae3f4ac6, sceNetEmulationGet
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0xaff9fa4d, sceNetDumpCreate
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0xb1af6840, sceNetGetSockInfo
 PSP2_IMPORT_FUNC SceNet, 0001, F00, 0xb226138b, sceNetRecvfrom

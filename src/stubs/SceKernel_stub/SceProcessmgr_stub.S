@@ -19,14 +19,11 @@ PSP2_IMPORT_HEAD 0x0, SceProcessmgr, 0001, 1, 0
 
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x0039be45, sceKernelLibcTime
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x2252890c, sceKernelPowerTick
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x2be3e066, sceKernelGetProcessParam
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x4b879059, sceKernelLibcGettimeofday
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x89da0967, sceKernelGetProcessTimeWide
+PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x890bdc39, sceKernelLibcMktime
+PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x94f041ed, sceKernelLibcLocaltime_r
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0x9e45da09, sceKernelLibcClock
+PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xbca437cd, sceKernelLibcGmtime_r
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xc1727f59, sceKernelGetStdin
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xcd248267, sceKernelGetCurrentProcess
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xd37a8437, sceKernelGetProcessTime
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xe5aa625c, sceKernelGetStdout
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xe6e9fca3, sceKernelGetRemoteProcessTime
-PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xf5d0d4c6, sceKernelGetProcessTimeLow
 PSP2_IMPORT_FUNC SceProcessmgr, 0001, F00, 0xfa5e3ada, sceKernelGetStderr

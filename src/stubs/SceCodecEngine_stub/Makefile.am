@@ -16,12 +16,12 @@
 PREFIX = _SceCodecEngine-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x268b1ef5 0x3e718890 0x859e4a68 0xa097e4c8 
+NIDS = 0x1a3a53e5 0x6a31831d 0x95ea3b3e 0xf0b4c892 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceCodecEngine_stub.a
-libSceCodecEngine_stub_a_SOURCES = SceCodecEngine_stub.S 
+libSceCodecEngine_stub_a_SOURCES = SceCodecEngineUser_stub.S 
 am_libSceCodecEngine_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

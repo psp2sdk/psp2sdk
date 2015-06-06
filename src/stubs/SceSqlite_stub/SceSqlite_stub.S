@@ -35,6 +35,7 @@ PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x17d4f00b, sqlite3_bind_parameter_count
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x19165d04, sqlite3_progress_handler
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x1aa3bc1a, sqlite3_create_module_v2
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x1fec6959, sqlite3_free_table
+PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x2034e5b7, sceSqliteConfigMallocMethods
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x20d054cf, sqlite3_backup_pagecount
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x218d700e, sqlite3_mutex_try
 PSP2_IMPORT_FUNC SceSqlite, 0001, F00, 0x2227f21d, sqlite3_column_value

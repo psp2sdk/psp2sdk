@@ -16,9 +16,9 @@
 PREFIX = _SceJpegEnc-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
-NIDS = 0x25d52d97 0x2b55844d 0x2f58b12c 0x824a7d4f 	\
-	0x88da92b4 0x9511f3bc 0xb2b828ec 0xc60de94c 	\
-	0xc87aa849 
+NIDS = 0x25d52d97 0x2b55844d 0x2e8fe45d 0x2f58b12c 	\
+	0x824a7d4f 0x88da92b4 0x9511f3bc 0xb2b828ec 	\
+	0xc60de94c 0xc87aa849 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 

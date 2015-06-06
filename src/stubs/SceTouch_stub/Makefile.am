@@ -17,7 +17,7 @@ PREFIX = _SceTouch-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
 
 NIDS = 0x10a2ca25 0x169a1d58 0x1b9c5d14 0x26531526 	\
-	0xff082df0 
+	0x41194411 0xb18370c2 0xff082df0 
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
