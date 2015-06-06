@@ -1,1 +1,1 @@
-SUBDIRS = psp2-fixup psp2-fixup-lib
+SUBDIRS = psp2-fixup

@@ -36,4 +36,4 @@ fi
 
 AC_CHECK_LIB(crypto, SHA1, , AC_MSG_ERROR(SHA1 not supported by libcrypto.))
 
-AC_OUTPUT(Makefile psp2-fixup/Makefile psp2-fixup-lib/Makefile)
+AC_OUTPUT(Makefile psp2-fixup/Makefile)
