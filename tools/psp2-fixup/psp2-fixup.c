@@ -83,6 +83,42 @@ typedef struct {
 	scn_t **scns;
 } seg_t;
 
+typedef struct {
+	void *relaFstub;
+	void *relaStub;
+	void *fnid;
+	void *stub;
+} stubContents_t;
+
+typedef struct {
+	scn_t *relFstub;
+	scn_t *relStub;
+	scn_t *fnid;
+	scn_t *fstub;
+	scn_t *stub;
+	scn_t *mark;
+	scn_t *relMark;
+	scn_t *modinfo;
+} sceScns_t;
+
+typedef struct {
+	const char *path;
+	FILE *fp;
+	Elf32_Ehdr ehdr;
+	scn_t *scns;
+	seg_t *segs;
+	sceScns_t sceScns;
+	stubContents_t stubContents;
+	struct {
+		scn_t *scn;
+		void *content;
+	} strtab;
+	struct {
+		scn_t *scn;
+		void *content;
+	} symtab;
+} elf_t;
+
 enum {
 	ET_SCE_RELEXEC = 0xFE04
 };
@@ -90,6 +126,25 @@ enum {
 enum {
 	SHT_SCE_RELA = 0x60000000
 };
+
+static scn_t *findScn(const scn_t *scns, Elf32_Half shnum,
+	const char *strtab, const char *name, const char *path)
+{
+	if (scns == NULL || strtab == NULL || name == NULL || path == NULL)
+		return NULL;
+
+	while (shnum) {
+		if (!strcmp(strtab + scns->shdr.sh_name, name))
+			return (scn_t *)scns;
+		scns++;
+		shnum--;
+	}
+
+	fprintf(stderr, "%s: %s is not found\n", path, name);
+	errno = EILSEQ;
+
+	return NULL;
+}
 
 static void *loadScn(FILE *fp, const char *path, const scn_t *scn,
 	const char *strtab)
@@ -280,6 +335,44 @@ static scn_t *getSymtabScn(const char *path, scn_t *scns, Elf32_Half shnum)
 	return NULL;
 }
 
+static int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
+	const char *strtab, const char *path)
+{
+	if (sceScns == NULL || scns == NULL || strtab == NULL || path == NULL)
+		return EINVAL;
+
+	sceScns->relMark = findScn(scns, shnum, strtab,
+		".rel.sce_libgen_mark", path);
+	if (sceScns->relMark == NULL)
+		return errno;
+
+	sceScns->mark = scns + sceScns->relMark->shdr.sh_info;
+
+	sceScns->relFstub = findScn(scns, shnum, strtab,
+		".rel.sceFStub.rodata", path);
+	if (sceScns->relFstub == NULL)
+		return errno;
+
+	sceScns->fstub = scns + sceScns->relFstub->shdr.sh_info;
+
+	sceScns->fnid = findScn(scns, shnum, strtab, ".sceFNID.rodata", path);
+	if (sceScns->fnid == NULL)
+		return errno;
+
+	sceScns->relStub = findScn(scns, shnum, strtab, ".rel.sceLib.stub", path);
+	if (sceScns->relStub == NULL)
+		return errno;
+
+	sceScns->stub = scns + sceScns->relStub->shdr.sh_info;
+
+	sceScns->modinfo = findScn(scns, shnum, strtab,
+		".sceModuleInfo.rodata", path);
+	if (sceScns->modinfo == NULL)
+		return errno;
+
+	return 0;
+}
+
 static int freeSegs(seg_t *segs, Elf32_Half segnum)
 {
 	seg_t *p;
@@ -299,23 +392,130 @@ static int freeSegs(seg_t *segs, Elf32_Half segnum)
 	return 0;
 }
 
-static scn_t *findScn(const scn_t *scns, Elf32_Half shnum,
-	const char *strtab, const char *name, const char *path)
+static int openElf(elf_t *dst, const char *path)
 {
-	if (scns == NULL || strtab == NULL || name == NULL || path == NULL)
-		return NULL;
+	int res;
 
-	while (shnum) {
-		if (!strcmp(strtab + scns->shdr.sh_name, name))
-			return (scn_t *)scns;
-		scns++;
-		shnum--;
+	if (dst == NULL || path == NULL)
+		return EINVAL;
+
+	dst->path = path;
+
+	dst->fp = fopen(path, "rb");
+	if (path == NULL) {
+		perror(path);
+		return errno;
 	}
 
-	fprintf(stderr, "%s: %s is not found\n", path, name);
-	errno = EILSEQ;
+	if (fread(&dst->ehdr, sizeof(dst->ehdr), 1, dst->fp) <= 0) {
+		perror(path);
+		fclose(dst->fp);
+		return errno;
+	}
 
-	return NULL;
+	dst->scns = getScns(dst->fp, path, &dst->ehdr);
+	if (dst->scns == NULL) {
+		fclose(dst->fp);
+		return errno;
+	}
+
+	dst->segs = getSegs(dst->fp, path, &dst->ehdr, dst->scns);
+	if (dst->segs == NULL) {
+		free(dst->scns);
+		fclose(dst->fp);
+		return errno;
+	}
+
+	dst->strtab.scn = dst->scns + dst->ehdr.e_shstrndx;
+	dst->strtab.content = loadScn(dst->fp, path, dst->strtab.scn, NULL);
+	if (dst->strtab.content == NULL) {
+		free(dst->scns);
+		freeSegs(dst->segs, dst->ehdr.e_phnum);
+		fclose(dst->fp);
+		return errno;
+	}
+
+	dst->symtab.scn = getSymtabScn(path, dst->scns, dst->ehdr.e_shnum);
+	if (dst->symtab.scn == NULL) {
+		free(dst->scns);
+		freeSegs(dst->segs, dst->ehdr.e_phnum);
+		free(dst->strtab.content);
+		fclose(dst->fp);
+		return errno;
+	}
+
+	dst->symtab.content = loadScn(dst->fp, path,
+		dst->symtab.scn, dst->strtab.content);
+	if (dst->symtab.content == NULL) {
+		free(dst->scns);
+		freeSegs(dst->segs, dst->ehdr.e_phnum);
+		free(dst->strtab.content);
+		fclose(dst->fp);
+		return errno;
+	}
+
+	res = getSceScns(&dst->sceScns, dst->scns, dst->ehdr.e_shnum,
+		dst->strtab.content, path);
+	if (res) {
+		free(dst->scns);
+		freeSegs(dst->segs, dst->ehdr.e_phnum);
+		free(dst->strtab.content);
+		free(dst->symtab.content);
+		fclose(dst->fp);
+	}
+
+	return res;
+}
+
+static int closeElf(const elf_t *elf)
+{
+	int res;
+	if (elf == NULL)
+		return EINVAL;
+
+	free(elf->scns);
+	res = freeSegs(elf->segs, elf->ehdr.e_phnum);
+
+	if (fclose(elf->fp)) {
+		perror(elf->path);
+		return errno;
+	}
+
+	if (elf->stubContents.relaFstub != NULL)
+		free(elf->stubContents.relaFstub);
+
+	if (elf->stubContents.relaStub != NULL)
+		free(elf->stubContents.relaStub);
+
+	if (elf->stubContents.fnid != NULL)
+		free(elf->stubContents.fnid);
+
+	if (elf->stubContents.stub != NULL)
+		free(elf->stubContents.stub);
+
+	return res;
+}
+
+static int updateSceScnsSize(sceScns_t *scns)
+{
+	Elf32_Word headNum;
+
+	if (scns == NULL)
+		return EINVAL;
+
+	/* mark->sh_size == (the number of the heads) * 24 + (the number of the stubs) * 20
+	   fnid->sh_size == (the number of stubs) * 4 */
+	headNum = (scns->mark->shdr.sh_size
+		- scns->fnid->shdr.sh_size / 4 * sizeof(sce_libgen_mark_stub))
+			/ sizeof(sce_libgen_mark_head);
+
+	scns->relFstub->shdr.sh_size
+		= scns->fstub->shdr.sh_size / 4 * sizeof(Psp2_Rela_Short);
+
+	scns->relStub->shdr.sh_size = headNum * 6 * sizeof(Psp2_Rela_Short);
+	scns->stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
+
+	return 0;
 }
 
 static int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
@@ -451,25 +651,6 @@ static int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 	return 0;
 }
 
-static int updateSymtab(Elf32_Sym *symtab, Elf32_Word size, scn_t *scns)
-{
-	if (symtab == NULL || scns == NULL)
-		return EINVAL;
-
-	while (size) {
-		if (symtab->st_shndx != SHN_UNDEF
-			&& symtab->st_shndx < SHN_LORESERVE)
-		{
-			symtab->st_value -= scns[symtab->st_shndx].addrDiff;
-		}
-
-		symtab++;
-		size -= sizeof(Elf32_Sym);
-	}
-
-	return 0;
-}
-
 static int updateEhdr(Elf32_Ehdr *ehdr, const char *path,
 	seg_t *segs, scn_t *modinfo)
 {
@@ -507,9 +688,53 @@ found:
 	return 0;
 }
 
-static int writeRel(FILE *dstFp, const char *dst,
-	FILE *srcFp, const char *src, const scn_t *scn, const seg_t *seg,
-	const scn_t *scns, const Elf32_Sym *symtab, const scn_t *modinfo)
+static int updateSymtab(Elf32_Sym *symtab, Elf32_Word size, scn_t *scns)
+{
+	if (symtab == NULL || scns == NULL)
+		return EINVAL;
+
+	while (size) {
+		if (symtab->st_shndx != SHN_UNDEF
+			&& symtab->st_shndx < SHN_LORESERVE)
+		{
+			symtab->st_value -= scns[symtab->st_shndx].addrDiff;
+		}
+
+		symtab++;
+		size -= sizeof(Elf32_Sym);
+	}
+
+	return 0;
+}
+
+static int updateElf(elf_t *elf)
+{
+	int res;
+
+	if (elf == NULL)
+		return errno;
+
+	res = updateSceScnsSize(&elf->sceScns);
+	if (res)
+		return res;
+
+	res = updateSegs(elf->segs, elf->ehdr.e_phnum, elf->strtab.content);
+	if (res)
+		return res;
+
+	res = updateEhdr(&elf->ehdr,
+		elf->path, elf->segs, elf->sceScns.modinfo);
+	if (res)
+		return res;
+
+	res = updateSymtab(elf->symtab.content, elf->symtab.scn->orgSize,
+		elf->scns);
+	return res;
+}
+
+static int writeRel(FILE *dst, FILE *src,
+	const scn_t *scn, const seg_t *seg, const scn_t *scns,
+	const char *strtab, const Elf32_Sym *symtab, const scn_t *modinfo)
 {
 	Psp2_Rela_Short rela;
 	const scn_t *dstScn;
@@ -517,8 +742,9 @@ static int writeRel(FILE *dstFp, const char *dst,
 	const Elf32_Sym *sym;
 	Elf32_Word i, j, type;
 
-	if (dstFp == NULL || dst == NULL || srcFp == NULL || src == NULL
-		|| scn == NULL || scns == NULL || symtab == NULL)
+	if (dst == NULL || src == NULL
+		|| scn == NULL || seg == NULL || scns == NULL
+		|| strtab == NULL || symtab == NULL)
 	{
 		return EINVAL;
 	}
@@ -526,8 +752,8 @@ static int writeRel(FILE *dstFp, const char *dst,
 	dstScn = scns + scn->shdr.sh_info;
 
 	for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-		if (fread(&rel, sizeof(rel), 1, srcFp) <= 0) {
-			perror(src);
+		if (fread(&rel, sizeof(rel), 1, src) <= 0) {
+			perror(strtab + scn->shdr.sh_name);
 			return errno;
 		}
 
@@ -558,13 +784,13 @@ static int writeRel(FILE *dstFp, const char *dst,
 usual:
 			rela.r_addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (fseek(srcFp, dstScn->orgOffset + rel.r_offset, SEEK_SET)) {
-					perror(src);
+				if (fseek(src, dstScn->orgOffset + rel.r_offset, SEEK_SET)) {
+					perror(strtab + scn->shdr.sh_name);
 					return errno;
 				}
 
-				if (fread(&j, sizeof(j), 1, srcFp) <= 0) {
-					perror(src);
+				if (fread(&j, sizeof(j), 1, src) <= 0) {
+					perror(strtab + scn->shdr.sh_name);
 					return errno;
 				}
 
@@ -574,8 +800,8 @@ usual:
 
 		rela.r_offset = dstScn->segOffset + rel.r_offset;
 
-		if (fwrite(&rela, sizeof(rela), 1, dstFp) != 1) {
-			perror(dst);
+		if (fwrite(&rela, sizeof(rela), 1, dst) != 1) {
+			perror(strtab + scn->shdr.sh_name);
 			return errno;
 		}
 	}
@@ -624,11 +850,8 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	return 0;
 }
 
-static int buildStubs(void **relaFstubContent, void **relaStubContent,
-	void **fnidContent, void **stubContent, Elf32_Half fstubPhndx,
-	scn_t *relaFstub, scn_t *relStub,
-	scn_t *fnid, scn_t *fstub, scn_t *stub, scn_t *mark, scn_t *relMark, FILE *srcFp,
-	const scn_t *scns, const char *strtab, Elf32_Sym *symtab)
+static int buildStubs(stubContents_t *stubContents, sceScns_t *sceScns,
+	FILE *srcFp, const scn_t *scns, const char *strtab, Elf32_Sym *symtab)
 {
 	union {
 		uint8_t size;
@@ -642,82 +865,78 @@ static int buildStubs(void **relaFstubContent, void **relaStubContent,
 	Elf32_Sym *sym;
 	Elf32_Word i, *fnidEnt;
 
-	if (relaFstubContent == NULL || relaStubContent == NULL
-		|| fnidContent == NULL || stubContent == NULL
-		|| mark == NULL || relMark == NULL
-		|| relStub == NULL || fnid == NULL || fstub == NULL
-		|| stub == NULL || mark == NULL || srcFp == NULL
+	if (stubContents == NULL || sceScns == NULL || srcFp == NULL
 		|| scns == NULL || strtab == NULL || symtab == NULL)
 	{
 		return EINVAL;
 	}
 
-	markContent = malloc(mark->shdr.sh_size);
+	markContent = malloc(sceScns->mark->shdr.sh_size);
 	if (markContent == NULL) {
-		perror(strtab + mark->shdr.sh_name);
+		perror(strtab + sceScns->mark->shdr.sh_name);
 		return errno;
 	}
 
-	relMarkContent = malloc(relMark->orgSize);
+	relMarkContent = malloc(sceScns->relMark->orgSize);
 	if (relMarkContent == NULL) {
-		perror(strtab + relMark->shdr.sh_name);
+		perror(strtab + sceScns->relMark->shdr.sh_name);
 		return errno;
 	}
 
-	*relaFstubContent = malloc(relaFstub->shdr.sh_size);
-	if (*relaFstubContent == NULL) {
-		perror(strtab + relaFstub->shdr.sh_name);
+	stubContents->relaFstub = malloc(sceScns->relFstub->shdr.sh_size);
+	if (stubContents->relaFstub == NULL) {
+		perror(strtab + sceScns->relFstub->shdr.sh_name);
 		return errno;
 	}
 
-	*relaStubContent = malloc(relStub->shdr.sh_size);
-	if (*relaStubContent == NULL) {
-		perror(strtab + relStub->shdr.sh_name);
+	stubContents->relaStub = malloc(sceScns->relStub->shdr.sh_size);
+	if (stubContents->relaStub == NULL) {
+		perror(strtab + sceScns->relStub->shdr.sh_name);
 		return errno;
 	}
 
-	*fnidContent = malloc(fnid->shdr.sh_size);
-	if (*fnidContent == NULL) {
-		perror(strtab + fnid->shdr.sh_name);
+	stubContents->fnid = malloc(sceScns->fnid->shdr.sh_size);
+	if (stubContents->fnid == NULL) {
+		perror(strtab + sceScns->fnid->shdr.sh_name);
 		return errno;
 	}
 
-	*stubContent = malloc(stub->shdr.sh_size);
-	if (*stubContent == NULL) {
-		perror(strtab + stub->shdr.sh_name);
+	stubContents->stub = malloc(sceScns->stub->shdr.sh_size);
+	if (stubContents->stub == NULL) {
+		perror(strtab + sceScns->stub->shdr.sh_name);
 		return errno;
 	}
 
-	if (fseek(srcFp, mark->orgOffset, SEEK_SET)) {
-		perror(strtab + mark->shdr.sh_name);
+	if (fseek(srcFp, sceScns->mark->orgOffset, SEEK_SET)) {
+		perror(strtab + sceScns->mark->shdr.sh_name);
 		return errno;
 	}
 
-	if (fread(markContent, mark->shdr.sh_size, 1, srcFp) <= 0) {
-		perror(strtab + mark->shdr.sh_name);
+	if (fread(markContent, sceScns->mark->shdr.sh_size, 1, srcFp) <= 0) {
+		perror(strtab + sceScns->mark->shdr.sh_name);
 		return errno;
 	}
 
-	if (fseek(srcFp, relMark->orgOffset, SEEK_SET)) {
-		perror(strtab + relMark->shdr.sh_name);
+	if (fseek(srcFp, sceScns->relMark->orgOffset, SEEK_SET)) {
+		perror(strtab + sceScns->relMark->shdr.sh_name);
 		return errno;
 	}
 
-	if (fread(relMarkContent, relMark->orgSize, 1, srcFp) <= 0) {
-		perror(strtab + relMark->shdr.sh_name);
+	if (fread(relMarkContent, sceScns->relMark->orgSize, 1, srcFp) <= 0) {
+		perror(strtab + sceScns->relMark->shdr.sh_name);
 		return errno;
 	}
 
-	relaFstubEnt = *relaFstubContent;
-	relaStubEnt = *relaStubContent;
-	fnidEnt = *fnidContent;
-	stubHeads = *stubContent;
+	relaFstubEnt = stubContents->relaFstub;
+	relaStubEnt = stubContents->relaStub;
+	fnidEnt = stubContents->fnid;
+	stubHeads = stubContents->stub;
 	relMarkEnt = relMarkContent;
 	p = markContent;
 	fnidOffset = 0;
 	fstubOffset = 0;
 	offset = 0;
-	while (offset < mark->shdr.sh_size) {
+	while (offset < sceScns->mark->shdr.sh_size) {
 		if (p->size == sizeof(sce_libgen_mark_head)) {
 			stubHeads->size = sizeof(sceLib_stub);
 			stubHeads->ver = 1;
@@ -725,19 +944,19 @@ static int buildStubs(void **relaFstubContent, void **relaStubContent,
 			stubHeads->nid = p->head.nid;
 
 			relaStubEnt->r_short = 1;
-			relaStubEnt->r_symseg = fnid->phndx;
+			relaStubEnt->r_symseg = sceScns->fnid->phndx;
 			relaStubEnt->r_code = R_ARM_ABS32;
-			relaStubEnt->r_datseg = stub->phndx;
+			relaStubEnt->r_datseg = sceScns->stub->phndx;
 			relaStubEnt->r_addend = fnidOffset;
-			relaStubEnt->r_offset = mark->segOffset
+			relaStubEnt->r_offset = sceScns->mark->segOffset
 				+ offset + offsetof(sceLib_stub, funcNids);
 
 			relaStubEnt->r_short = 1;
-			relaStubEnt->r_symseg = fstubPhndx;
+			relaStubEnt->r_symseg = sceScns->fstub->phndx;
 			relaStubEnt->r_code = R_ARM_ABS32;
-			relaStubEnt->r_datseg = stub->phndx;
+			relaStubEnt->r_datseg = sceScns->stub->phndx;
 			relaStubEnt->r_addend = fstubOffset;
-			relaStubEnt->r_offset = mark->segOffset
+			relaStubEnt->r_offset = sceScns->mark->segOffset
 				+ offset + offsetof(sceLib_stub, funcStubs);
 
 			stubHeads->varNids = 0;
@@ -749,13 +968,13 @@ static int buildStubs(void **relaFstubContent, void **relaStubContent,
 			stubHeads->varNum = 0;
 			stubHeads->unkNum = 0;
 
-			for (i = 0; i < relMark->orgSize / sizeof(Elf32_Rel); i++) {
+			for (i = 0; i < sceScns->relMark->orgSize / sizeof(Elf32_Rel); i++) {
 				sym = symtab + ELF32_R_SYM(relMarkEnt[i].r_info);
-				if (sym->st_value != mark->shdr.sh_addr + offset)
+				if (sym->st_value != sceScns->mark->shdr.sh_addr + offset)
 					continue;
 
-				addStub(relaFstubEnt, fstub, fnidEnt,
-					relMarkContent, relMark->shdr.sh_size,
+				addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
+					relMarkContent, sceScns->relMark->shdr.sh_size,
 					markContent,
 					relMarkEnt[i].r_offset
 						- offsetof(sce_libgen_mark_stub, head),
@@ -813,26 +1032,13 @@ static int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	return 0;
 }
 
-static int writeSegs(FILE *dstFp, const char *dst,
-	FILE *srcFp, const char *src,
-	const char *strtab, const Elf32_Sym *symtab,
-	const Elf32_Ehdr *ehdr, const scn_t *scns, const seg_t *segs,
-	const scn_t *relaFstub, const scn_t *relaStub,
-	const scn_t *fnid, const scn_t *stub, const scn_t *modinfo,
-	const void *relaFstubContent, const void *relaStubContent,
-	const void *fnidContent, const void *stubContent)
+static int writePhdrs(FILE *dstFp, const char *dst,
+	const Elf32_Ehdr *ehdr, const seg_t *segs)
 {
-	Elf32_Half i, j;
-	int res;
+	Elf32_Half i;
 
-	if (dstFp == NULL || dst == NULL || srcFp == NULL || src == NULL
-		|| ehdr == NULL || scns == NULL || segs == NULL
-		|| relaFstub == NULL || relaStub == NULL || stub == NULL
-		|| relaFstubContent == NULL || relaStubContent == NULL
-		|| stubContent == NULL)
-	{
+	if (dstFp == NULL || dst == NULL || ehdr == NULL || segs == NULL)
 		return EINVAL;
-	}
 
 	if (fseek(dstFp, ehdr->e_phoff, SEEK_SET)) {
 		perror(dst);
@@ -845,46 +1051,63 @@ static int writeSegs(FILE *dstFp, const char *dst,
 			return errno;
 		}
 
-	for (i = 0; i < ehdr->e_phnum; i++) {
+	return 0;
+}
+
+static int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
+	const seg_t *segs, Elf32_Half phnum,
+	const sceScns_t *sceScns, const stubContents_t *stubContents,
+	const char *strtab, const Elf32_Sym *symtab)
+{
+	Elf32_Half i, j;
+	int res;
+
+	if (dst == NULL || src == NULL || scns == NULL || segs == NULL
+		|| sceScns == NULL || stubContents == NULL || strtab == NULL)
+	{
+		return EINVAL;
+	}
+
+	for (i = 0; i < phnum; i++) {
 		for (j = 0; j < segs->shnum; j++) {
-			if (fseek(srcFp, segs->scns[j]->orgOffset, SEEK_SET)) {
+			if (fseek(src, segs->scns[j]->orgOffset, SEEK_SET)) {
 				perror(strtab + segs->scns[j]->shdr.sh_name);
 				return errno;
 			}
 
-			if (fseek(dstFp, segs->scns[j]->shdr.sh_offset, SEEK_SET)) {
+			if (fseek(dst, segs->scns[j]->shdr.sh_offset, SEEK_SET)) {
 				perror(strtab + segs->scns[j]->shdr.sh_name);
 				return errno;
 			}
 
 			// Refer to updateSegs
 			if (segs->scns[j]->shdr.sh_type == SHT_SCE_RELA) {
-				if (segs->scns[j] == relaFstub) {
-					if (fwrite(relaFstubContent, relaFstub->shdr.sh_size, 1, dstFp) != 1) {
-						perror(strtab + relaFstub->shdr.sh_name);
+				if (segs->scns[j] == sceScns->relFstub) {
+					if (fwrite(stubContents->relaFstub, sceScns->relFstub->shdr.sh_size, 1, dst) != 1) {
+						perror(strtab + sceScns->relFstub->shdr.sh_name);
 						res = errno;
 					}
-				} else if (segs->scns[j] == relaStub) {
-					if (fwrite(relaStubContent, relaStub->shdr.sh_size, 1, dstFp) != 1) {
-						perror(strtab + relaStub->shdr.sh_name);
+				} else if (segs->scns[j] == sceScns->relStub) {
+					if (fwrite(stubContents->relaStub, sceScns->relStub->shdr.sh_size, 1, dst) != 1) {
+						perror(strtab + sceScns->relStub->shdr.sh_name);
 						res = errno;
 					}
 				} else
-					res = writeRel(dstFp, dst, srcFp, src,
-						segs->scns[j], segs,
-						scns, symtab, modinfo);
-			} else if (segs->scns[j] == fnid) {
-				if (fwrite(fnidContent, fnid->shdr.sh_size, 1, dstFp) != 1) {
-					perror(strtab + fnid->shdr.sh_name);
+					res = writeRel(dst, src,
+						segs->scns[j], segs, scns,
+						strtab, symtab, sceScns->modinfo);
+			} else if (segs->scns[j] == sceScns->fnid) {
+				if (fwrite(stubContents->fnid, sceScns->fnid->shdr.sh_size, 1, dst) != 1) {
+					perror(strtab + sceScns->fnid->shdr.sh_name);
 					res = errno;
 				}
-			} else if (segs->scns[j] == stub) {
-				if (fwrite(stubContent, stub->shdr.sh_size, 1, dstFp) != 1) {
-					perror(strtab + stub->shdr.sh_name);
+			} else if (segs->scns[j] == sceScns->stub) {
+				if (fwrite(stubContents->stub, sceScns->stub->shdr.sh_size, 1, dst) != 1) {
+					perror(strtab + sceScns->stub->shdr.sh_name);
 					res = errno;
 				}
 			} else
-				res = writeScn(dstFp, srcFp, segs->scns[j], strtab);
+				res = writeScn(dst, src, segs->scns[j], strtab);
 
 			if (res)
 				return res;
@@ -896,17 +1119,52 @@ static int writeSegs(FILE *dstFp, const char *dst,
 	return 0;
 }
 
+static int writeElf(const char *path, elf_t *elf)
+{
+	FILE *fp;
+	int res;
+
+	if (path == NULL)
+		return EINVAL;
+
+	fp = fopen(path, "wb");
+	if (fp == NULL) {
+		perror(path);
+		return errno;
+	}
+
+	if (fwrite(&elf->ehdr, sizeof(Elf32_Ehdr), 1, fp) != 1) {
+		perror(path);
+		fclose(fp);
+		return errno;
+	}
+
+	res = writePhdrs(fp, path, &elf->ehdr, elf->segs);
+	if (res) {
+		fclose(fp);
+		return res;
+	}
+
+	res = writeSegs(fp, elf->fp, elf->scns, elf->segs, elf->ehdr.e_phnum,
+		&elf->sceScns, &elf->stubContents,
+		elf->strtab.content, elf->symtab.content);
+	if (res) {
+		fclose(fp);
+		return res;
+	}
+
+	if (fclose(fp)) {
+		perror(path);
+		return errno;
+	}
+
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
-	scn_t *relMark, *relFstub, *relStub;
-	scn_t *fnid, *fstub, *stub, *mark, *symtabScn, *modinfo, *scns;
-	seg_t *segs;
-	FILE *srcFp, *dstFp;
-	Elf32_Ehdr ehdr;
-	Elf32_Sym *symtab;
-	Elf32_Word headNum;
-	void *relaFstubContent, *relaStubContent, *fnidContent, *stubContent;
-	char *src, *dst, *strtab;
+	elf_t elf;
+	char *src, *dst;
 	int res;
 
 	if (argc != 3) {
@@ -917,139 +1175,26 @@ int main(int argc, char *argv[])
 	src = argv[1];
 	dst = argv[2];
 
-	srcFp = fopen(src, "rb");
-	if (srcFp == NULL) {
-		perror(src);
-		return errno;
-	}
+	res = openElf(&elf, src);
+	if (res)
+		return res;
 
-	dstFp = fopen(dst, "wb");
-	if (dstFp == NULL) {
-		perror(dst);
-		fclose(srcFp);
-		return errno;
-	}
-
-	if (fread(&ehdr, sizeof(ehdr), 1, srcFp) <= 0) {
-		perror(src);
-		fclose(srcFp);
-		fclose(dstFp);
-		return errno;
-	}
-
-	scns = getScns(srcFp, src, &ehdr);
-	if (scns == NULL) {
-		fclose(srcFp);
-		fclose(dstFp);
-		return errno;
-	}
-
-	segs = getSegs(srcFp, src, &ehdr, scns);
-	if (segs == NULL) {
-		free(scns);
-		fclose(srcFp);
-		fclose(dstFp);
-		return errno;
-	}
-
-	strtab = loadScn(srcFp, src, scns + ehdr.e_shstrndx, NULL);
-	if (strtab == NULL) {
-		free(scns);
-		freeSegs(segs, ehdr.e_phnum);
-		fclose(srcFp);
-		fclose(dstFp);
-		return errno;
-	}
-
-	symtabScn = getSymtabScn(src, scns, ehdr.e_shnum);
-	if (symtabScn == NULL) {
-		free(scns);
-		freeSegs(segs, ehdr.e_phnum);
-		fclose(srcFp);
-		fclose(dstFp);
-		return errno;
-	}
-
-	symtab = loadScn(srcFp, src, symtabScn, strtab);
-	if (symtab == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	relMark = findScn(scns, ehdr.e_shnum, strtab, ".rel.sce_libgen_mark", src);
-	if (relMark == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	mark = scns + relMark->shdr.sh_info;
-
-	relFstub = findScn(scns, ehdr.e_shnum, strtab, ".rel.sceFStub.rodata", src);
-	if (relFstub == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	fstub = scns + relFstub->shdr.sh_info;
-
-	fnid = findScn(scns, ehdr.e_shnum, strtab, ".sceFNID.rodata", src);
-	if (fnid == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	relStub = findScn(scns, ehdr.e_shnum, strtab, ".rel.sceLib.stub", src);
-	if (relStub == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	stub = scns + relStub->shdr.sh_info;
-
-	modinfo = findScn(scns, ehdr.e_shnum, strtab, ".sceModuleInfo.rodata", src);
-	if (modinfo == NULL) {
-		res = errno;
-		goto fail;
-	}
-
-	/* mark->sh_size == (the number of the heads) * 24 + (the number of the stubs) * 20
-	   fnid->sh_size == (the number of stubs) * 4 */
-	headNum = (mark->shdr.sh_size - fnid->shdr.sh_size / 4 * sizeof(sce_libgen_mark_stub))
-		/ sizeof(sce_libgen_mark_head);
-	relFstub->shdr.sh_size = fstub->shdr.sh_size / 4 * sizeof(Psp2_Rela_Short);
-	relStub->shdr.sh_size = headNum * 6 * sizeof(Psp2_Rela_Short);
-	stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
-
-	res = updateSegs(segs, ehdr.e_phnum, strtab);
+	res = updateElf(&elf);
 	if (res)
 		goto fail;
 
-	res = updateEhdr(&ehdr, src, segs, modinfo);
+	res = buildStubs(&elf.stubContents, &elf.sceScns,
+		elf.fp, elf.scns, elf.strtab.content, elf.symtab.content);
 	if (res)
 		goto fail;
 
-	if (fwrite(&ehdr, sizeof(Elf32_Ehdr), 1, dstFp) != 1)
+	res = writeElf(dst, &elf);
+	if (res)
 		goto fail;
 
-	res = updateSymtab(symtab, symtabScn->orgSize, scns);
-
-	res = buildStubs(&relaFstubContent, &relaStubContent,
-		&fnidContent, &stubContent, fstub->phndx,
-		relFstub, relStub, fnid, fstub, stub, mark, relMark,
-		srcFp, scns, strtab, symtab);
-
-	res = writeSegs(dstFp, dst, srcFp, src, strtab, symtab,
-		&ehdr, scns, segs, relFstub, relStub, fnid, stub, modinfo,
-		relaFstubContent, relaStubContent, fnidContent, stubContent);
+	return closeElf(&elf);
 
 fail:
-	free(scns);
-	freeSegs(segs, ehdr.e_phnum);
-	free(strtab);
-	free(symtab);
-
-	fclose(dstFp);
-	fclose(srcFp);
-
+	closeElf(&elf);
 	return res;
 }
