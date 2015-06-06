@@ -16,7 +16,11 @@
  */
 
 #include <errno.h>
+#ifdef __APPLE__
+#include <libelf/gelf.h>
+#else
 #include <elf.h>
+#endif
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +32,14 @@
 
 #ifndef R_ARM_TARGET2
 #define R_ARM_TARGET2 41
+#endif
+
+#ifndef R_ARM_NONE
+#define R_ARM_NONE 0
+#endif
+
+#ifndef R_ARM_ABS32
+#define R_ARM_ABS32 2
 #endif
 
 typedef struct {
