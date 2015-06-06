@@ -15,6 +15,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <psp2moduleinfo.h>
+#include <openssl/sha.h>
 #include <errno.h>
 #include <elf.h>
 #include <stddef.h>
@@ -999,6 +1001,48 @@ static int buildStubs(stubContents_t *stubContents, sceScns_t *sceScns,
 	return 0;
 }
 
+static int writeModinfo(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
+{
+	unsigned char md[SHA_DIGEST_LENGTH];
+	_sceModuleInfo *p;
+
+	if (dst == NULL || src == NULL || scn == NULL)
+		return EINVAL;
+
+	if (scn->orgSize == 0)
+		return 0;
+
+	p = malloc(scn->orgSize);
+	if (p == NULL) {
+		perror(strtab + scn->shdr.sh_name);
+		return errno;
+	}
+
+	if (fread(p, scn->orgSize, 1, src) <= 0) {
+		perror(strtab + scn->shdr.sh_name);
+		free(p);
+		return errno;
+	}
+
+	if (p->nid == 0) {
+		SHA1((unsigned char *)p->name, strlen(p->name), md);
+		((unsigned char *)&p->nid)[0] = md[3];
+		((unsigned char *)&p->nid)[1] = md[2];
+		((unsigned char *)&p->nid)[2] = md[1];
+		((unsigned char *)&p->nid)[3] = md[0];
+	}
+
+	if (fwrite(p, scn->orgSize, 1, dst) != 1) {
+		perror(strtab + scn->shdr.sh_name);
+		free(p);
+		return errno;
+	}
+
+	free(p);
+
+	return 0;
+}
+
 static int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 {
 	void *p;
@@ -1106,6 +1150,8 @@ static int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 					perror(strtab + sceScns->stub->shdr.sh_name);
 					res = errno;
 				}
+			} else if (segs->scns[j] == sceScns->modinfo) {
+				res = writeModinfo(dst, src, sceScns->modinfo, strtab);
 			} else
 				res = writeScn(dst, src, segs->scns[j], strtab);
 

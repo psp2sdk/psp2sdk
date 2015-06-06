@@ -9,13 +9,13 @@ AM_INIT_AUTOMAKE(foreign)
 # Checks for programs.
 AC_PROG_CC
 
-CFLAGS="$CFLAGS -I\$(top_srcdir)/include"
+CFLAGS="$CFLAGS -I\$(top_srcdir)/include -I\$(top_srcdir)/../src/include"
 if test "$ac_compiler_gnu" = yes; then
 	CFLAGS="$CFLAGS -Wall"
 fi
 
 # Checks for header files.
-AC_CHECK_HEADERS(stddef.h stdlib.h string.h, ,
+AC_CHECK_HEADERS(stddef.h stdlib.h string.h, openssl/sha.h,
 	AC_MSG_ERROR(header files not found.))
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -33,5 +33,7 @@ AC_FUNC_MALLOC
 if test HAVE_MALLOC = 0; then
 	AC_MSG_ERROR(invalid malloc.)
 fi
+
+AC_CHECK_LIB(crypto, SHA1, , AC_MSG_ERROR(SHA1 not supported by libcrypto.))
 
 AC_OUTPUT(Makefile psp2-fixup/Makefile psp2-fixup-lib/Makefile)
