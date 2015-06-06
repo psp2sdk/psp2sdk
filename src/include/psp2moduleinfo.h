@@ -1,4 +1,7 @@
-/*
+/**
+ * \file
+ * \brief Header file related to module information definitions
+ *
  * Copyright (C) 2015 PSP2SDK Project
  *
  * This library is free software; you can redistribute it and/or
@@ -22,31 +25,40 @@
 #include <stddef.h>
 #include <stdint.h>
 
+//! Module Information
 typedef struct {
-	uint16_t attr;
-	uint16_t ver;
-	char name[27];
-	uint8_t type;
-	void *gp;
-	void *expTop;
-	void *expBtm;
-	void *impTop;
-	void *impBtm;
-	uint32_t nid;
-	uint32_t unk38;
-	uint32_t unk3C;
-	uint32_t unk40;
-	void *start;
-	void *stop;
-	void *exidxTop;
-	void *exidxBtm;
-	void *extabTop;
-	void *extabBtm;
+	uint16_t attr;	//!< Attribute
+	uint16_t ver;	//!< Version
+	char name[27];	//!< Name
+	uint8_t type;	//!< Type
+	void *gp;	//!< Global Pointer
+	void *expTop;	//!< Pointer to the top of export table
+	void *expBtm;	//!< Pointer to the bottom of export table
+	void *impTop;	//!< Pointer to the top of import table
+	void *impBtm;	//!< Pointer to the bottom of import table
+	uint32_t nid;	//!< NID
+	uint32_t unk38;	//!< Unknown
+	uint32_t unk3C;	//!< Unknown
+	uint32_t unk40;	//!< Unknown
+	void *start;	//!< Pointer to module_start function
+	void *stop;	//!< Pointer to module_stop function
+	void *exidxTop;	//!< Pointer to the top of exidx section
+	void *exidxBtm;	//!< Pointer to the bottom of exidx section
+	void *extabTop;	//!< Pointer to the top of extab section
+	void *extabBtm;	//!< Pointer to the bottom of extab section
 } _sceModuleInfo;
 
+//! The type of structure stored in .sceModuleInfo.rodata section
 typedef const _sceModuleInfo SceModuleInfo;
 
-/* It doesn't refer to import_btm because it is not defined yet. */ 
+// It doesn't refer to import_btm because it is not defined yet.
+/**
+ * Define module information
+ *
+ * \param attribute Attribute
+ * \param version Version
+ * \param module_name Name
+ */
 #define PSP2_MODULE_INFO(attribute, version, module_name) \
 	extern char export_top[], export_btm[]; \
 	extern char import_top[]; \

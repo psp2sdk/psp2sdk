@@ -1,4 +1,7 @@
-/*
+/**
+ * \file
+ * \brief Header file which defines unique variable types
+ *
  * Copyright (C) 2015 PSP2SDK Project
  *
  * This library is free software; you can redistribute it and/or
@@ -20,6 +23,6 @@
 
 #include <stddef.h>
 
-typedef size_t SceSize;
+typedef size_t SceSize; //!< SCE's alias of size_t
 
 #endif

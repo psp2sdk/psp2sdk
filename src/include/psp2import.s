@@ -40,6 +40,7 @@ _\name\()_stub_str:
 #endif
 .endm
 
+## Documantation for PSP2_IMPORT_FUNC
 .macro PSP2_IMPORT_FUNC module, moduleNum, num, nid, name
 #ifdef NIDS
 	.global	_NID_\name
