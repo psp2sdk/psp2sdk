@@ -15,7 +15,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <psp2moduleinfo.h>
+#include <psp2/moduleinfo.h>
 #include <openssl/sha.h>
 #include <errno.h>
 #include <stdio.h>

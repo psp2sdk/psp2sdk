@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT(psp2sdk, 0.0, https://github.com/173210/psp2sdk/issues)
-AC_CONFIG_SRCDIR(include/psp2moduleinfo.h)
+AC_CONFIG_SRCDIR(include/psp2/moduleinfo.h)
 
 AM_INIT_AUTOMAKE(foreign -Wno-portability)
 

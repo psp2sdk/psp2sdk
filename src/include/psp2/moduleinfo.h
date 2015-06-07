@@ -21,7 +21,7 @@
 #ifndef _PSP2MODULEINFO_H_
 #define _PSP2MODULEINFO_H_
 
-#include <psp2types.h>
+#include <psp2/types.h>
 #include <stddef.h>
 #include <stdint.h>
 

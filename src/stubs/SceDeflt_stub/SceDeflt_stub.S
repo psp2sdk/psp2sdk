@@ -13,7 +13,7 @@
 @ License along with this library; if not, write to the Free Software
 @ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include <psp2import.S>
+#include <psp2/import.S>
 
 PSP2_IMPORT_HEAD 0x0, SceDeflt, 0001, 1, 0
 
