@@ -15,7 +15,7 @@ fi
 
 CFLAGS="$CFLAGS -I\$(top_srcdir)/include"
 if test "$ac_compiler_gnu" = yes; then
-	CFLAGS="$CFLAGS -Wall"
+	CFLAGS="$CFLAGS -Wall -mcpu=cortex-a9 -mfpu=neon-fp16"
 fi
 
 AM_PROG_AS
