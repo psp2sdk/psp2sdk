@@ -28,6 +28,8 @@ AC_CHECK_TYPES(uint16_t, , AC_MSG_ERROR(uint16_t not defined.),
 AC_CHECK_TYPES(uint32_t, , AC_MSG_ERROR(uint32_t not defined.),
 	[#include <stdint.h>])
 
+AC_C_BIGENDIAN(AC_MSG_ERROR(bigendian host not supported.))
+
 # Checks for library functions.
 AC_FUNC_MALLOC
 if test HAVE_MALLOC = 0; then
