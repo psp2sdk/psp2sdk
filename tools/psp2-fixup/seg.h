@@ -18,8 +18,8 @@
 #ifndef _SEG_H_
 #define _SEG_H_
 
-#include <elf.h>
 #include <stdio.h>
+#include "elf.h"
 #include "scn.h"
 #include "stub.h"
 

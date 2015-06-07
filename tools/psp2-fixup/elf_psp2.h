@@ -1,8 +1,8 @@
 #ifndef _ELF_PSP2_H_
 #define _ELF_PSP2_H_
 
-#include <elf.h>
 #include <stdint.h>
+#include "elf.h"
 
 typedef struct {
 		uint8_t size;

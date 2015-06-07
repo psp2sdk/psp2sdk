@@ -18,8 +18,8 @@
 #ifndef _ELF_PRIV_H_
 #define _ELF_PRIV_H_
 
-#include <elf.h>
 #include <stdio.h>
+#include "elf.h"
 #include "scn.h"
 #include "seg.h"
 

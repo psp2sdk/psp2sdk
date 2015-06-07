@@ -17,12 +17,12 @@
 
 #include <psp2moduleinfo.h>
 #include <openssl/sha.h>
-#include <elf.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "elf_psp2.h"
+#include "elf.h"
 #include "scn.h"
 #include "stub.h"
 

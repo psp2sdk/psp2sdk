@@ -18,8 +18,8 @@
 #ifndef _STUB_H_
 #define _STUB_H_
 
-#include <elf.h>
 #include <stdio.h>
+#include "elf.h"
 #include "scn.h"
 
 typedef struct {

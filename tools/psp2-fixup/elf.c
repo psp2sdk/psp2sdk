@@ -15,12 +15,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <elf.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "elf_priv.h"
 #include "elf_psp2.h"
+#include "elf.h"
 #include "scn.h"
 #include "seg.h"
 

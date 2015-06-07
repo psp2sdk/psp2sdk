@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE(foreign)
 # Checks for programs.
 AC_PROG_CC
 
-CFLAGS="$CFLAGS -I\$(top_srcdir)/include -I\$(top_srcdir)/../src/include"
+CFLAGS="$CFLAGS -I\$(top_srcdir)/../src/include"
 if test "$ac_compiler_gnu" = yes; then
 	CFLAGS="$CFLAGS -Wall"
 fi

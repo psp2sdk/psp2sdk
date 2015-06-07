@@ -18,8 +18,8 @@
 #ifndef _SCN_H_
 #define _SCN_H_
 
-#include <elf.h>
 #include <stdio.h>
+#include "elf.h"
 
 typedef struct {
 	Elf32_Addr addrDiff;
