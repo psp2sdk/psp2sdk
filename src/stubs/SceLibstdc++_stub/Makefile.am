@@ -294,15 +294,15 @@ NIDS = 0x0056443f 0x00c04303 0x00e08376 0x011ceb00 	\
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceLibstdc++_stub.a
-libSceLibstdc++_stub_a_SOURCES = SceLibstdcxx_stub.S 
-am_libSceLibstdc++_stub_a_OBJECTS =	\
+libSceLibstdc___stub_a_SOURCES = SceLibstdc++_stub.S
+am_libSceLibstdc___stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
-$(PREFIX)head.o: $(libSceLibstdc++_stub_a_SOURCES)
+$(PREFIX)head.o: $(libSceLibstdc___stub_a_SOURCES)
 	$(COMPILE) -DHEAD $< -c -o $@
 
-$(PREFIX)NIDS.o: $(libSceLibstdc++_stub_a_SOURCES)
+$(PREFIX)NIDS.o: $(libSceLibstdc___stub_a_SOURCES)
 	$(COMPILE) -DNIDS $< -c -o $@
 
-$(ENTRIES): $(libSceLibstdc++_stub_a_SOURCES)
+$(ENTRIES): $(libSceLibstdc___stub_a_SOURCES)
 	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
