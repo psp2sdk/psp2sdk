@@ -11,7 +11,7 @@ AC_PROG_CC
 
 CFLAGS="$CFLAGS -I\$(top_srcdir)/../src/include"
 if test "$ac_compiler_gnu" = yes; then
-	CFLAGS="$CFLAGS -Wall"
+	CFLAGS="$CFLAGS -Wall -flto"
 fi
 
 # Checks for header files.
