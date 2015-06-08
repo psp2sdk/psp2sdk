@@ -17,12 +17,12 @@
 
 if test -d src; then
   echo Running src/autogen.sh ...
-  (cd src ; NOCONFIGURE=1 ./autogen.sh "$@")
+  (cd src ; ./autogen.sh "$@")
   echo Done running src/autogen.sh ...
 fi
 
 if test -d tools; then
   echo Running tools/autogen.sh ...
-  (cd src ; NOCONFIGURE=1 ./autogen.sh "$@")
+  (cd src ; ./autogen.sh "$@")
   echo Done running tools/autogen.sh ...
 fi
