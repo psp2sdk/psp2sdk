@@ -38,7 +38,7 @@ typedef int16_t  SceInt16;
 typedef uint16_t  SceUInt16;
 
 typedef int32_t SceInt32;
-typedef uint32_t SceInt32;
+typedef uint32_t SceUInt32;
 
 typedef int32_t SceInt;
 typedef uint32_t SceUInt;
@@ -53,8 +53,8 @@ typedef size_t SceSize;
 typedef ssize_t SceSSize;
 
 typedef int SceBool;
-#define SCE_TRUE (1)
-#define SCE_FALSE (0)
+#define PSP2_TRUE (1)
+#define PSP2_FALSE (0)
 
 typedef float SceFloat;
 typedef float SceFloat32;
@@ -246,9 +246,9 @@ typedef SceInt64 SceOff; //!< Offset type
 typedef int SceUID; //!< UIDs are used to describe many different kernel objects. 
 
 typedef int ScePID; //!< Process ID
-#define SCE_KERNEL_PROCESS_ID_SELF 0 //!< Current running process ID is always 0
+#define PSP2_KERNEL_PROCESS_ID_SELF 0 //!< Current running process ID is always 0
 
 typedef char* SceName; //!< Names are used to describe object names
-#define SCE_UID_NAMELEN 31 //!< Maximum length for kernel object names
+#define PSP2_UID_NAMELEN 31 //!< Maximum length for kernel object names
 
 #endif /* _PSP2TYPES_H_ */
