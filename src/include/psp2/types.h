@@ -141,12 +141,14 @@ typedef struct SceIMatrix4 {
     SceIVector4 x;
     SceIVector4 y;
     SceIVector4 z;
+    SceIVector4 w;
 } SceIMatrix4;
 
 typedef struct SceFMatrix4 {
     SceFVector4 x;
     SceFVector4 y;
     SceFVector4 z;
+    SceFVector4 w;
 } SceFMatrix4;
 
 typedef struct SceFQuaternion {
@@ -239,11 +241,14 @@ typedef struct SceDateTime {
     unsigned int microsecond;
 } SceDateTime;
 
-typedef int SceUID; //!< UIDs are used to describe many different kernel objects. 
-typedef int ScePID; //!< Process ID
-
 typedef SceInt64 SceOff; //!< Offset type
 
+typedef int SceUID; //!< UIDs are used to describe many different kernel objects. 
+
+typedef int ScePID; //!< Process ID
+#define SCE_KERNEL_PROCESS_ID_SELF 0 //!< Current running process ID is always 0
+
 typedef char* SceName; //!< Names are used to describe object names
+#define SCE_UID_NAMELEN 31 //!< Maximum length for kernel object names
 
 #endif /* _PSP2TYPES_H_ */
