@@ -66,18 +66,18 @@ typedef struct SceDisplayFrameBuf {
 /***
  * Set/Update framebuffer parameters
  *
- * @param[in] frameBuf - Pointer to a ::SceDisplayFrameBuf structure.
+ * @param[in] pParam - Pointer to a ::SceDisplayFrameBuf structure.
  * @param[in] sync - One of ::DisplaySetBufSync
  *
  * @return 0 on success, < 0 on error.
- * @note - If NULL is provided as FrameBuf pointer, output is blacked out.
+ * @note - If NULL is provided as pParam pointer, output is blacked out.
 */
 int sceDisplaySetFrameBuf(const SceDisplayFrameBuf *pParam, int sync);
 
 /***
  * Get current framebuffer parameters
  *
- * @param[out] FrameBuf - Pointer to a ::SceDisplayFrameBuf structure
+ * @param[out] pParam - Pointer to a ::SceDisplayFrameBuf structure
  * which will receive framebuffer parameters.
  *
  * @param[in] sync - One of ::DisplaySetBufSync
@@ -89,7 +89,7 @@ int sceDisplayGetFrameBuf(SceDisplayFrameBuf *pParam, int sync);
 /***
  * Get current number of fps for the current screen mode.
  *
- * @param[out] fps - Pointer to a float variable to store current number of fps.
+ * @param[out] pFps - Pointer to a float variable to store current number of fps.
  *
  * @return 0 on success, < 0 on error.
  * @note - This function returns a theoretical value, this might not be the exact frame rate.
