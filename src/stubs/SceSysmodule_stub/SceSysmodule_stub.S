@@ -13,10 +13,10 @@
 @ License along with this library; if not, write to the Free Software
 @ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include <psp2import.S>
+#include <psp2/import.S>
 
 PSP2_IMPORT_HEAD 0x0, SceSysmodule, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x31d87805 sceSysmoduleUnloadModule
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x53099b7a sceSysmoduleIsLoaded
-PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x79a0160a sceSysmoduleLoadModule
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x31d87805, sceSysmoduleUnloadModule
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x53099b7a, sceSysmoduleIsLoaded
+PSP2_IMPORT_FUNC SceSysmodule, 0001, F00, 0x79a0160a, sceSysmoduleLoadModule

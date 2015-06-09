@@ -1,1 +1,1 @@
-SUBDIRS = stubs
+SUBDIRS = include stubs

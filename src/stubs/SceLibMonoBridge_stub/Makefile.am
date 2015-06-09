@@ -93,16 +93,16 @@ NIDS = 0x1a2e441f 0x599aea5e 0xf466abec 0x110f567b	\
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
-lib_LIBRARIES = libSceLibMonoBridge_stub.a
-libSceLibMonoBridge_stub_a_SOURCES = SceLibMonoBridge_stub.S
-am_libSceLibMonoBridge_stub_a_OBJECTS =	\
+lib_LIBRARIES = libSceMonoBridge_stub.a
+libSceMonoBridge_stub_a_SOURCES = SceLibMonoBridge_stub.S
+am_libSceMonoBridge_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
-$(PREFIX)head.o: $(libSceLibMonoBridge_stub_a_SOURCES)
+$(PREFIX)head.o: $(libSceMonoBridge_stub_a_SOURCES)
 	$(COMPILE) -DHEAD $< -c -o $@
 
-$(PREFIX)NIDS.o: $(libSceLibMonoBridge_stub_a_SOURCES)
+$(PREFIX)NIDS.o: $(libSceMonoBridge_stub_a_SOURCES)
 	$(COMPILE) -DNIDS $< -c -o $@
 
-$(ENTRIES): $(libSceLibMonoBridge_stub_a_SOURCES)
+$(ENTRIES): $(libSceMonoBridge_stub_a_SOURCES)
 	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@

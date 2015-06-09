@@ -13,13 +13,10 @@
 @ License along with this library; if not, write to the Free Software
 @ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include <psp2import.S>
+#include <psp2/import.S>
 
 PSP2_IMPORT_HEAD 0x0, SceAppMgr, 0001, 1, 0
 
-PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0x10b5765f, sceAppMgrReceiveSystemEvent
-PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0x5e86319a, _sceAppMgrGetAppState
-PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0xe6774abc, sceAppMgrLoadExec
 PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0xad9022a1, sceAppMgrSetInfobarState
 PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0xafceab96, sceAppMgrAcquireBgmPort
 PSP2_IMPORT_FUNC SceAppMgr, 0001, F00, 0xf3717e37, sceAppMgrReleaseBgmPort
