@@ -66,8 +66,8 @@ typedef struct SceDisplayFrameBuf {
 /***
  * Set/Update framebuffer parameters
  *
- * @param frameBuf - Pointer to a ::SceDisplayFrameBuf structure.
- * @param sync - One of ::DisplaySetBufSync
+ * @param[in] frameBuf - Pointer to a ::SceDisplayFrameBuf structure.
+ * @param[in] sync - One of ::DisplaySetBufSync
  *
  * @return 0 on success, < 0 on error.
  * @note - If NULL is provided as FrameBuf pointer, output is blacked out.
@@ -77,10 +77,10 @@ int sceDisplaySetFrameBuf(const SceDisplayFrameBuf *pParam, int sync);
 /***
  * Get current framebuffer parameters
  *
- * @param FrameBuf - Pointer to a ::SceDisplayFrameBuf structure
+ * @param[out] FrameBuf - Pointer to a ::SceDisplayFrameBuf structure
  * which will receive framebuffer parameters.
  *
- * @param sync - One of ::DisplaySetBufSync
+ * @param[in] sync - One of ::DisplaySetBufSync
  *
  * @return 0 on success, < 0 on error.
 */
@@ -89,7 +89,7 @@ int sceDisplayGetFrameBuf(SceDisplayFrameBuf *pParam, int sync);
 /***
  * Get current number of fps for the current screen mode.
  *
- * @param fps - Pointer to a float variable to store current number of fps.
+ * @param[out] fps - Pointer to a float variable to store current number of fps.
  *
  * @return 0 on success, < 0 on error.
  * @note - This function returns a theoretical value, this might not be the exact frame rate.
@@ -114,14 +114,14 @@ int sceDisplayWaitVblankStartCB(void);
 /**
  * Wait for vertical blank start after specified number of vertical periods
  * 
- * @param vcount - Number of vertical periods before waiting for vertical blank start
+ * @param[in] vcount - Number of vertical periods before waiting for vertical blank start
  */
 int sceDisplayWaitVblankStartMulti(unsigned int vcount);
 
 /**
  * Wait for vertical blank start with callback after specified number of vertical periods
  * 
- * @param vcount - Number of vertical periods before waiting for vertical blank start
+ * @param[in] vcount - Number of vertical periods before waiting for vertical blank start
  */
 int sceDisplayWaitVblankStartMultiCB(unsigned int vcount);
 
@@ -139,7 +139,7 @@ int sceDisplayWaitSetFrameBufCB(void);
  * Wait for vertical blank start after specified number of vertical periods 
  * since last update of framebuffer.
  * 
- * @param vcount - Number of vertical periods before waiting for vertical blank start
+ * @param[in] vcount - Number of vertical periods before waiting for vertical blank start
  */
 int sceDisplayWaitSetFrameBufMulti(unsigned int vcount);
 
@@ -147,21 +147,21 @@ int sceDisplayWaitSetFrameBufMulti(unsigned int vcount);
  * Wait for vertical blank start with callback after specified number of vertical periods
  * since last update of framebuffer.
  * 
- * @param vcount - Number of vertical periods before waiting for vertical blank start
+ * @param[in] vcount - Number of vertical periods before waiting for vertical blank start
  */
 int sceDisplayWaitSetFrameBufMultiCB(unsigned int vcount);
 
 /**
  * Register callback to be used at each vertical blank start
  *
- * @param uid - Callback UID
+ * @param[in] uid - Callback UID
  */
 int sceDisplayRegisterVblankStartCallback(SceUID uid);
 
 /**
  * Unregister callback used at each vertical blank start
  *
- * @param uid - Callback UID
+ * @param[in] uid - Callback UID
  */
 int sceDisplayUnregisterVblankStartCallback(SceUID uid);
 
