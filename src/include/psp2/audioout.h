@@ -143,7 +143,7 @@ int sceAudioOutGetConfig(int port, int type);
 enum AudioOutAlcMode {
 	PSP2_AUDIO_ALC_OFF		= 0,
 	PSP2_AUDIO_ALC_MODE1	= 1,
-	PSP2_AUDIO_ALC_MODE_MAX	= 2,
+	PSP2_AUDIO_ALC_MODE_MAX	= 2
 };
 
 /***
