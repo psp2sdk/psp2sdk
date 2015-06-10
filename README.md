@@ -22,8 +22,10 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [tomtomdu80] (https://github.com/tomtomdu80)
 
+[MysteryDash] (https://github.com/MysteryDash)
+
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
 ## Usage
-This project is licensed under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License.
+This project is licensed under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 3 of the License.
 
