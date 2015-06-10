@@ -49,8 +49,8 @@ typedef uint64_t SceUInt64;
 typedef int64_t SceLong64;
 typedef uint64_t SceULong64;
 
-typedef size_t SceSize;
-typedef ssize_t SceSSize;
+typedef unsigned int SceSize;
+typedef int SceSSize;
 
 typedef int SceBool;
 #define PSP2_TRUE (1)
@@ -125,6 +125,16 @@ typedef struct SceFMatrix2 {
     SceFVector2 y;
 } SceFMatrix2;
 
+typedef union SceUMatrix2 {
+	SceFMatrix2 fm;
+	SceIMatrix2 im;
+	SceFVector2 fv[2];
+	SceIVector2 iv[2];
+	SceUVector2 uv[2];
+	SceFloat f[2][2];
+	SceInt i[2][2];
+} SceUMatrix2;
+
 typedef struct SceIMatrix3 {
     SceIVector3 x;
     SceIVector3 y;
@@ -137,6 +147,16 @@ typedef struct SceFMatrix3 {
     SceFVector3 z;
 } SceFMatrix3;
 
+typedef union SceUMatrix3 {
+	SceFMatrix3 fm;
+	SceIMatrix3 im;
+	SceFVector3 fv[3];
+	SceIVector3 iv[3];
+	SceUVector3 uv[3];
+	SceFloat f[3][3];
+	SceInt i[3][3];
+} SceUMatrix3;
+
 typedef struct SceIMatrix4 {
     SceIVector4 x;
     SceIVector4 y;
@@ -144,12 +164,23 @@ typedef struct SceIMatrix4 {
     SceIVector4 w;
 } SceIMatrix4;
 
+
 typedef struct SceFMatrix4 {
     SceFVector4 x;
     SceFVector4 y;
     SceFVector4 z;
     SceFVector4 w;
 } SceFMatrix4;
+
+typedef union SceUMatrix4 {
+	SceFMatrix4 fm;
+	SceIMatrix4 im;
+	SceFVector4 fv[4];
+	SceIVector4 iv[4];
+	SceUVector4 uv[4];
+	SceFloat f[4][4];
+	SceInt i[4][4];
+} SceUMatrix4;
 
 typedef struct SceFQuaternion {
     SceFloat x;
@@ -241,6 +272,7 @@ typedef struct SceDateTime {
     unsigned int microsecond;
 } SceDateTime;
 
+typedef int SceMode; //!< Mode for I/O functions
 typedef SceInt64 SceOff; //!< Offset type
 
 typedef int SceUID; //!< UIDs are used to describe many different kernel objects. 
