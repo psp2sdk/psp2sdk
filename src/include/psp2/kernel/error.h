@@ -338,6 +338,6 @@ enum KernelError {
 		SCE_KERNEL_ERROR_PRELOAD_FIOS2_FAILED 							= 0x8002D0F2,
 		SCE_KERNEL_ERROR_AUTHFAIL 										= 0x8002F000,
 		SCE_KERNEL_ERROR_NO_AUTH 										= 0x8002F001
-}
+};
 
 #endif
