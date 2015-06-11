@@ -111,6 +111,9 @@ seg_t *getSegs(FILE *fp, const char *path,
 	mapOverScnSeg(segCntMapScns, (scn_t *)scns, segs, ehdr);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
+		if (segs[i].phdr.p_type != PT_LOAD)
+			continue;
+
 		for (j = 1; j < segs[i].shnum; j++) {
 			tmp = segs[i].scns[j];
 			if (segs[i].scns[j - 1]->shdr.sh_addr > tmp->shdr.sh_addr) {
@@ -153,7 +156,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 	seg_t **sorts, *tmp;
 	Elf32_Addr addr, newAddr;
 	Elf32_Off offset;
-	Elf32_Half i, j;
+	Elf32_Half i, j, loadNum;
 	Elf32_Word and, gap;
 
 	if (segs == NULL || strtab == NULL)
@@ -165,10 +168,16 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 		return errno;
 	}
 
-	for (i = 0; i < segnum; i++)
-		sorts[i] = segs + i;
+	loadNum = 0;
+	for (i = 0; i < segnum; i++) {
+		if (segs[i].phdr.p_type == PT_LOAD) {
+			sorts[loadNum] = segs + i;
+			loadNum++;
+		} else
+			sorts[segnum - (i - loadNum) - 1] = segs + i;
+	}
 
-	for (i = 1; i < segnum; i++) {
+	for (i = 1; i < loadNum; i++) {
 		tmp = sorts[i];
 		if (sorts[i - 1]->phdr.p_vaddr > tmp->phdr.p_vaddr) {
 			j = i;
@@ -181,7 +190,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 	}
 
 	addr = sorts[0]->phdr.p_vaddr;
-	for (i = 1; i < segnum; i++) {
+	for (i = 0; i < loadNum; i++) {
 		and = sorts[i]->phdr.p_align - 1;
 		if (addr & and)
 			addr = (addr & ~and) + sorts[i]->phdr.p_align;
@@ -202,15 +211,29 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			if (gap)
 				sorts[i]->phdr.p_filesz += gap;
 
+			scn->addrDiff = addr - scn->shdr.sh_addr;
+			scn->segOffset = addr - sorts[i]->phdr.p_vaddr;
+			scn->shdr.sh_addr = addr;
+
+			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
+			addr += scn->shdr.sh_size;
+		}
+
+		sorts[i]->phdr.p_memsz += sorts[i]->phdr.p_filesz;
+	}
+
+	for (i = loadNum; i < segnum; i++) {
+		sorts[i]->phdr.p_memsz -= sorts[i]->phdr.p_filesz;
+		sorts[i]->phdr.p_filesz = 0;
+
+		for (j = 0; j < sorts[i]->shnum; j++) {
+			scn = sorts[i]->scns[j];
+
 			/* It doesn't back up sh_type, but it doesn't matter
 			   because writeSegs assume sections whose sh_type were
 			   SHT_REL */
 			if (scn->shdr.sh_type == SHT_REL)
 				scn->shdr.sh_type = SHT_SCE_RELA;
-
-			scn->addrDiff = addr - scn->shdr.sh_addr;
-			scn->segOffset = addr - sorts[i]->phdr.p_vaddr;
-			scn->shdr.sh_addr = addr;
 
 			if (scn->shdr.sh_type == SHT_SCE_RELA
 				&& scn->orgSize == scn->shdr.sh_size)
@@ -220,10 +243,31 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			}
 
 			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
-			addr += scn->shdr.sh_size;
 		}
 
 		sorts[i]->phdr.p_memsz += sorts[i]->phdr.p_filesz;
+	}
+
+	for (i = 1; i < loadNum; i++) {
+		tmp = sorts[i];
+		if (sorts[i - 1]->phdr.p_paddr > tmp->phdr.p_paddr) {
+			j = i;
+			do {
+				sorts[j] = sorts[j - 1];
+				j--;
+			} while (j > 0 && sorts[j - 1]->phdr.p_paddr > tmp->phdr.p_paddr);
+			sorts[j] = tmp;
+		}
+	}
+
+	addr = sorts[0]->phdr.p_paddr;
+	for (i = 1; i < loadNum; i++) {
+		and = sorts[i]->phdr.p_align - 1;
+		if (addr & and)
+			addr = (addr & ~and) + sorts[i]->phdr.p_align;
+
+		sorts[i]->phdr.p_paddr = addr;
+		addr += sorts[i]->phdr.p_memsz;
 	}
 
 	for (i = 1; i < segnum; i++) {
@@ -253,28 +297,6 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 		}
 
 		offset += sorts[i]->phdr.p_filesz;
-	}
-
-	for (i = 1; i < segnum; i++) {
-		tmp = sorts[i];
-		if (sorts[i - 1]->phdr.p_paddr > tmp->phdr.p_paddr) {
-			j = i;
-			do {
-				sorts[j] = sorts[j - 1];
-				j--;
-			} while (j > 0 && sorts[j - 1]->phdr.p_paddr > tmp->phdr.p_paddr);
-			sorts[j] = tmp;
-		}
-	}
-
-	addr = sorts[0]->phdr.p_paddr;
-	for (i = 1; i < segnum; i++) {
-		and = sorts[i]->phdr.p_align - 1;
-		if (addr & and)
-			addr = (addr & ~and) + sorts[i]->phdr.p_align;
-
-		sorts[i]->phdr.p_paddr = addr;
-		addr += sorts[i]->phdr.p_memsz;
 	}
 
 	return 0;
