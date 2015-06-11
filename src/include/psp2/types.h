@@ -125,16 +125,6 @@ typedef struct SceFMatrix2 {
     SceFVector2 y;
 } SceFMatrix2;
 
-typedef union SceUMatrix2 {
-	SceFMatrix2 fm;
-	SceIMatrix2 im;
-	SceFVector2 fv[2];
-	SceIVector2 iv[2];
-	SceUVector2 uv[2];
-	SceFloat f[2][2];
-	SceInt i[2][2];
-} SceUMatrix2;
-
 typedef struct SceIMatrix3 {
     SceIVector3 x;
     SceIVector3 y;
@@ -146,16 +136,6 @@ typedef struct SceFMatrix3 {
     SceFVector3 y;
     SceFVector3 z;
 } SceFMatrix3;
-
-typedef union SceUMatrix3 {
-	SceFMatrix3 fm;
-	SceIMatrix3 im;
-	SceFVector3 fv[3];
-	SceIVector3 iv[3];
-	SceUVector3 uv[3];
-	SceFloat f[3][3];
-	SceInt i[3][3];
-} SceUMatrix3;
 
 typedef struct SceIMatrix4 {
     SceIVector4 x;
@@ -171,16 +151,6 @@ typedef struct SceFMatrix4 {
     SceFVector4 z;
     SceFVector4 w;
 } SceFMatrix4;
-
-typedef union SceUMatrix4 {
-	SceFMatrix4 fm;
-	SceIMatrix4 im;
-	SceFVector4 fv[4];
-	SceIVector4 iv[4];
-	SceUVector4 uv[4];
-	SceFloat f[4][4];
-	SceInt i[4][4];
-} SceUMatrix4;
 
 typedef struct SceFQuaternion {
     SceFloat x;
@@ -244,23 +214,6 @@ typedef union SceUnion128 {
     SceFColor fc;
     SceIVector4 iv;
 } SceUnion128;
-
-typedef union SceUnion512 {
-    SceUnion32 un32[16];
-    SceUnion64 un64[8];
-    SceULong64 ull[8];
-    SceLong64 ll[8];
-    unsigned int ui[16];
-    int i[16];
-    unsigned short us[32];
-    short s[32];
-    unsigned char uc[64];
-    char c[64];
-    float f[16];
-    SceFMatrix4 fm;
-    SceIMatrix4 im;
-    SceUMatrix4 um;
-} SceUnion512;
         
 typedef struct SceDateTime {
     unsigned short year;
