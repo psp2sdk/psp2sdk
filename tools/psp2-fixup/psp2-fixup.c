@@ -27,7 +27,11 @@ int main(int argc, char *argv[])
 	int res;
 
 	if (argc != 3) {
-		fprintf(stderr, "%s: Usage <INPUT> <OUTPUT>\n", argv[0]);
+		fprintf(stderr, "%s: Usage <INPUT> <OUTPUT>\n"
+"psp2-fixup  Copyright (C) 2015  PSP2SDK Project\n"
+"This program is free software; you may redistribute it under the terms of\n"
+"the GNU Lesser General Public License version 3 or (at your option) any later\n"
+"version. This program has absolutely no warranty.\n", argv[0]);
 		return EINVAL;
 	}
 
