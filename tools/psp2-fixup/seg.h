@@ -30,7 +30,7 @@ typedef struct {
 } seg_t;
 
 seg_t *getSegs(FILE *fp, const char *path,
-	const Elf32_Ehdr *ehdr, const scn_t *scns);
+	Elf32_Ehdr *ehdr, const scn_t *scns);
 
 int freeSegs(seg_t *segs, Elf32_Half segnum);
 
