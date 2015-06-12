@@ -21,7 +21,7 @@
 #ifndef _COMMON_DIALOG_ERROR_H
 #define _COMMON_DIALOG_ERROR_H
 
-#include error.h
+#include <psp2/error.h>
 
 enum CommonDialogErrorCodes {
 	SCE_COMMON_DIALOG_ERROR_BUSY	= 0x80020401,
