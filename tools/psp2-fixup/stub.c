@@ -164,6 +164,7 @@ int buildStubs(stubContents_t *stubContents, sceScns_t *sceScns,
 			relaStubEnt->r_addend = fnidOffset;
 			relaStubEnt->r_offset = sceScns->mark->segOffset
 				+ offset + offsetof(sceLib_stub, funcNids);
+			relaStubEnt++;
 
 			relaStubEnt->r_short = 1;
 			relaStubEnt->r_symseg = sceScns->fstub->phndx;
@@ -172,6 +173,7 @@ int buildStubs(stubContents_t *stubContents, sceScns_t *sceScns,
 			relaStubEnt->r_addend = fstubOffset;
 			relaStubEnt->r_offset = sceScns->mark->segOffset
 				+ offset + offsetof(sceLib_stub, funcStubs);
+			relaStubEnt++;
 
 			stubHeads->varNids = 0;
 			stubHeads->varStubs = 0;
