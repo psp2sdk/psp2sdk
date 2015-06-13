@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <psp2/moduleinfo.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -369,11 +370,11 @@ static int writeRel(FILE *dst, FILE *src,
 		if (dstScn == modinfo) {
 			rela.r_addend = scns[sym->st_shndx].shdr.sh_offset;
 			switch (rel.r_offset) {
-				case 40: // The bottom of the export table
-				case 48: // The bottom of the import table
+				case offsetof(SceModuleInfo, expBtm):
+				case offsetof(SceModuleInfo, impBtm):
 					rela.r_addend += scns[sym->st_shndx].shdr.sh_size;
-				case 36: // The top of the export table
-				case 44: // The top of the import table
+				case offsetof(SceModuleInfo, expTop):
+				case offsetof(SceModuleInfo, impTop):
 				break;
 			default:
 				goto usual;
