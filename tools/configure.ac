@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT(psp2toolchain, 0.0, https://github.com/173210/psp2sdk/issues)
+AC_INIT(PSP2SDK, dirty-m4_esyscmd_s([git describe --always]),
+	https://github.com/173210/psp2sdk/issues)
 AC_CONFIG_SRCDIR(psp2-fixup/psp2-fixup.c)
 
 AM_INIT_AUTOMAKE(foreign)
