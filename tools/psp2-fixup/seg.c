@@ -331,7 +331,7 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	return 0;
 }
 
-static int writeRel(FILE *dst, FILE *src,
+static int writeRela(FILE *dst, FILE *src,
 	const scn_t *scn, const seg_t *seg, const scn_t *scns,
 	const char *strtab, const Elf32_Sym *symtab, const scn_t *modinfo)
 {
@@ -447,7 +447,7 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 
 			// Refer to updateSegs
 			if (segs->scns[j]->shdr.sh_type == SHT_SCE_RELA)
-				res = writeRel(dst, src,
+				res = writeRela(dst, src,
 					segs->scns[j], segs, scns,
 					strtab, symtab, sceScns->modinfo);
 			else if (segs->scns[j] == sceScns->modinfo)
