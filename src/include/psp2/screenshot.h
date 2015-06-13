@@ -43,10 +43,10 @@ enum ScreenshotMaxLen {
 };
 
 typedef struct ScreenshotParam {
-	const char *photoTitle;
-	const char *gameTitle;
-	const char *gameComment;
-	void *reserved;
+	const char *photoTitle; //!< Photo title
+	const char *gameTitle;  //!< Game title
+	const char *gameComment;  //!< Game description
+	void *reserved; //!< Reserved range (Must be NULL)
 };
 
 int sceScreenshotSetParam(const ScreenshotParam *param); //!< Set screenshot params

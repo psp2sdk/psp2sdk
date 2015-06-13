@@ -24,12 +24,12 @@
 #include <psp2/types.h>
 
 enum AppMgrErrorCodes {
-	SCE_APPMGR_ERROR_BUSY	= 0x80802000,
-	SCE_APPMGR_ERROR_STATE	= 0x80802013,
-	SCE_APPMGR_ERROR_NULL_POINTER	= 0x80802016,
-	SCE_APPMGR_ERRORINVALID	= 0x8080201a,
-	SCE_APPMGR_ERROR_INVALID_SELF_PATH	= 0x8080201e,
-	SCE_APPMGR_ERROR_TOO_LONG_ARGV	= 0x8080201d
+	SCE_APPMGR_ERROR_BUSY	= 0x80802000, //!< Busy
+	SCE_APPMGR_ERROR_STATE	= 0x80802013, //!< Invalid state
+	SCE_APPMGR_ERROR_NULL_POINTER	= 0x80802016, //!< NULL pointer
+	SCE_APPMGR_ERROR_INVALID	= 0x8080201a, //!< Invalid param
+	SCE_APPMGR_ERROR_INVALID_SELF_PATH	= 0x8080201e, //!< Invalid self path
+	SCE_APPMGR_ERROR_TOO_LONG_ARGV	= 0x8080201d //!< argv is too long
 };
 
 enum AppMgrMaxAppNameLength {
@@ -75,12 +75,11 @@ int _sceAppMgrGetAppState(SceAppMgrAppState *appState, unsigned int len, unsigne
 
 int sceAppMgtRecieveSystemEvent(SceAppMgrSystemEvent *systemEvent);
 
-int sceAppMgrAcquireBgmPort(void);
+int sceAppMgrAcquireBgmPort(void); //!< Obtains the BGM port, even when it is not in front
 
-int sceAppMgrReleaseBgmPort(void);
+int sceAppMgrReleaseBgmPort(void); //!< Release acquired BGM port
 
-/* Set infobar state */
-int sceAppMgrSetInfobarState(int visibility, int color, int transparency);
+int sceAppMgrSetInfobarState(int visibility, int color, int transparency); //!< Set infobar state
 
 typedef struct sceAppMgrLoadExecOptParam {
 	int reserved[256/4];
