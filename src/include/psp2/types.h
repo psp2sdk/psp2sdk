@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2TYPES_H_
-#define _PSP2TYPES_H_
+#ifndef _PSP2_TYPES_H_
+#define _PSP2_TYPES_H_
 
 #include <stddef.h>
 #include <stdint.h>

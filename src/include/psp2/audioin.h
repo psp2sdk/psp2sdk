@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2AUDIOIN_H
-#define _PSP2AUDIOIN_H
+#ifndef _PSP2_AUDIOIN_H_
+#define _PSP2_AUDIOIN_H_
 
 #include <psp2/types.h>
 

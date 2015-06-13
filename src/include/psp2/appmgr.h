@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2APPMGR_H
-#define _PSP2APPMGR_H
+#ifndef _PSP2_APPMGR_H_
+#define _PSP2_APPMGR_H_
 
 #include <psp2/types.h>
 

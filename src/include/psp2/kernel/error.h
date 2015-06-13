@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  021100xFFFFFAEB  USA
  */
  
-#ifndef _PSP2ERROR_H_
-#define _PSP2ERROR_H_
+#ifndef _PSP2_KERNEL_ERROR_H_
+#define _PSP2_KERNEL_ERROR_H_
 
 enum KernelError {
 		SCE_KERNEL_OK													= 0x0,

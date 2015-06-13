@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2TOUCH_H_
-#define _PSP2TOUCH_H_
+#ifndef _PSP2_TOUCH_H_
+#define _PSP2_TOUCH_H_
 
 #include <psp2/types.h>
 

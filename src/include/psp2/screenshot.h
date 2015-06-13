@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCREENSHOT_H
-#define _SCREENSHOT_H
+#ifndef _PSP2_SCREENSHOT_H_
+#define _PSP2_SCREENSHOT_H_
 
 #include <psp2/types.h>
 
