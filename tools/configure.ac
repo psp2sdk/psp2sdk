@@ -43,12 +43,7 @@ AC_CHECK_TYPES(uint32_t, , AC_MSG_ERROR(uint32_t not defined.),
 
 AC_C_BIGENDIAN(AC_MSG_ERROR(bigendian host not supported.))
 
-# Checks for library functions.
-AC_FUNC_MALLOC
-if test HAVE_MALLOC = 0; then
-	AC_MSG_ERROR(invalid malloc.)
-fi
-
+# Checks for a library function.
 AC_CHECK_LIB(crypto, SHA1, , AC_MSG_ERROR(SHA1 not supported by libcrypto.))
 
 AC_OUTPUT(Makefile psp2-fixup/Makefile)
