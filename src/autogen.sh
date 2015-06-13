@@ -79,7 +79,7 @@ automake --add-missing --gnu -Wno-portability $am_opt ||
 echo "Running autoconf ..."
 autoconf || { echo "**Error**: autoconf failed."; exit 1; }
 
-conf_flags="--host=arm-none-eabi"
+conf_flags="--host=arm-none-eabi CFLAGS=-nostdlib"
 
 if test x$NOCONFIGURE = x; then
   echo Running $srcdir/configure $conf_flags "$@" ...
