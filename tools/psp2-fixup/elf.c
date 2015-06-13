@@ -113,18 +113,6 @@ int closeElf(const elf_t *elf)
 		return errno;
 	}
 
-	if (elf->stubContents.relaFstub != NULL)
-		free(elf->stubContents.relaFstub);
-
-	if (elf->stubContents.relaStub != NULL)
-		free(elf->stubContents.relaStub);
-
-	if (elf->stubContents.fnid != NULL)
-		free(elf->stubContents.fnid);
-
-	if (elf->stubContents.stub != NULL)
-		free(elf->stubContents.stub);
-
 	return res;
 }
 
@@ -236,8 +224,7 @@ int writeElf(const char *path, elf_t *elf)
 	}
 
 	res = writeSegs(fp, elf->fp, elf->scns, elf->segs, elf->ehdr.e_phnum,
-		&elf->sceScns, &elf->stubContents,
-		elf->strtab.content, elf->symtab.content);
+		&elf->sceScns, elf->strtab.content, elf->symtab.content);
 	if (res) {
 		fclose(fp);
 		return res;

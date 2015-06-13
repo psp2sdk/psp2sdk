@@ -22,14 +22,7 @@
 #include "elf.h"
 #include "scn.h"
 
-typedef struct {
-	void *relaFstub;
-	void *relaStub;
-	void *fnid;
-	void *stub;
-} stubContents_t;
-
-int buildStubs(stubContents_t *stubContents, sceScns_t *sceScns,
-	FILE *srcFp, const scn_t *scns, const char *strtab, Elf32_Sym *symtab);
+int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
+	const char *strtab, Elf32_Sym *symtab);
 
 #endif

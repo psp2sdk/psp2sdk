@@ -110,6 +110,7 @@ scn_t *getScns(FILE *fp, const char *path, const Elf32_Ehdr *ehdr)
 
 		scns[i].orgOffset = scns[i].shdr.sh_offset;
 		scns[i].orgSize = scns[i].shdr.sh_size;
+		scns[i].content = NULL;
 	}
 
 	return scns;

@@ -30,7 +30,6 @@ typedef struct {
 	scn_t *scns;
 	seg_t *segs;
 	sceScns_t sceScns;
-	stubContents_t stubContents;
 	struct {
 		scn_t *scn;
 		void *content;

@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
 	if (res)
 		goto fail;
 
-	res = buildStubs(&elf.stubContents, &elf.sceScns,
-		elf.fp, elf.scns, elf.strtab.content, elf.symtab.content);
+	res = buildStubs(&elf.sceScns, elf.fp, elf.scns,
+		elf.strtab.content, elf.symtab.content);
 	if (res)
 		goto fail;
 

@@ -408,15 +408,14 @@ usual:
 }
 
 int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
-	const seg_t *segs, Elf32_Half phnum,
-	const sceScns_t *sceScns, const stubContents_t *stubContents,
+	const seg_t *segs, Elf32_Half phnum, const sceScns_t *sceScns,
 	const char *strtab, const Elf32_Sym *symtab)
 {
 	Elf32_Half i, j;
 	int res;
 
 	if (dst == NULL || src == NULL || scns == NULL || segs == NULL
-		|| sceScns == NULL || stubContents == NULL || strtab == NULL)
+		|| sceScns == NULL || strtab == NULL)
 	{
 		return EINVAL;
 	}
@@ -433,35 +432,26 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 				return errno;
 			}
 
+			if (segs->scns[j]->content != NULL) {
+				if (fwrite(segs->scns[j]->content, segs->scns[j]->shdr.sh_size, 1, dst) != 1) {
+					perror(strtab + segs->scns[j]->shdr.sh_name);
+					return errno;
+				}
+
+				free(segs->scns[j]->content);
+				segs->scns[j]->content = NULL;
+
+				continue;
+			}
+
 			// Refer to updateSegs
-			if (segs->scns[j]->shdr.sh_type == SHT_SCE_RELA) {
-				if (segs->scns[j] == sceScns->relFstub) {
-					if (fwrite(stubContents->relaFstub, sceScns->relFstub->shdr.sh_size, 1, dst) != 1) {
-						perror(strtab + sceScns->relFstub->shdr.sh_name);
-						res = errno;
-					}
-				} else if (segs->scns[j] == sceScns->relStub) {
-					if (fwrite(stubContents->relaStub, sceScns->relStub->shdr.sh_size, 1, dst) != 1) {
-						perror(strtab + sceScns->relStub->shdr.sh_name);
-						res = errno;
-					}
-				} else
-					res = writeRel(dst, src,
-						segs->scns[j], segs, scns,
-						strtab, symtab, sceScns->modinfo);
-			} else if (segs->scns[j] == sceScns->fnid) {
-				if (fwrite(stubContents->fnid, sceScns->fnid->shdr.sh_size, 1, dst) != 1) {
-					perror(strtab + sceScns->fnid->shdr.sh_name);
-					res = errno;
-				}
-			} else if (segs->scns[j] == sceScns->stub) {
-				if (fwrite(stubContents->stub, sceScns->stub->shdr.sh_size, 1, dst) != 1) {
-					perror(strtab + sceScns->stub->shdr.sh_name);
-					res = errno;
-				}
-			} else if (segs->scns[j] == sceScns->modinfo) {
+			if (segs->scns[j]->shdr.sh_type == SHT_SCE_RELA)
+				res = writeRel(dst, src,
+					segs->scns[j], segs, scns,
+					strtab, symtab, sceScns->modinfo);
+			else if (segs->scns[j] == sceScns->modinfo)
 				res = writeModinfo(dst, src, sceScns->modinfo, strtab);
-			} else
+			else
 				res = writeScn(dst, src, segs->scns[j], strtab);
 
 			if (res)
