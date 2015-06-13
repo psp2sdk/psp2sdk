@@ -12,7 +12,7 @@ before_install:
 
 script:
  - cd src
- - doxygen
+ - (cat Doxyfile; echo PROJECT_NUMBER=$REV) | doxygen -
  - ./autogen.sh $FLAGS
  - make install
  - cd ..
@@ -40,11 +40,11 @@ after_success:
  - git add .
  - git config user.name "Travis CI"
  - git config user.email contact@travis-ci.com
- - git commit -qm "Revision $REV"
+ - git commit -qm $REV
  - git push -q https://$TOKEN@github.com/173210/psp2sdk.git
 
 env:
  global:
   - FLAGS="-q --prefix=$PWD/out"
-  - REV=$(git rev-parse --verify HEAD)
+  - REV=dirty-$(git describe --always)
   - secure: "GwNIOVZvxiqQDTikyaLjyNcz5UvrVE5wjoBfu6/vbzmBR1KS+QbVnYkbTv8enW8kua8ilJ3F4604HCc2pqu8d7B/ONHvgvkVTIIvczegketS136ZS8NdVyb1Lp18reVAIkYudxopkKfocwY9dAA33VZZ4OKp5aovQ1owtSJxxXeFjl7leS7MUzrv2ltkF/kZscPHEgIlw/EFWJpcW5bNUXkPh4aDjG6uR9lJRq8EHaMnELJwWtyEv34dmQ8SC70O5XOfxEy80iBs17mvNXykHXPtLpv061myxMJ84/4fGD6P/G7MT7qIWBew0wdY7FWkzWsZO1i6zfygGZPGGQD5I9QRcUSi7YFlxx9Nkm7ecrZbrU2UXhHtBi0kpnrPYAor9JlATOVjAP5UcNXZ/JD2Geb8jtEP+WT+MQt4tbOfObXJKiYdsLez9/xOZx3ReONoLNbKa4h+4j7bDdvAbxmDwcQaz8BNEeIZtqUnXMdOqK0amCxanhULrCA9sQmC2eaptCjilYjoCHBWe55/j+k0K3WFpEHjlv48uPsDx8kT0gO/fFdm4rQ+XSKhtQvqbWGMmkzQ1BMmE1Qd6D+GZirWrisDrs1ZeLrcWxGUv4mNdmwVnrFNwB2wLsus/JTJArQOvtdWbVC9x45xjGX5eUJfAg+8x3M/ppvuE2fKJ3lv94c="
