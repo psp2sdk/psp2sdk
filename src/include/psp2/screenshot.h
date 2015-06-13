@@ -33,13 +33,13 @@ enum ScreenshotErrorCodes {
 };
 
 enum ScreenshotMaxLen {
-	SCE_SCREENSHOT_MAX_FS_PATH	= 1024,
-	SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN	= 64,
-	SCE_SCREENSHOT_MAX_PHOTO_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN*4),
-	SCE_SCREENSHOT_MAX_GAME_TITLE_LEN	= 64,
-	SCE_SCREENSHOT_MAX_GAME_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_GAME_TITLE_LEN*4),
-	SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN	= 128,
-	SCE_SCREENSHOT_MAX_GAME_COMMENT_SIZE	= (SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN*4)
+	SCE_SCREENSHOT_MAX_FS_PATH	= 1024, //!< Max size of path strings (includes device name and NULL terminator)
+	SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN	= 64, //!< Max length of photo title
+	SCE_SCREENSHOT_MAX_PHOTO_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN*4), //!< Max size of photo title (includes NULL terminater)
+	SCE_SCREENSHOT_MAX_GAME_TITLE_LEN	= 64, //!< Max length of game title
+	SCE_SCREENSHOT_MAX_GAME_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_GAME_TITLE_LEN*4), //!< Max size of game title (includes NULL terminator)
+	SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN	= 128, //!< Max length of comment (description)
+	SCE_SCREENSHOT_MAX_GAME_COMMENT_SIZE	= (SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN*4) //!< Max size of comment (description) (includes NULL terminator)
 };
 
 typedef struct ScreenshotParam {
@@ -49,12 +49,12 @@ typedef struct ScreenshotParam {
 	void *reserved;
 };
 
-int sceScreenshotSetParam(const ScreenshotParam *param);
+int sceScreenshotSetParam(const ScreenshotParam *param); //!< Set screenshot params
 
-int sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY);
+int sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY); //!< Set overlay image
 
-int sceScreenshotDisable(void);
+int sceScreenshotDisable(void); //!< Disable screenshot
 
-int sceScreenshotEnable(void);
+int sceScreenshotEnable(void); //!< Enable screnshot
 
 #endif
