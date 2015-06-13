@@ -1,0 +1,50 @@
+---
+sudo: required
+
+before_install:
+ - sudo add-apt-repository -y ppa:terry.guo/gcc-arm-embedded
+ - sudo add-apt-repository -y ppa:win-cross-dev/win-cross
+ - sudo apt-get update -qq -y
+ - sudo apt-get install -qq -y doxygen graphviz gcc-arm-none-eabi gcc-mingw-w64-x86-64 binutils-mingw-w64-x86-64 libssl-dev mingw64-openssl
+
+ - git clone https://github.com/173210/psp2sdk.git src/html -qb gh-pages --single-branch
+ - git -C src/html rm -qrf .
+
+script:
+ - cd src
+ - doxygen
+ - ./autogen.sh $FLAGS
+ - make install
+ - cd ..
+
+ - cd tools
+ - ./autogen.sh $FLAGS
+ - make install
+ - make clean
+ - cd ../out
+ - tar -c * -f ../psp2sdk-amd64-pc-linux-gnu.tar
+ - cd ..
+ - rm -Rf out
+
+ - make -C src install
+ - cd tools
+ - ./autogen.sh $FLAGS --host=x86_64-w64-mingw32
+ - make install
+ - make clean
+ - cd ..
+ - zip -0rq psp2sdk-x86_64-w64-mingw32.zip out
+ - rm -Rf out
+
+after_success:
+ - cd src/html
+ - git add .
+ - git config user.name "Travis CI"
+ - git config user.email contact@travis-ci.com
+ - git commit -qm "Revision $REV"
+ - git push -q https://$TOKEN@github.com/173210/psp2sdk.git
+
+env:
+ global:
+  - FLAGS="-q --prefix=$PWD/out"
+  - REV=$(git rev-parse --verify HEAD)
+  - secure: "MYD5+WggympBz6j2bo4D4ziOSJQu3PGKarXqZtPt5IQxAa6OuFejB9Cp4+zywlPdULrgp4tkJIjpI+3bTx2dF4b9B/rh5jAFa59kKTjb36Wr1Wkl0376mI6m/vy/2WDglSNGmGRbiddpYsmhhWmLxMHsuNJKhGAevFEvZ/WlTB3KDF61PyiSbusI+ECeye4JdAefsmYDSYSHTbOlswVhVop908lY4SmQ24sJD+LD18JUwavEYHebJg3Py+ogEmcFGEDCUZ8jiVPZ0tpbcJJ3hfuXytvTSe4ORXtSlyiI+XtCd+vHgmdwCALWh+x5TbvHRX034zefDk9Kyw4BYoC6odIN4fcq+Ai1FPgCNf8RLqhEEdPXxxjF7gwfFnMTmCiqn3UwUnwNIXO9TUaGbprO82TUtpo2p8ruTGppyWnsZzxXXy8UEEZZ5AV32VKzQDzECaG1W94aNkdzOuE4xQyu758TUhh4xdBLRJ/DbXFqqHA3sxxJvZ01VZ3CfsyDJA1esP47h6p1ayTIKuRI+/ClgDK0nCvGNmpntUAe8tl5Z9xUp5RbHW+Ro5oUlGGlJD0A+ktyX7Tmh0+UlBtsijJFpZNF6bXo36TEtKCjapcRbt6we3EIIejojPjSnUZIIxyx05FwEVhH3IlxwJpEnIZSpHgMav1rMNNml8l6Zdou9Cs="
