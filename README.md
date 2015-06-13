@@ -25,6 +25,7 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 [MysteryDash] (https://github.com/MysteryDash)
 
 [frangarcj] (https://github.com/frangarcj)
+[korgano] (https://github.com/korgano)
 
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
