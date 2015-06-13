@@ -22,6 +22,6 @@ fi
 
 if test -d tools; then
   echo Running tools/autogen.sh ...
-  (cd src ; ./autogen.sh "$@")
+  (cd tools ; ./autogen.sh "$@")
   echo Done running tools/autogen.sh ...
 fi
