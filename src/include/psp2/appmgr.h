@@ -59,13 +59,13 @@ enum AppMgrInfobarTransparency {
 };
 
 typedef struct SceAppMgrSystemEvent {
-	int systemEvent;
+	int32_t systemEvent;
 	union {
-		unsigned int reserved[60];
+		uint8_t reserved[60];
 	}
 };
 
-int _sceAppMgrGetAppState(SceAppMgrAppState *appState, unsigned int len, unsigned int version);
+int32_t _sceAppMgrGetAppState(SceAppMgrAppState *appState, uint32_t len, uint32_t version);
 
 /**
  * static __inline int sceAppMgrGetAppState(SceAppMgrAppState *appState) {
@@ -73,13 +73,13 @@ int _sceAppMgrGetAppState(SceAppMgrAppState *appState, unsigned int len, unsigne
  * };
  */
 
-int sceAppMgtRecieveSystemEvent(SceAppMgrSystemEvent *systemEvent);
+int32_t sceAppMgrRecieveSystemEvent(SceAppMgrSystemEvent *systemEvent);
 
-int sceAppMgrAcquireBgmPort(void); //!< Obtains the BGM port, even when it is not in front
+int32_t sceAppMgrAcquireBgmPort(void); //!< Obtains the BGM port, even when it is not in front
 
-int sceAppMgrReleaseBgmPort(void); //!< Release acquired BGM port
+int32_t sceAppMgrReleaseBgmPort(void); //!< Release acquired BGM port
 
-int sceAppMgrSetInfobarState(int visibility, int color, int transparency); //!< Set infobar state
+int32_t sceAppMgrSetInfobarState(int visibility, int color, int transparency); //!< Set infobar state
 
 typedef struct sceAppMgrLoadExecOptParam {
 	int reserved[256/4];
