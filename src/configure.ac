@@ -32,6 +32,7 @@ if test "$ac_compiler_gnu" = yes; then
 	CFLAGS="$CFLAGS -Wall -mcpu=cortex-a9 -mfpu=neon-fp16"
 fi
 
+AC_CHECK_TOOL(AR, ar, :) 
 AM_PROG_AS
 
 # Checks for header files.
