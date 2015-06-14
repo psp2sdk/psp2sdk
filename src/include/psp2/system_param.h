@@ -24,7 +24,7 @@
 #include <psp2/types.h>
 
 /* System param id */
-typedef int SystemParamId;
+typedef uint32_t SystemParamId;
 #define SYSTEM_PARAM_ID_LANG	(1) //!< Language settings
 #define SYSTEM_PARAM_ID_ENTER_BUTTON	(2) //!< Enter button assignment
 #define SYSTEM_PARAM_ID_USERNAME	(3) //!< Username string
@@ -34,7 +34,7 @@ typedef int SystemParamId;
 #define SYSTEM_PARAM_ID_DAYLIGHT_SAVINGS	(7) //!< Daylight savings time (0=Disabled 1=Enabled)
 
 /* Language settings */
-typedef int SystemParamLang;
+typedef int32_t SystemParamLang;
 #define SYSTEM_PARAM_LANG_JAPANESE	(0)
 #define SYSTEM_PARAM_LANG_ENGLISH_US	(1)
 #define SYSTEM_PARAM_LANG_FRENCH	(2)
@@ -56,7 +56,7 @@ typedef int SystemParamLang;
 #define SYSTEM_PARAM_LANG_ENGLISH_GB	(18)
 
 /* Assignment of enter button */
-typedef int SystemParamEnterButton;
+typedef int32_t SystemParamEnterButton;
 #define SYSTEM_PARAM_ENTER_BUTTON_CIRCLE	(0)
 #define SYSTEM_PARAM_ENTER_BUTTON_CROSS (1)
 

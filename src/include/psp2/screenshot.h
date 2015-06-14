@@ -43,18 +43,18 @@ enum ScreenshotMaxLen {
 };
 
 typedef struct ScreenshotParam {
-	const char *photoTitle; //!< Photo title
-	const char *gameTitle;  //!< Game title
-	const char *gameComment;  //!< Game description
+	const int8_t *photoTitle; //!< Photo title
+	const int8_t *gameTitle;  //!< Game title
+	const int8_t *gameComment;  //!< Game description
 	void *reserved; //!< Reserved range (Must be NULL)
 };
 
-int sceScreenshotSetParam(const ScreenshotParam *param); //!< Set screenshot params
+int32_t sceScreenshotSetParam(const ScreenshotParam *param); //!< Set screenshot params
 
-int sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY); //!< Set overlay image
+int32_t sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY); //!< Set overlay image
 
-int sceScreenshotDisable(void); //!< Disable screenshot
+int32_t sceScreenshotDisable(void); //!< Disable screenshot
 
-int sceScreenshotEnable(void); //!< Enable screnshot
+int32_t sceScreenshotEnable(void); //!< Enable screnshot
 
 #endif
