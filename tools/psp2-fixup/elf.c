@@ -40,7 +40,12 @@ int openElf(elf_t *dst, const char *path)
 	}
 
 	if (fread(&dst->ehdr, sizeof(dst->ehdr), 1, dst->fp) <= 0) {
-		perror(path);
+		if (feof(dst->fp)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", path);
+			errno = EILSEQ;
+		} else
+			perror(path);
+
 		fclose(dst->fp);
 		return errno;
 	}

@@ -83,7 +83,12 @@ seg_t *getSegs(FILE *fp, const char *path,
 	i = 0;
 	while (i < ehdr->e_phnum) {
 		if (fread(&segs[i].phdr, sizeof(segs[i].phdr), 1, fp) <= 0) {
-			perror(path);
+			if (feof(fp)) {
+				fprintf(stderr, "%s: Unexpected EOF\n", path);
+				errno = EILSEQ;
+			} else
+				perror(path);
+
 			free(segs);
 			return NULL;
 		}
@@ -352,7 +357,13 @@ static int writeRela(FILE *dst, FILE *src,
 
 	for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
 		if (fread(&rel, sizeof(rel), 1, src) <= 0) {
-			perror(strtab + scn->shdr.sh_name);
+			strtab += scn->shdr.sh_name;
+			if (feof(src)) {
+				fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+				errno = EILSEQ;
+			} else
+				perror(strtab);
+
 			return errno;
 		}
 
@@ -389,8 +400,14 @@ usual:
 				}
 
 				if (fread(&j, sizeof(j), 1, src) <= 0) {
-					perror(strtab + scn->shdr.sh_name);
-					return errno;
+					strtab += scn->shdr.sh_name;
+					if (feof(src)) {
+						fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+						return EILSEQ;
+					} else {
+						perror(strtab);
+						return errno;
+					}
 				}
 
 				rela.r_addend += j;

@@ -127,8 +127,14 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 	}
 
 	if (fread(markContent, sceScns->mark->shdr.sh_size, 1, srcFp) <= 0) {
-		perror(strtab + sceScns->mark->shdr.sh_name);
-		return errno;
+		strtab += sceScns->mark->shdr.sh_name;
+		if (feof(srcFp)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+			return EILSEQ;
+		} else {
+			perror(strtab);
+			return errno;
+		}
 	}
 
 	if (fseek(srcFp, sceScns->relMark->orgOffset, SEEK_SET)) {
@@ -137,8 +143,14 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 	}
 
 	if (fread(relMarkContent, sceScns->relMark->orgSize, 1, srcFp) <= 0) {
-		perror(strtab + sceScns->relMark->shdr.sh_name);
-		return errno;
+		strtab += sceScns->relMark->shdr.sh_name;
+		if (feof(srcFp)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+			return EILSEQ;
+		} else {
+			perror(strtab);
+			return errno;
+		}
 	}
 
 	relaFstubEnt = sceScns->relFstub->content;

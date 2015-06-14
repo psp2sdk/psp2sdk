@@ -50,7 +50,7 @@ void *loadScn(FILE *fp, const char *path, const scn_t *scn,
 {
 	void *p;
 
-	if (fp == NULL || scn == NULL)
+	if (fp == NULL || scn == NULL || (path == NULL && strtab == NULL))
 		return NULL;
 
 	if (fseek(fp, scn->shdr.sh_offset, SEEK_SET)) {
@@ -73,9 +73,13 @@ void *loadScn(FILE *fp, const char *path, const scn_t *scn,
 	}
 
 	if (fread(p, scn->shdr.sh_size, 1, fp) <= 0) {
-		if (strtab != NULL)
-			perror(strtab + scn->shdr.sh_name);
-		else if (path != NULL)
+		if (path == NULL && strtab != NULL)
+			path = strtab + scn->shdr.sh_name;
+
+		if (feof(fp)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", path);
+			errno = EILSEQ;
+		} else
 			perror(path);
 
 		free(p);
@@ -103,7 +107,12 @@ scn_t *getScns(FILE *fp, const char *path, const Elf32_Ehdr *ehdr)
 
 	for (i = 0; i < ehdr->e_shnum; i++) {
 		if (fread(&scns[i].shdr, sizeof(scns[i].shdr), 1, fp) <= 0) {
-			perror(path);
+			if (feof(fp)) {
+				fprintf(stderr, "%s: Unexpected EOF\n", path);
+				errno = EILSEQ;
+			} else
+				perror(path);
+
 			free(scns);
 			return NULL;
 		}
@@ -208,7 +217,13 @@ int writeModinfo(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	}
 
 	if (fread(p, scn->orgSize, 1, src) <= 0) {
-		perror(strtab + scn->shdr.sh_name);
+		strtab += scn->shdr.sh_name;
+		if (feof(src)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+			errno = EILSEQ;
+		} else
+			perror(strtab);
+
 		free(p);
 		return errno;
 	}
@@ -249,7 +264,13 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	}
 
 	if (fread(p, scn->orgSize, 1, src) <= 0) {
-		perror(strtab + scn->shdr.sh_name);
+		strtab += scn->shdr.sh_name;
+		if (feof(src)) {
+			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+			errno = EILSEQ;
+		} else
+			perror(strtab);
+
 		free(p);
 		return errno;
 	}
