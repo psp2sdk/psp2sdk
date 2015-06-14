@@ -46,7 +46,7 @@ enum DisplaySetBufSync {
 	PSP2_DISPLAY_SETBUF_NEXTFRAME = 1
 };
 
-/***
+/**
  * Structure used with sceDisplaySetFrameBuf to set/update framebuffer.
  * Original screen resolution is 960x544, but the following resolutions 
  * can also be supplied as width and height :
@@ -63,7 +63,7 @@ typedef struct SceDisplayFrameBuf {
 	unsigned int height; 		//!< framebuffer height
 } SceDisplayFrameBuf;
 
-/***
+/**
  * Set/Update framebuffer parameters
  *
  * @param[in] pParam - Pointer to a ::SceDisplayFrameBuf structure.
@@ -74,7 +74,7 @@ typedef struct SceDisplayFrameBuf {
 */
 int sceDisplaySetFrameBuf(const SceDisplayFrameBuf *pParam, int sync);
 
-/***
+/**
  * Get current framebuffer parameters
  *
  * @param[out] pParam - Pointer to a ::SceDisplayFrameBuf structure
@@ -86,7 +86,7 @@ int sceDisplaySetFrameBuf(const SceDisplayFrameBuf *pParam, int sync);
 */
 int sceDisplayGetFrameBuf(SceDisplayFrameBuf *pParam, int sync);
 
-/***
+/**
  * Get current number of fps for the current screen mode.
  *
  * @param[out] pFps - Pointer to a float variable to store current number of fps.
