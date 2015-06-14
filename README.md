@@ -28,6 +28,8 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [korgano] (https://github.com/korgano)
 
+[bigboss] (https://github.com/psxdev)
+
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
 ## Usage
