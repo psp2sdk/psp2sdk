@@ -21,6 +21,20 @@ DIE=0
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
+if [ -z "$DEVKITPRO" ]; then
+  echo
+  echo "**Error**: You must have DEVKITPRO set to compile PSP2SDK."
+  echo "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM"
+  exit 1
+fi
+
+if [ -z "$DEVKITARM" ]; then
+  echo
+  echo "**Warning**: You should have DEVKITARM set in order to compile PSP2SDK."
+  echo "Defaulting to: $DEVKITPRO/devkitARM"
+  export DEVKITARM="$DEVKITPRO/devkitARM"
+fi
+
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
   echo
   echo "**Error**: You must have \`autoconf' installed to compile PSP2SDK."
@@ -79,7 +93,7 @@ automake --add-missing --gnu -Wno-portability $am_opt ||
 echo "Running autoconf ..."
 autoconf || { echo "**Error**: autoconf failed."; exit 1; }
 
-conf_flags="--host=arm-none-eabi CFLAGS=-nostdlib"
+conf_flags="--prefix=$DEVKITARM/psp2 --host=arm-none-eabi CFLAGS=-nostdlib"
 
 if test x$NOCONFIGURE = x; then
   echo Running $srcdir/configure $conf_flags "$@" ...
