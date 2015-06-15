@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ELF_PRIV_H_
-#define _ELF_PRIV_H_
+#ifndef ELF_PRIV_H
+#define ELF_PRIV_H
 
 #include <stdio.h>
 #include "elf.h"

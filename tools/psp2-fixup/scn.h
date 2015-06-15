@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCN_H_
-#define _SCN_H_
+#ifndef SCN_H
+#define SCN_H
 
 #include <stdio.h>
 #include "elf.h"

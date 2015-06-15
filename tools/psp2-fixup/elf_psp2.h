@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ELF_PSP2_H_
-#define _ELF_PSP2_H_
+#ifndef ELF_PSP2_H
+#define ELF_PSP2_H
 
 #include <stdint.h>
 #include "elf.h"

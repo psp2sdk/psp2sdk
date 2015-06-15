@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SEG_H_
-#define _SEG_H_
+#ifndef SEG_H
+#define SEG_H
 
 #include <stdio.h>
 #include "elf.h"

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _STUB_H_
-#define _STUB_H_
+#ifndef STUB_H
+#define STUB_H
 
 #include <stdio.h>
 #include "elf.h"
