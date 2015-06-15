@@ -24,7 +24,7 @@ test -z "$srcdir" && srcdir=.
 if [ -z "$DEVKITPRO" ]; then
   echo
   echo "**Error**: You must have DEVKITPRO set to compile PSP2SDK."
-  echo "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM"
+  echo "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>devkitpro"
   exit 1
 fi
 
