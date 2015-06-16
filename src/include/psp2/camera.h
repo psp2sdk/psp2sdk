@@ -198,12 +198,7 @@ int32_t sceCameraGetEV(int32_t devnum, int32_t *pMode);
 int32_t sceCameraSetEV(int32_t devnum, int32_t mode);
 
 
-/*****
+int32_t sceCameraGetDeviceLocation(int32_t devnum, SceFVector3 *pLocation);
 
-Missing
-
-PSP2_IMPORT_FUNC SceCamera, 0001, F00, 0x274ef751, sceCameraGetDeviceLocation
-
-**/
 
 #endif
