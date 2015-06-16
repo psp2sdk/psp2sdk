@@ -24,7 +24,7 @@ script:
  - make install
  - make clean
  - cd ../out
- - tar -c * -f ../psp2sdk-amd64-pc-linux-gnu.tar
+ - tar -c * -f ../psp2sdk-$REV-amd64-pc-linux-gnu.tar
  - cd ..
  - rm -Rf out
 
@@ -34,12 +34,12 @@ script:
  - make install
  - make clean
  - cd ..
- - zip -0rq psp2sdk-x86_64-w64-mingw32.zip out
+ - zip -0rq psp2sdk-$REV-x86_64-w64-mingw32.zip out
  - rm -Rf out
 
 after_success:
- - curl -q -T psp2sdk-amd64-pc-linux-gnu.tar -u $FTP ftp://wololo.net/
- - curl -q -T psp2sdk-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
+ - curl -q -T psp2sdk-$REV-amd64-pc-linux-gnu.tar -u $FTP ftp://wololo.net/
+ - curl -q -T psp2sdk-$REV-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
  - cd src/html
  - git add .
  - git config user.name "Travis CI"
