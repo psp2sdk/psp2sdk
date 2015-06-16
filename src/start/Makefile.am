@@ -1,10 +1,6 @@
 all: crt0.o
 
-.S.o:
-	$(CC) $(CCASFLAGS) $< -c -o $@
+.c.o:
+	$(CC) $(CCASFLAGS) -flto $< -c -o $@
 
-crt0.S: crt0.c
-	$(CC) $(CCASFLAGS) $< -S -o $@
-
-clean:
-	-rm -f crt0.S crt0.o
+CLEANFILES = crt0.o
