@@ -38,7 +38,8 @@ script:
  - rm -Rf out
 
 after_success:
- - curl -T {psp2sdk-amd64-pc-linux-gnu.tar,psp2sdk-x86_64-w64-mingw32.zip} -u $FTP ftp://wololo.net/
+ - curl -q -T psp2sdk-amd64-pc-linux-gnu.tar -u $FTP ftp://wololo.net/
+ - curl -q -T psp2sdk-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
  - cd src/html
  - git add .
  - git config user.name "Travis CI"
