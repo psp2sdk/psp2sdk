@@ -31,32 +31,32 @@ enum TouchErrorCodes {
 };
 
 typedef struct SceTouchPanelInfo {
-  short minAaX;	//!< Min active area X position
-  short minAaY;	//!< Min active area Y position
-  short maxAaX;	//!< Max active area X position
-  short maxAaY;	//!< Max active area Y position
-  short minDispX;	//!< Min display X position
-  short minDispY;	//!< Min display Y position
-  short maxDispX;	//!< Max display X position
-  short maxDispY;	//!< Max display Y position
-  unsigned char minForce;	//!< Min touch force value
-  unsigned char maxForce;	//!< Max touch force value
-  unsigned char rsv[30];	//!< Reserved
+  int16_t minAaX;	//!< Min active area X position
+  int16_t minAaY;	//!< Min active area Y position
+  int16_t maxAaX;	//!< Max active area X position
+  int16_t maxAaY;	//!< Max active area Y position
+  int16_t minDispX;	//!< Min display X position
+  int16_t minDispY;	//!< Min display Y position
+  int16_t maxDispX;	//!< Max display X position
+  int16_t maxDispY;	//!< Max display Y position
+  uint8_t minForce;	//!< Min touch force value
+  uint8_t maxForce;	//!< Max touch force value
+  uint8_t rsv[30];	//!< Reserved
 } SceTouchPanelInfo;
 
 typedef struct SceTouchReport {
-  unsigned char id;	//!< Touch ID
-  unsigned char force;	//!< Touch force
-  short x;	//!< X position
-  short y;	//!< Y position
-  char rsv[8];	//!< Reserved
-  unsigned short info;	//!< Information of this touch
+  uint8_t id;	//!< Touch ID
+  uint8_t force;	//!< Touch force
+  int16_t x;	//!< X position
+  int16_t y;	//!< Y position
+  int8_t rsv[8];	//!< Reserved
+  uint16_t info;	//!< Information of this touch
 } SceTouchReport;
 
 typedef struct SceTouchData {
-  unsigned long timeStamp;	//!< Data timestamp
-  unsigned int status;	//!< Unused
-  unsigned int reportNum;	//!< Number of touch reports
+  uint64_t timeStamp;	//!< Data timestamp
+  uint32_t status;	//!< Unused
+  uint32_t reportNum;	//!< Number of touch reports
   SceTouchReport report[8];	//!< Touch reports
 } SceTouchData;
 
@@ -73,7 +73,7 @@ typedef struct SceTouchData {
  * @param[in]	port	Port number.
  * @param[out]	pPanelInfo	The buffer to get the Touch Panel information.
  */
-int sceTouchGetPanelInfo(unsigned int port, SceTouchPanelInfo *pPanelInfo);
+int32_t sceTouchGetPanelInfo(uint32_t port, SceTouchPanelInfo *pPanelInfo);
 
 /**
  * Get touch data (Blocking)
@@ -81,7 +81,7 @@ int sceTouchGetPanelInfo(unsigned int port, SceTouchPanelInfo *pPanelInfo);
  * @param[in]	port	Port Number.
  * @param[out]	pData	Buffer to receive touch data.
  */
-int sceTouchRead(unsigned int port, SceTouchData *pData, unsigned int nBufs);
+int32_t sceTouchRead(uint32_t port, SceTouchData *pData, uint32_t nBufs);
 
 /**
  * Set sampling state of touch panel.
@@ -89,7 +89,7 @@ int sceTouchRead(unsigned int port, SceTouchData *pData, unsigned int nBufs);
  * @param[in]	port	Port number.
  * @param[in]	state	Sampling state.
  */
-int sceTouchSetSamplingState(unsigned int port, unsigned int state);
+int32_t sceTouchSetSamplingState(uint32_t port, uint32_t state);
 
 /**
  * Get sampling state of touch panel.
@@ -97,7 +97,7 @@ int sceTouchSetSamplingState(unsigned int port, unsigned int state);
  * @param[in]	port	Port number.
  * @param[out]	pState	The buffer to receive sampling state.
  */
-int sceTouchGetSamplingState(unsigned int port, unsigned int *pState);
+int32_t sceTouchGetSamplingState(uint32_t port, uint32_t *pState);
 
 /**
  * Disable touch force output.
@@ -105,7 +105,7 @@ int sceTouchGetSamplingState(unsigned int port, unsigned int *pState);
  * @param[in]	port	Port number.
  */
 
-int sceTouchDisableTouchForce(unsigned int port);
+int32_t sceTouchDisableTouchForce(uint32_t port);
 
 /**
  * Enable touch force output.
@@ -113,7 +113,7 @@ int sceTouchDisableTouchForce(unsigned int port);
  * @param[in]	port	Port number.
  */
 
-int sceTouchEnableTouchForce(unsigned int port);
+int32_t sceTouchEnableTouchForce(uint32_t port);
 
 /***
  * Get touch data (Polling)
@@ -122,6 +122,6 @@ int sceTouchEnableTouchForce(unsigned int port);
  * @param[out]	pData	Buffer to receive touch data.
  * @param[in]	nBufs	Number of buffers to receive touch data.
  */
-int sceTouchPeek(unsigned int port, SceTouchData *pData, unsigned int nBufs);
+int32_t sceTouchPeek(uint32_t port, SceTouchData *pData, uint32_t nBufs);
 
 #endif /* _PSP2TOUCH_H_ */
