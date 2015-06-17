@@ -50,7 +50,7 @@ int module_start(SceSize arglen, void *argp)
 
 int module_stop()
 {
-	return sceKernelTerminateDeleteThread(id);
+	return sceKernelDeleteThread(id);
 }
 
 static const uint32_t nids[3] __attribute__((section(".sceExport.rodata")))
