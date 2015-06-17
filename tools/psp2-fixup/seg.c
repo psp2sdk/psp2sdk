@@ -244,16 +244,16 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			/* It doesn't back up sh_type, but it doesn't matter
 			   because writeSegs assume sections whose sh_type were
 			   SHT_REL */
-			if (scn->shdr.sh_type == SHT_REL)
+			if (scn->shdr.sh_type == SHT_REL) {
 				scn->shdr.sh_type = SHT_SCE_RELA;
 
-			if (scn->shdr.sh_type == SHT_SCE_RELA
-				&& scn->orgSize == scn->shdr.sh_size)
-			{
-				scn->shdr.sh_size /= sizeof(Elf32_Rel);
-				scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
+				if (scn->orgSize == scn->shdr.sh_size) {
+					scn->shdr.sh_size /= sizeof(Elf32_Rel);
+					scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
+				}
 			}
 
+			scn->segOffset = sorts[i]->phdr.p_filesz;
 			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
 		}
 

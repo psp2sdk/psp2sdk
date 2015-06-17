@@ -179,21 +179,21 @@ int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
 
 int updateSceScnsSize(sceScns_t *scns)
 {
-	Elf32_Word headNum;
+	Elf32_Word headNum, stubNum;
 
 	if (scns == NULL)
 		return EINVAL;
 
 	/* mark->sh_size == (the number of the heads) * 24 + (the number of the stubs) * 20
 	   fnid->sh_size == (the number of stubs) * 4 */
+	stubNum = scns->fstub->shdr.sh_size / 4;
 	headNum = (scns->mark->shdr.sh_size
-		- scns->fnid->shdr.sh_size / 4 * sizeof(sce_libgen_mark_stub))
+		- stubNum * sizeof(sce_libgen_mark_stub))
 			/ sizeof(sce_libgen_mark_head);
 
-	scns->relFstub->shdr.sh_size
-		= scns->fstub->shdr.sh_size / 4 * sizeof(Psp2_Rela_Short);
+	scns->relFstub->shdr.sh_size = stubNum * sizeof(Psp2_Rela_Short);
 
-	scns->relStub->shdr.sh_size = headNum * 6 * sizeof(Psp2_Rela_Short);
+	scns->relStub->shdr.sh_size = headNum * 2 * sizeof(Psp2_Rela_Short);
 	scns->stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
 
 	return 0;
