@@ -1,15 +1,19 @@
 %rename cc1 old_cc1
 %rename cc1plus old_cc1plus
 %rename link old_link
+%rename lib old_lib
 
 *cc1:
 %(old_cc1) %(cpu)
 
-*cc1plus
+*cc1plus:
 %(old_cc1plus) %(cpu)
 
 *link:
-%(old_link) -T psp2.x%s
+%(old_link) -q -T psp2.x%s
+
+*lib:
+%(old_lib) --start-group -lSceKernel_stub --end-group
 
 *cpu:
 -mcpu=cortex-a9 -mfpu=neon-fp16
