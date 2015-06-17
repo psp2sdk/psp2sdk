@@ -214,6 +214,10 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 			}
 
 			stubHeads++;
+		} else if (p->size == 0) {
+			printf("%s: Invalid mark\n",
+				strtab + sceScns->mark->shdr.sh_name);
+			return EILSEQ;
 		}
 
 		offset += p->size;
