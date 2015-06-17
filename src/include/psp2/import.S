@@ -71,7 +71,7 @@ _NID_\name = \nid
 
 	.section .sce_libgen_mark
 	.word	0x00000114
-	.word	_\name\()_\num\()_stub_head
+	.word	_\module\()_\moduleNum\()_stub_head
 	.word	\name
 	.word	\nid
 	.word	_NID_\name
