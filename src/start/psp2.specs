@@ -1,0 +1,18 @@
+%rename cc1 old_cc1
+%rename cc1plus old_cc1plus
+%rename link old_link
+
+*cc1:
+%(old_cc1) %(cpu)
+
+*cc1plus
+%(old_cc1plus) %(cpu)
+
+*link:
+%(old_link) -T psp2.x%s
+
+*cpu:
+-mcpu=cortex-a9 -mfpu=neon-fp16
+
+*startfile:
+lib/crt0%O%s
