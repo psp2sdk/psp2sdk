@@ -24,13 +24,13 @@ _\name\()_\num\()_stub_head:
 	.word	_\name\()_stub_str
 	.word	\ver
 	.word	0x00000000
-	.word	0x00000000
-	.size	_\name\()_\num\()_stub_head, .-_\name\()_\num\()_stub_head
 
 	.global	_sce_package_version_\name
 _sce_package_version_\name:
 	.word	\pkgVer
 	.size	_sce_package_version_\name, .-_sce_package_version_\name
+
+	.size	_\name\()_\num\()_stub_head, .-_\name\()_\num\()_stub_head
 
 	.section .sceImport.rodata
 	.global	_\name\()_stub_str
