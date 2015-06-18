@@ -30,6 +30,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 {
 	const Elf32_Sym *sym;
 	Elf32_Word i, type;
+	Elf32_Addr addend;
 
 	if (relaFstub == NULL || fnid == NULL
 		|| relMark == NULL || mark == NULL)
@@ -44,17 +45,17 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 			type = ELF32_R_TYPE(relMark[i].r_info);
 			sym = symtab + ELF32_R_SYM(relMark[i].r_info);
 
-			relaFstub->r_short = 1;
-			relaFstub->r_symseg = scns[sym->st_shndx].phndx;
-			relaFstub->r_code = type;
-			relaFstub->r_datseg = fstub->phndx;
+			PSP2_R_SET_SHORT(relaFstub, 1);
+			PSP2_R_SET_SYMSEG(relaFstub, scns[sym->st_shndx].phndx);
+			PSP2_R_SET_TYPE(relaFstub, type);
+			PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
+			PSP2_R_SET_OFFSET(relaFstub,
+				fstub->segOffset + relMark[i].r_offset);
 
-			relaFstub->r_addend = sym->st_value;
+			addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1)
-				relaFstub->r_addend
-					+= *(uint32_t *)((uintptr_t)mark + relMark[i].r_offset);
-
-			relaFstub->r_offset = fstub->segOffset + relMark[i].r_offset;
+				addend += *(uint32_t *)((uintptr_t)mark + relMark[i].r_offset);
+			PSP2_R_SET_ADDEND(relaFstub, addend);
 		}
 	}
 
@@ -74,7 +75,7 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 	} *markContent, *p;
 	sceLib_stub *stubHeads;
 	Psp2_Rela_Short *relaFstubEnt, *relaStubEnt;
-	Elf32_Off offset, fnidOffset, fstubOffset;
+	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
 	Elf32_Rel *relMarkContent;
 	Elf32_Sym *sym;
 	Elf32_Word i, *fnidEnt;
@@ -160,6 +161,7 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 	p = markContent;
 	fnidOffset = 0;
 	fstubOffset = 0;
+	stubOffset = 0;
 	offset = 0;
 	while (offset < sceScns->mark->shdr.sh_size) {
 		if (p->size == sizeof(sce_libgen_mark_head)) {
@@ -168,22 +170,22 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 			stubHeads->flags = 0;
 			stubHeads->nid = p->head.nid;
 
-			relaStubEnt->r_short = 1;
-			relaStubEnt->r_symseg = sceScns->fnid->phndx;
-			relaStubEnt->r_code = R_ARM_ABS32;
-			relaStubEnt->r_datseg = sceScns->stub->phndx;
-			relaStubEnt->r_addend = fnidOffset;
-			relaStubEnt->r_offset = sceScns->mark->segOffset
-				+ offset + offsetof(sceLib_stub, funcNids);
+			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fnid->phndx);
+			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+			PSP2_R_SET_OFFSET(relaStubEnt, sceScns->stub->segOffset
+				+ stubOffset + offsetof(sceLib_stub, funcNids));
+			PSP2_R_SET_ADDEND(relaStubEnt, fnidOffset);
 			relaStubEnt++;
 
-			relaStubEnt->r_short = 1;
-			relaStubEnt->r_symseg = sceScns->fstub->phndx;
-			relaStubEnt->r_code = R_ARM_ABS32;
-			relaStubEnt->r_datseg = sceScns->stub->phndx;
-			relaStubEnt->r_addend = fstubOffset;
-			relaStubEnt->r_offset = sceScns->mark->segOffset
-				+ offset + offsetof(sceLib_stub, funcStubs);
+			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fstub->phndx);
+			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+			PSP2_R_SET_OFFSET(relaStubEnt, sceScns->stub->segOffset
+				+ stubOffset + offsetof(sceLib_stub, funcStubs));
+			PSP2_R_SET_ADDEND(relaStubEnt, fstubOffset);
 			relaStubEnt++;
 
 			stubHeads->varNids = 0;
@@ -213,6 +215,7 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 				stubHeads->funcNum++;
 			}
 
+			stubOffset += sizeof(sceLib_stub);
 			stubHeads++;
 		} else if (p->size == 0) {
 			printf("%s: Invalid mark\n",

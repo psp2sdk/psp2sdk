@@ -58,14 +58,34 @@ typedef struct {
 	uint32_t unkStubs;
 } sceLib_stub;
 
-typedef struct {
-	Elf32_Word r_short : 4;
-	Elf32_Word r_symseg : 4;
-	Elf32_Word r_code : 8;
-	Elf32_Word r_datseg : 4;
-	Elf32_Word r_offset : 32;
-	Elf32_Word r_addend : 12;
-} Psp2_Rela_Short;
+typedef uint64_t Psp2_Rela_Short;
+
+#define PSP2_R_SET_SHORT(rela, isShort) {	\
+		*(rela) &= 0xFFFFFFFFFFFFFFF0;	\
+		*(rela) |= (isShort);	\
+	}
+#define PSP2_R_SET_SYMSEG(rela, symseg) {	\
+		*(rela) &= 0xFFFFFFFFFFFFFF0F;	\
+		*(rela) |= (symseg) << 4;	\
+	}
+#define PSP2_R_SET_TYPE(rela, code) {	\
+		*(rela) &= 0xFFFFFFFFFFFF00FF;	\
+		*(rela) |= (code) << 8;	\
+	}
+#define PSP2_R_SET_DATSEG(rela, datseg) {	\
+		*(rela) &= 0xFFFFFFFFFFF0FFFF;	\
+		*(rela) |= (datseg) << 16;	\
+	}
+
+#define PSP2_R_SET_OFFSET(rela, offset) {	\
+		*(rela) &= 0xFFF00000000FFFFF;	\
+		*(rela) |= (uint64_t)(offset) << 20;	\
+	}
+
+#define PSP2_R_SET_ADDEND(rela, addend) {	\
+		*(rela) &= 0x000FFFFFFFFFFFFF;	\
+		*(rela) |= (uint64_t)(addend) << 52;	\
+	}
 
 enum {
 	ET_SCE_RELEXEC = 0xFE04

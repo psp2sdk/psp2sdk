@@ -345,6 +345,7 @@ static int writeRela(FILE *dst, FILE *src,
 	Elf32_Rel rel;
 	const Elf32_Sym *sym;
 	Elf32_Word i, j, type;
+	Elf32_Addr addend;
 
 	if (dst == NULL || src == NULL
 		|| scn == NULL || seg == NULL || scns == NULL
@@ -373,17 +374,18 @@ static int writeRela(FILE *dst, FILE *src,
 
 		sym = symtab + ELF32_R_SYM(rel.r_info);
 
-		rela.r_short = 1;
-		rela.r_symseg = scns[sym->st_shndx].phndx;
-		rela.r_code = type;
-		rela.r_datseg = dstScn->phndx;
+		PSP2_R_SET_SHORT(&rela, 1);
+		PSP2_R_SET_SYMSEG(&rela, scns[sym->st_shndx].phndx);
+		PSP2_R_SET_TYPE(&rela, type);
+		PSP2_R_SET_DATSEG(&rela, dstScn->phndx);
+		PSP2_R_SET_OFFSET(&rela, dstScn->segOffset + rel.r_offset);
 
 		if (dstScn == modinfo) {
-			rela.r_addend = scns[sym->st_shndx].shdr.sh_offset;
+			addend = scns[sym->st_shndx].shdr.sh_offset;
 			switch (rel.r_offset) {
 				case offsetof(SceModuleInfo, expBtm):
 				case offsetof(SceModuleInfo, impBtm):
-					rela.r_addend += scns[sym->st_shndx].shdr.sh_size;
+					addend += scns[sym->st_shndx].shdr.sh_size;
 				case offsetof(SceModuleInfo, expTop):
 				case offsetof(SceModuleInfo, impTop):
 				break;
@@ -392,7 +394,7 @@ static int writeRela(FILE *dst, FILE *src,
 			}
 		} else {
 usual:
-			rela.r_addend = sym->st_value;
+			addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
 				if (fseek(src, dstScn->orgOffset + rel.r_offset, SEEK_SET)) {
 					perror(strtab + scn->shdr.sh_name);
@@ -410,11 +412,11 @@ usual:
 					}
 				}
 
-				rela.r_addend += j;
+				addend += j;
 			}
 		}
 
-		rela.r_offset = dstScn->segOffset + rel.r_offset;
+		PSP2_R_SET_ADDEND(&rela, addend);
 
 		if (fwrite(&rela, sizeof(rela), 1, dst) != 1) {
 			perror(strtab + scn->shdr.sh_name);
