@@ -393,12 +393,13 @@ static int writeRela(FILE *dst, FILE *src,
 		sym = symtab + ELF32_R_SYM(rel.r_info);
 
 		PSP2_R_SET_SHORT(&rela, 1);
-		PSP2_R_SET_SYMSEG(&rela, scns[sym->st_shndx].phndx);
+		PSP2_R_SET_SYMSEG(&rela, sym->st_shndx == SHN_ABS ?
+			15 : scns[sym->st_shndx].phndx);
 		PSP2_R_SET_TYPE(&rela, type);
 		PSP2_R_SET_DATSEG(&rela, dstScn->phndx);
 		PSP2_R_SET_OFFSET(&rela, dstScn->segOffset + rel.r_offset);
 
-		if (dstScn == modinfo) {
+		if (dstScn == modinfo && sym->st_shndx != SHN_ABS) {
 			addend = scns[sym->st_shndx].shdr.sh_offset;
 			switch (rel.r_offset) {
 				case offsetof(SceModuleInfo, expBtm):
