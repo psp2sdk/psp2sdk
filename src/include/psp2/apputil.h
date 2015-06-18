@@ -36,12 +36,12 @@ enum SceAppUtilErrorCodes {
 };
 
 typedef uint32_t SceAppUtilBootAttribute;
-typedef uint32_t SceAppUtilEventType;
+typedef uint32_t SceAppUtilAppEventType;
 typedef uint32_t SceAppUtilSavedataSlotId;
 typedef uint32_t SceAppUtilSavedataSlotStatus;
 typedef uint32_t SceAppUtilSavedataSaveMode;
 typedef uint32_t SceAppUtilSavedataRemoveMode;
-typedef uint32_t SceAppUtilParamId;
+typedef uint32_t SceAppUtilAppParamId;
 typedef uint32_t SceAppUtilBgdlStatusType;
 
 typedef struct SceAppUtilInitParam {
@@ -50,7 +50,7 @@ typedef struct SceAppUtilInitParam {
 };
 
 typedef struct SceAppUtilBootParam {
-	uint32_t attr; //!< Boot attribute
+	SceAppUtilBootAttribute attr; //!< Boot attribute
 	uint32_t appVersion; //!< App version
 	uint8_t reserved[32]; //!< Reserved range
 };
@@ -69,14 +69,14 @@ typedef struct SceAppUtilMountPoint {
 };
 
 typedef struct SceAppUtilSaveDataSlot {
-	uint32_t id; //!< Slot id
-	uint32_t status; //!< Slot status
+	SceAppUtilSavedataSlotId id; //!< Slot id
+	SceAppUtilSavedataSlotStatus status; //!< Slot status
 	int32_t userParam; //!< Param for free usage
 	SceAppUtilSaveDataSlotEmptyParam *emptyParam; //!< Settings for empty slot
 };
 
 typedef struct SceAppUtilSaveDataSlotParam {
-	uint32_t status; //!< Status
+	SceAppUtilSavedataSlotStatus status; //!< Status
 	uint8_t title[64]; //!< Title name
 	uint8_t subTitle[128]; //!< Subtitle
 	uint8_t detail[512]; //!< Detail info
