@@ -110,6 +110,8 @@ int closeElf(const elf_t *elf)
 	if (elf == NULL)
 		return EINVAL;
 
+	free(elf->strtab.content);
+	free(elf->symtab.content);
 	free(elf->scns);
 	res = freeSegs(elf->segs, elf->ehdr.e_phnum);
 
