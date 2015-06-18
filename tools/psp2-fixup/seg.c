@@ -373,6 +373,11 @@ static int writeRela(FILE *dst, FILE *src,
 	dstScn = scns + scn->shdr.sh_info;
 
 	for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
+		if (fseek(src, scn->orgOffset + i, SEEK_SET)) {
+			perror(strtab + scn->shdr.sh_name);
+			return errno;
+		}
+
 		if (fread(&rel, sizeof(rel), 1, src) <= 0) {
 			strtab += scn->shdr.sh_name;
 			if (feof(src)) {
@@ -385,9 +390,6 @@ static int writeRela(FILE *dst, FILE *src,
 		}
 
 		type = ELF32_R_TYPE(rel.r_info);
-		if (type == R_ARM_NONE || type == R_ARM_TARGET2)
-			continue;
-
 		sym = symtab + ELF32_R_SYM(rel.r_info);
 
 		PSP2_R_SET_SHORT(&rela, 1);
