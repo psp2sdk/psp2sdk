@@ -37,10 +37,10 @@ enum SceAppUtilErrorCodes {
 
 typedef uint32_t SceAppUtilBootAttribute;
 typedef uint32_t SceAppUtilAppEventType;
-typedef uint32_t SceAppUtilSavedataSlotId;
-typedef uint32_t SceAppUtilSavedataSlotStatus;
-typedef uint32_t SceAppUtilSavedataSaveMode;
-typedef uint32_t SceAppUtilSavedataRemoveMode;
+typedef uint32_t SceAppUtilSaveDataSlotId;
+typedef uint32_t SceAppUtilSaveDataSlotStatus;
+typedef uint32_t SceAppUtilSaveDataSaveMode;
+typedef uint32_t SceAppUtilSaveDataRemoveMode;
 typedef uint32_t SceAppUtilAppParamId;
 typedef uint32_t SceAppUtilBgdlStatusType;
 
@@ -69,14 +69,14 @@ typedef struct SceAppUtilMountPoint {
 };
 
 typedef struct SceAppUtilSaveDataSlot {
-	SceAppUtilSavedataSlotId id; //!< Slot id
-	SceAppUtilSavedataSlotStatus status; //!< Slot status
+	SceAppUtilSaveDataSlotId id; //!< Slot id
+	SceAppUtilSaveDataSlotStatus status; //!< Slot status
 	int32_t userParam; //!< Param for free usage
 	SceAppUtilSaveDataSlotEmptyParam *emptyParam; //!< Settings for empty slot
 };
 
 typedef struct SceAppUtilSaveDataSlotParam {
-	SceAppUtilSavedataSlotStatus status; //!< Status
+	SceAppUtilSaveDataSlotStatus status; //!< Status
 	uint8_t title[64]; //!< Title name
 	uint8_t subTitle[128]; //!< Subtitle
 	uint8_t detail[512]; //!< Detail info
@@ -87,12 +87,12 @@ typedef struct SceAppUtilSaveDataSlotParam {
 	uint8_t reserved[48]; //!< Reserved range
 };
 
-typedef struct SceAppUtilSavedataSaveItem {
+typedef struct SceAppUtilSaveDataSaveItem {
 	const int8_t *dataPath; //!< Path to savedata
 	const void *buf; //!< Buffer of savedata file
 	int8_t padding[4]; //!< Padding
 	SceOff offset; //!< Offset of savedata file
-	SceAppUtilSavedataSaveMode mode; //!< Savedata save mode
+	SceAppUtilSaveDataSaveMode mode; //!< Savedata save mode
 	int8_t reserved[36]; //!< Reserved range
 };
 
@@ -120,9 +120,9 @@ typedef struct SceAppUtilSaveDataFileSlot {
 	uint8_t reserved[32];
 };
 
-typedef struct SceAppUtilSavedataRemoveItem {
+typedef struct SceAppUtilSaveDataRemoveItem {
 	const int8_t *dataPath; //!< Path to savedata data
-	SceAppUtilSavedataRemoveMode mode; //!< Savedata remove mode
+	SceAppUtilSaveDataRemoveMode mode; //!< Savedata remove mode
 	int8_t reserved[36]; //!< Reserved range
 };
 
