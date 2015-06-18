@@ -59,32 +59,33 @@ typedef const _sceModuleInfo SceModuleInfo;
  * \param version Version
  * \param module_name Name
  */
-#define PSP2_MODULE_INFO(attribute, version, module_name) \
-	extern char export_top[], export_btm[]; \
-	extern char import_top[]; \
-	int module_start(SceSize argc, void *argp); \
-	int module_stop(SceSize argc, void *argp); \
-	extern char exidx_top[], exidx_btm[]; \
-	extern char extab_top[], extab_btm[]; \
-	SceModuleInfo module_info \
-		__attribute__((section(".sceModuleInfo.rodata"), aligned(16))) \
-			= { \
-		.attr = attribute, \
-		.ver = version, \
-		.name = module_name, \
-		.type = 0, \
-		.gp = NULL, \
-		.expTop = export_top, \
-		.expBtm = export_btm, \
-		.impTop = import_top, \
-		.impBtm = import_top, \
-		.nid = 0, \
-		.start = module_start, \
-		.stop = module_stop, \
-		.exidxTop = exidx_top, \
-		.exidxBtm = exidx_btm, \
-		.extabTop = extab_top, \
-		.extabBtm = extab_btm \
+#define PSP2_MODULE_INFO(attribute, version, module_name)	\
+	__asm__ (".section .sceLib.stub, \"a\", %progbits;");	\
+	extern char export_top[], export_btm[];	\
+	extern char import_top[];	\
+	int module_start(SceSize argc, void *argp);	\
+	int module_stop(SceSize argc, void *argp);	\
+	extern char exidx_top[], exidx_btm[];	\
+	extern char extab_top[], extab_btm[];	\
+	SceModuleInfo module_info	\
+		__attribute__((section(".sceModuleInfo.rodata"), aligned(16)))	\
+			= {	\
+		.attr = attribute,	\
+		.ver = version,	\
+		.name = module_name,	\
+		.type = 0,	\
+		.gp = NULL,	\
+		.expTop = export_top,	\
+		.expBtm = export_btm,	\
+		.impTop = import_top,	\
+		.impBtm = import_top,	\
+		.nid = 0,	\
+		.start = module_start,	\
+		.stop = module_stop,	\
+		.exidxTop = exidx_top,	\
+		.exidxBtm = exidx_btm,	\
+		.extabTop = extab_top,	\
+		.extabBtm = extab_btm	\
 	};
 
 #endif
