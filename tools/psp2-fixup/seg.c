@@ -74,8 +74,7 @@ static void segCntMapScns(scn_t *scn, seg_t *seg, Elf32_Half index)
 }
 
 /* Load phdrs and scns included in the sections. scns will be sorted. */
-seg_t *getSegs(FILE *fp, const char *path,
-	Elf32_Ehdr *ehdr, const scn_t *scns)
+seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr, scn_t *scns)
 {
 	Elf32_Half i, j, k;
 	scn_t *tmp;
@@ -117,7 +116,7 @@ seg_t *getSegs(FILE *fp, const char *path,
 		}
 	}
 
-	mapOverScnSeg(segCntScns, (scn_t *)scns, segs, ehdr);
+	mapOverScnSeg(segCntScns, scns, segs, ehdr);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		segs[i].scns = malloc(segs[i].shnum * sizeof(scn_t));
@@ -136,7 +135,7 @@ seg_t *getSegs(FILE *fp, const char *path,
 		segs[i].shnum = 0;
 	}
 
-	mapOverScnSeg(segCntMapScns, (scn_t *)scns, segs, ehdr);
+	mapOverScnSeg(segCntMapScns, scns, segs, ehdr);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		if (segs[i].phdr.p_type != PT_LOAD)
