@@ -25,13 +25,16 @@
 #include "seg.h"
 
 static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
-	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr)
+	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr, const scn_t *relMark)
 {
 	Elf32_Half i, j, rela;
 	Elf32_Phdr *phdr;
 
-	if (f == NULL || scns == NULL || segs == NULL || ehdr == NULL)
+	if (f == NULL || scns == NULL || segs == NULL
+		|| ehdr == NULL || relMark == NULL)
+	{
 		return EINVAL;
+	}
 
 	for (rela = 0; segs[rela].phdr.p_type != 0x60000000; rela++)
 		if (rela >= ehdr->e_phnum) {
@@ -39,18 +42,19 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 			return EILSEQ;
 		}
 
-	for (i = 0; i < ehdr->e_shnum; i++) {
-		if (scns[i].shdr.sh_type == SHT_REL) {
-			f(scns + i, segs + rela, rela);
+	for (i = 0; i < ehdr->e_shnum; i++, scns++) {
+		if (scns->shdr.sh_type == SHT_REL) {
+			if (scns != relMark)
+				f(scns, segs + rela, rela);
 			continue;
 		}
 
 		for (j = 0; j < ehdr->e_phnum; j++) {
 			phdr = &segs[j].phdr;
-			if (phdr->p_offset <= scns[i].shdr.sh_offset
-				&& scns[i].shdr.sh_offset + scns[i].shdr.sh_size
+			if (phdr->p_offset <= scns->shdr.sh_offset
+				&& scns->shdr.sh_offset + scns->shdr.sh_size
 					<= phdr->p_offset + phdr->p_filesz) {
-				f(scns + i, segs + j, j);
+				f(scns, segs + j, j);
 				break;
 			}
 		}
@@ -74,14 +78,18 @@ static void segCntMapScns(scn_t *scn, seg_t *seg, Elf32_Half index)
 }
 
 /* Load phdrs and scns included in the sections. scns will be sorted. */
-seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr, scn_t *scns)
+seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
+	scn_t *scns, const scn_t *relMark)
 {
 	Elf32_Half i, j, k;
 	scn_t *tmp;
 	seg_t *segs;
 
-	if (fp == NULL || path == NULL || ehdr == NULL || scns == NULL)
+	if (fp == NULL || path == NULL || ehdr == NULL
+		|| scns == NULL || relMark == NULL)
+	{
 		return NULL;
+	}
 
 	segs = malloc(ehdr->e_phnum * sizeof(seg_t));
 	if (segs == NULL) {
@@ -116,7 +124,7 @@ seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr, scn_t *scns)
 		}
 	}
 
-	mapOverScnSeg(segCntScns, scns, segs, ehdr);
+	mapOverScnSeg(segCntScns, scns, segs, ehdr, relMark);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		segs[i].scns = malloc(segs[i].shnum * sizeof(scn_t));
@@ -135,7 +143,7 @@ seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr, scn_t *scns)
 		segs[i].shnum = 0;
 	}
 
-	mapOverScnSeg(segCntMapScns, scns, segs, ehdr);
+	mapOverScnSeg(segCntMapScns, scns, segs, ehdr, relMark);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		if (segs[i].phdr.p_type != PT_LOAD)
@@ -396,6 +404,8 @@ static int writeRela(FILE *dst, FILE *src,
 			15 : scns[sym->st_shndx].phndx);
 		PSP2_R_SET_TYPE(&rela, type);
 		PSP2_R_SET_DATSEG(&rela, dstScn->phndx);
+		printf("0x%X + 0x%X = 0x%X\n", dstScn->segOffset, rel.r_offset,
+			dstScn->segOffset + rel.r_offset);
 		PSP2_R_SET_OFFSET(&rela, dstScn->segOffset + rel.r_offset);
 
 		if (dstScn == modinfo && sym->st_shndx != SHN_ABS) {

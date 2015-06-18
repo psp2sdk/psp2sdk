@@ -56,18 +56,10 @@ int openElf(elf_t *dst, const char *path)
 		return errno;
 	}
 
-	dst->segs = getSegs(dst->fp, path, &dst->ehdr, dst->scns);
-	if (dst->segs == NULL) {
-		free(dst->scns);
-		fclose(dst->fp);
-		return errno;
-	}
-
 	dst->strtab.scn = dst->scns + dst->ehdr.e_shstrndx;
 	dst->strtab.content = loadScn(dst->fp, path, dst->strtab.scn, NULL);
 	if (dst->strtab.content == NULL) {
 		free(dst->scns);
-		freeSegs(dst->segs, dst->ehdr.e_phnum);
 		fclose(dst->fp);
 		return errno;
 	}
@@ -75,7 +67,6 @@ int openElf(elf_t *dst, const char *path)
 	dst->symtab.scn = getSymtabScn(path, dst->scns, dst->ehdr.e_shnum);
 	if (dst->symtab.scn == NULL) {
 		free(dst->scns);
-		freeSegs(dst->segs, dst->ehdr.e_phnum);
 		free(dst->strtab.content);
 		fclose(dst->fp);
 		return errno;
@@ -85,7 +76,6 @@ int openElf(elf_t *dst, const char *path)
 		dst->symtab.scn, dst->strtab.content);
 	if (dst->symtab.content == NULL) {
 		free(dst->scns);
-		freeSegs(dst->segs, dst->ehdr.e_phnum);
 		free(dst->strtab.content);
 		fclose(dst->fp);
 		return errno;
@@ -95,13 +85,23 @@ int openElf(elf_t *dst, const char *path)
 		dst->strtab.content, path);
 	if (res) {
 		free(dst->scns);
-		freeSegs(dst->segs, dst->ehdr.e_phnum);
 		free(dst->strtab.content);
 		free(dst->symtab.content);
 		fclose(dst->fp);
+		return res;
 	}
 
-	return res;
+	dst->segs = getSegs(dst->fp, path, &dst->ehdr,
+		dst->scns, dst->sceScns.relMark);
+	if (dst->segs == NULL) {
+		free(dst->scns);
+		free(dst->strtab.content);
+		free(dst->symtab.content);
+		fclose(dst->fp);
+		return errno;
+	}
+
+	return 0;
 }
 
 int closeElf(const elf_t *elf)
