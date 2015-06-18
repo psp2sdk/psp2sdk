@@ -375,9 +375,45 @@
 #define PSP2_NET_IN_CLASSD_NET        0xf0000000
 #define PSP2_NET_IN_AUTOIP_NET        0xffff0000
 
+#define PSP2_NET_ICMP_TYPE_ECHO_REPLY           0
+#define PSP2_NET_ICMP_TYPE_DEST_UNREACH         3
+#define PSP2_NET_ICMP_TYPE_SOURCE_QUENCH        4
+#define PSP2_NET_ICMP_TYPE_REDIRECT             5
+#define PSP2_NET_ICMP_TYPE_ECHO_REQUEST         8
+#define PSP2_NET_ICMP_TYPE_TIME_EXCEEDED        11
+#define PSP2_NET_ICMP_TYPE_PARAMETER_PROBLEM    12
+#define PSP2_NET_ICMP_TYPE_TIMESTAMP_REQUEST    13
+#define PSP2_NET_ICMP_TYPE_TIMESTAMP_REPLY      14
+#define PSP2_NET_ICMP_TYPE_INFORMATION_REQUEST  15
+#define PSP2_NET_ICMP_TYPE_INFORMATION_REPLY    16
+#define PSP2_NET_ICMP_TYPE_ADDRESS_MASK_REQUEST 17
+#define PSP2_NET_ICMP_TYPE_ADDRESS_MASK_REPLY   18
+
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_NET_UNREACH          0
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_HOST_UNREACH         1
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_PROTO_UNREACH        2
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_PORT_UNREACH         3
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_FRAG_AND_DF          4
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_SRC_HOST_FAILED      5
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_DST_NET_UNKNOWN      6
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_DST_HOST_UNKNOWN     7
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_SRC_HOST_ISOLATED    8
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_NET_ADMIN_PROHIBITED 9
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_NET_HOST_PROHIBITED  10
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_NET_TOS              11
+#define PSP2_NET_ICMP_CODE_DEST_UNREACH_HOST_TOS             12
+#define PSP2_NET_ICMP_CODE_TIME_EXCEEDED_TTL_EXCEEDED        0
+#define PSP2_NET_ICMP_CODE_TIME_EXCEEDED_FRT_EXCEEDED        1
 
 #define PSP2_NET_IP_DEFAULT_MULTICAST_TTL   1
 #define PSP2_NET_IP_DEFAULT_MULTICAST_LOOP  1
+
+#define PSP2_NET_IPVERSION   4
+
+#define PSP2_NET_IP_RF       0x8000
+#define PSP2_NET_IP_DF       0x4000
+#define PSP2_NET_IP_MF       0x2000
+#define PSP2_NET_IP_OFFMASK  0x1fff
 
 /* callback */
 
@@ -548,6 +584,52 @@ typedef struct SceNetStatisticsInfo {
 	int libnet_mem_free_min;
 } SceNetStatisticsInfo;
 
+typedef struct SceNetIpHeaderIpVerHl {
+	unsigned char hl;
+	unsigned char ver;
+} SceNetIpHeaderIpVerHl;
+
+typedef union SceNetIpHeaderUnion {
+	SceNetIpHeaderIpVerHl ip_ver_hl;
+	unsigned char ver_hl;
+} SceNetIpHeaderUnion;
+
+typedef struct SceNetIpHeader {
+	SceNetIpHeaderUnion un;
+	unsigned char ip_tos;
+	unsigned short ip_len;
+	unsigned short ip_id;
+	unsigned short ip_off;
+	unsigned char ip_ttl;
+	unsigned char ip_p;
+	unsigned short ip_sum;
+	SceNetInAddr ip_src;
+	SceNetInAddr ip_dst;
+} SceNetIpHeader;
+
+typedef struct SceNetIcmpHeaderEcho {
+	unsigned short id;
+	unsigned short sequence;
+} SceNetIcmpHeaderEcho;
+
+typedef struct SceNetIcmpHeaderFrag {
+	unsigned short unused;
+	unsigned short mtu;
+} SceNetIcmpHeaderFrag;
+
+typedef union SceNetIcmpHeaderUnion {
+	SceNetIcmpHeaderEcho echo;
+	unsigned int gateway;
+	SceNetIcmpHeaderFrag frag;
+} SceNetIcmpHeaderUnion;
+
+typedef struct SceNetIcmpHeader {
+	unsigned char type;
+	unsigned char code;
+	unsigned short checksum;
+	SceNetIcmpHeaderUnion un;
+} SceNetIcmpHeader;
+
 /* prototypes */
 
 int sceNetInit(SceNetInitParam *param);
@@ -611,6 +693,7 @@ const char *sceNetInetNtop(int af,const void *src,char *dst,unsigned int size);
 int sceNetInetPton(int af, const char *src, void *dst);
 
 //TODO : create BSD aliases ?
+
 long long unsigned int sceNetHtonll(unsigned long long int host64);
 unsigned int sceNetHtonl(unsigned int host32);
 unsigned short int sceNetHtons(unsigned short int host16);
