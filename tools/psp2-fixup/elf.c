@@ -124,7 +124,7 @@ int closeElf(const elf_t *elf)
 static int updateEhdr(Elf32_Ehdr *ehdr, const char *path,
 	seg_t *segs, scn_t *modinfo)
 {
-	Elf32_Off offset;
+	Elf32_Off offset=0;
 	int i, j;
 
 	if (ehdr == NULL || segs == NULL)
@@ -135,13 +135,13 @@ static int updateEhdr(Elf32_Ehdr *ehdr, const char *path,
 	for (i = 0; i < ehdr->e_phnum || i < 4; i++)
 		for (j = 0; j < segs[i].shnum; j++)
 			if (segs[i].scns[j] == modinfo)
-					goto found;
+				offset = modinfo->shdr.sh_offset - segs[i].phdr.p_offset;
+	
+	if (offset == 0){
+		fprintf(stderr, "%s: .sceModuleInfo.rodata not found\n", path);
+		return EILSEQ;
+	}
 
-	fprintf(stderr, "%s: .sceModuleInfo.rodata not found\n", path);
-	return EILSEQ;
-
-found:
-	offset = modinfo->shdr.sh_offset - segs[i].phdr.p_offset;
 	if (offset >= 1 << 30) {
 		fprintf(stderr, "%s: .sceModuleInfo.rodata is invalid\n", path);
 		return EILSEQ;
