@@ -37,21 +37,20 @@ SECTIONS
 
 	.sceModuleInfo.rodata : { *(.sceModuleInfo.rodata) } :text
 
-	.sceLib.ent : { *(.sceLib.ent) } :text
-	.sceLib.stub : { *(.sceLib.stub) } :text
-
-	.sceExport.rodata :
+	.sceLib.ent :
 	{
 		export_top = .;
-		*(.sceExport.rodata)
-	export_btm = .;
+		*(.sceLib.ent)
+		export_btm = .;
 	} :text
-
-	.sceImport.rodata :
+	.sceLib.stub :
 	{
 		import_top = .;
-		KEEP(*(.sceImport.rodata))
+		*(.sceLib.stub)
 	} :text
+
+	.sceExport.rodata : { *(.sceExport.rodata) } :text
+	.sceImport.rodata : { *(.sceImport.rodata) } :text
 
 	.sceFNID.rodata : { KEEP(*(.sceFNID.rodata)) } :text
 	.sceFStub.rodata : { KEEP(*(.sceFStub.rodata)) } :text
