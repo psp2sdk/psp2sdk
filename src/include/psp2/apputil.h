@@ -1,7 +1,4 @@
 /**
- * \file
- * \brief Header file which defines control related variables and functions
- *
  * Copyright (C) 2015 PSP2SDK Project
  *
  * This library is free software: you can redistribute it and/or modify
@@ -23,68 +20,91 @@
 
 #include <psp2/types.h>
 
-enum AppUtilErrorCodes {
+enum SceAppUtilErrorCodes {
 	SCE_APPUTIL_ERROR_PARAMETER	= 0x80100600,
 	SCE_APPUTIL_ERROR_NOT_INITIALIZED	= 0x80100601,
 	SCE_APPUTIL_ERROR_NO_MEMORY	= 0x80100602,
 	SCE_APPUTIL_ERROR_BUSY	= 0x80100603,
 	SCE_APPUTIL_ERROR_NOT_MOUNTED	= 0x80100604,
+	SCE_APPUTIL_ERROR_NO_PERMISSION	= 0x80100605,
+	SCE_APPUTIL_ERROR_APPEVENT_PARSE_INVALID_DATA	= 0x80100620,
 	SCE_APPUTIL_ERROR_SAVEDATA_SLOT_EXISTS	= 0x80100640,
 	SCE_APPUTIL_ERROR_SAVEDATA_SLOT_NOT_FOUND	= 0x80100641,
-	SCE_APPUTIL_ERROR_SAVEDATA_NO_SPACE	= 0x80100642
+	SCE_APPUTIL_ERROR_SAVEDATA_NO_SPACE_QUOTA	= 0x80100642,
+	SCE_APPUTIL_ERROR_SAVEDATA_NO_SPACE_FS	= 0x80100643,
+	SCE_APPUTIL_ERROR_PHOTO_DEVICE_NOT_FOUND	= 0x80100680,
 };
 
+typedef uint32_t SceAppUtilBootAttribute;
+typedef uint32_t SceAppUtilEventType;
+typedef uint32_t SceAppUtilSavedataSlotId;
+typedef uint32_t SceAppUtilSavedataSlotStatus;
+typedef uint32_t SceAppUtilSavedataSaveMode;
+typedef uint32_t SceAppUtilSavedataRemoveMode;
+typedef uint32_t SceAppUtilParamId;
+typedef uint32_t SceAppUtilBgdlStatusType;
 
-typedef struct SceAppUtilInitParam
-{
-	uint32_t workBufSize;
-	uint8_t reserved[60];
+typedef struct SceAppUtilInitParam {
+	uint32_t workBufSize; //!< Buffer size
+	uint8_t reserved[60]; //!< Reserved range
 };
 
-typedef struct SceAppUtilBootParam
-{
-	uint32_t attr;
-	uint32_t appVersion;
-	uint8_t reserved[32];
+typedef struct SceAppUtilBootParam {
+	uint32_t attr; //!< Boot attribute
+	uint32_t appVersion; //!< App version
+	uint8_t reserved[32]; //!< Reserved range
 };
 
-typedef struct SceAppUtilSaveDataMountPoint
-{
+typedef struct SceAppUtilSaveDataMountPoint {
 	uint8_t data[16];
 };
 
-typedef struct SceAppUtilSaveDataSlotParam
-{
-	uint32_t status;
-	uint8_t title[64];
-	uint8_t subTitle[128];
-	uint8_t detail[512];
-	uint8_t iconPath[64];
-	int32_t userParam;
-	uint32_t sizeKB;
-	SceDateTime modifiedTime;
-	uint8_t reserved[48];
+typedef struct SceAppUtilAppEventParam {
+	SceAppUtilAppEventType type; //!< Event type
+	uint8_t dat[1024] //!< Event parameter
 };
 
-typedef struct SceAppUtilSaveDataSlotEmptyParam
-{
-	int8_t *title;
-	int8_t *iconPath;
-	void *iconBuf;
-	uint32_t iconBufSize;
-	uint8_t reserved[32];
+typedef struct SceAppUtilMountPoint {
+	int8_t data[16] //!< Mount point
 };
 
-typedef struct SceAppUtilSaveDataSlot
-{
-	uint32_t id;
-	uint32_t status;
-	int32_t userParam;
-	SceAppUtilSaveDataSlotEmptyParam *emptyParam;
+typedef struct SceAppUtilSaveDataSlot {
+	uint32_t id; //!< Slot id
+	uint32_t status; //!< Slot status
+	int32_t userParam; //!< Param for free usage
+	SceAppUtilSaveDataSlotEmptyParam *emptyParam; //!< Settings for empty slot
 };
 
-typedef struct SceAppUtilSaveDataFile
-{
+typedef struct SceAppUtilSaveDataSlotParam {
+	uint32_t status; //!< Status
+	uint8_t title[64]; //!< Title name
+	uint8_t subTitle[128]; //!< Subtitle
+	uint8_t detail[512]; //!< Detail info
+	uint8_t iconPath[64]; //!< Icon path
+	int32_t userParam; //!< User param
+	uint32_t sizeKB; //!< Data size (In KB)
+	SceDateTime modifiedTime; //!< Last modified time
+	uint8_t reserved[48]; //!< Reserved range
+};
+
+typedef struct SceAppUtilSavedataSaveItem {
+	const int8_t *dataPath; //!< Path to savedata
+	const void *buf; //!< Buffer of savedata file
+	int8_t padding[4]; //!< Padding
+	SceOff offset; //!< Offset of savedata file
+	SceAppUtilSavedataSaveMode mode; //!< Savedata save mode
+	int8_t reserved[36]; //!< Reserved range
+};
+
+typedef struct SceAppUtilSaveDataSlotEmptyParam {
+	int8_t *title; //!< Title string
+	int8_t *iconPath; //!< Path to icon
+	void *iconBuf; //!< Icon buffer
+	uint32_t iconBufSize; //!< Icon buffer size
+	uint8_t reserved[32]; //!< Reserved range
+};
+
+typedef struct SceAppUtilSaveDataFile {
 	const int8_t* filePath;
 	void* buf;
 	uint32_t bufSize;
@@ -94,74 +114,68 @@ typedef struct SceAppUtilSaveDataFile
 	uint8_t reserved[32];
 };
 
-typedef struct SceAppUtilSaveDataFileSlot
-{
+typedef struct SceAppUtilSaveDataFileSlot {
 	uint32_t id;
 	SceAppUtilSaveDataSlotParam *slotParam;
 	uint8_t reserved[32];
 };
 
-int32_t sceAppUtilInit(SceAppUtilInitParam *initParam, SceAppUtilBootParam *bootParam);
+typedef struct SceAppUtilSavedataRemoveItem {
+	const int8_t *dataPath; //!< Path to savedata data
+	SceAppUtilSavedataRemoveMode mode; //!< Savedata remove mode
+	int8_t reserved[36]; //!< Reserved range
+};
 
-int32_t sceAppUtilShutdown();
+typedef struct SceAppUtilStoreBrowseParam {
+	uint32_t type; //!< Store browse type
+	const int8_t *id; //!< Target id
+};
 
-int32_t sceAppUtilSaveDataSlotCreate(uint32_t slotId,SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint);
+typedef struct SceAppUtilWebBrowserParam {
+	const int8_t str; //!< String that's passed to command specified by launchMode
+	uint32_t strlen; //!< Length of str
+	uint32_t launchMode; //!< Browser mode
+	uint32_t reserved0; //!< Reserved area
+};
 
-int32_t sceAppUtilSaveDataSlotDelete(uint32_t slotId, SceAppUtilSaveDataMountPoint *mountPoint);
+int32_t SceAppUtilInit(SceAppUtilInitParam *initParam, SceAppUtilBootParam *bootParam); //!< Initialize AppUtil library
 
-int32_t sceAppUtilSaveDataSlotSetParam(uint32_t slotId, SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint);
+int32_t SceAppUtilShutdown(); //!< Shutdown AppUtil library
 
-int32_t sceAppUtilSaveDataSlotGetParam(uint32_t slotId, SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint);
+int32_t SceAppUtilRecieveAppEvent(SceAppUtilAppEventParam *eventParam);  //!< Receive app event
 
-//sceAppUtilSaveDataFileSave ???
-int32_t sceAppUtilSaveDataDataSave(SceAppUtilSaveDataFileSlot *slot, SceAppUtilSaveDataFile *files, uint32_t fileNum, SceAppUtilSaveDataMountPoint *mountPoint, uint32_t *requiredSizeKB);
+int32_t SceAppUtilSaveDataSlotCreate(uint32_t slotId,SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint); //!< Create savedata slot
 
-int32_t sceAppUtilMusicMount();
+int32_t SceAppUtilSaveDataSlotDelete(uint32_t slotId, SceAppUtilSaveDataMountPoint *mountPoint); //!< Delete savedata slot
 
-int32_t sceAppUtilMusicUmount();
+int32_t SceAppUtilSaveDataSlotSetParam(uint32_t slotId, SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint); //!< Set savedata slot param
 
-int32_t sceAppUtilPhotoMount();
+int32_t SceAppUtilSaveDataSlotGetParam(uint32_t slotId, SceAppUtilSaveDataSlotParam *param, SceAppUtilSaveDataMountPoint *mountPoint); //!< Get savedata slot param
 
-int32_t sceAppUtilPhotoUmount();
+int32_t SceAppUtilSaveDataDataSave(SceAppUtilSaveDataFileSlot *slot, SceAppUtilSaveDataFile *files, uint32_t fileNum, SceAppUtilSaveDataMountPoint *mountPoint, uint32_t *requiredSizeKB); //!< Write savedata files and directories
 
-int32_t sceAppUtilSystemParamGetInt(uint32_t paramId, int32_t *value);
+int32_t SceAppUtilMusicMount(); //!< Mount music data
 
-int32_t sceAppUtilSystemParamGetString(uint32_t paramId, int8_t *buf, uint32_t bufSize);
+int32_t SceAppUtilMusicUmount(); //!< Unmount music data
 
-int32_t sceAppUtilSaveSafeMemory(void *buf, uint32_t bufSize, int64_t offset);
+int32_t SceAppUtilPhotoMount(); //!< Mount photo data
 
-int32_t sceAppUtilLoadSafeMemory(void *buf, uint32_t bufSize, int64_t offset);
+int32_t SceAppUtilPhotoUmount(); //!< Unmount photo data
 
+int32_t SceAppUtilSystemParamGetInt(uint32_t paramId, int32_t *value); //!< Get system parameters for int type
 
-/** Missing Functions
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x0f4ee55f, sceAppUtilAppEventParseLiveArea
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x1b36af8c, sceAppUtilAddcontUmount
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x22297d59, sceAppUtilAppEventParseIncomingDialog
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x28c7d4f6, sceAppUtilAppEventParseNpBasicJoinablePresence
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x2af42d6a, sceAppUtilAppEventParseScreenShotNotification
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x2db7be3b, sceAppUtilDrmOpen
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x4faad133, sceAppUtilResetCookieWebBrowser
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x53b2c020, sceAppUtilAddcontMount
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x6a140498, sceAppUtilDrmClose
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x6bed9b58, sceAppUtilAppEventParseNpAppDataMessage
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x7402c6ea, sceAppUtilPspSaveDataLoad
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x77380601, sceAppUtilAppEventParseNearGift
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x85fa94ee, sceAppUtilStoreBrowse
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x8dee696b, sceAppUtilAppEventParseTriggerUtil
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x8ed716f5, sceAppUtilAppEventParseWebBrowser
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x96f478d6, sceAppUtilBgdlGetStatus
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x9942071d, sceAppUtilPspSaveDataGetDirNameList
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0x9d8ac677, sceAppUtilSaveSafeMemory
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xa2496814, sceAppUtilAppEventParseNpInviteMessage
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xc560e716, sceAppUtilSaveDataGetQuota
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xc97d5d9e, sceAppUtilAddCookieWebBrowser
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xcd7fd67a, sceAppUtilAppParamGetInt
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xd1c6ab8e, sceAppUtilSaveDataDataRemove
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xe6057a85, sceAppUtilSaveDataSlotSearch
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xe61453b0, sceAppUtilSaveDataMount
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xeb720402, sceAppUtilSaveDataUmount
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xee0dbed9, sceAppUtilReceiveAppEvent
-PSP2_IMPORT_FUNC SceAppUtil, 0001, F00, 0xf19d0423, sceAppUtilLaunchWebBrowser
-**/
+int32_t SceAppUtilSystemParamGetString(uint32_t paramId, int8_t *buf, uint32_t bufSize); //!< Get application parameters for string type
+
+int32_t SceAppUtilParamGetInt(SceAppUtilAppParamId paramId, int32_t *value); //!< Get application parameters for int type
+
+int32_t SceAppUtilSaveSafeMemory(void *buf, uint32_t bufSize, int64_t offset); //!< Save save memory
+
+int32_t SceAppUtilLoadSafeMemory(void *buf, uint32_t bufSize, int64_t offset); //!< Load safe memory
+
+int32_t SceAppUtilStoreBrowse(SceAppUtilStoreBrowseParam *param); //!< Launch PSN Store
+
+int32_t SceAppUtilBgdlGetStatus(SceAppUtilBgdlStatus *stat); //!< Get background download status
+
+int32_t SceAppUtilLaunchWebBrowser(SceAppUtilWebBrowserParam *param); //!< Launch web browser app
 
 #endif
