@@ -247,7 +247,9 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 				sorts[i]->phdr.p_filesz += gap;
 
 			scn->addrDiff = addr - scn->shdr.sh_addr;
-			scn->segOffset = addr - sorts[i]->phdr.p_vaddr;
+			offset = addr - sorts[i]->phdr.p_vaddr;
+			scn->segOffsetDiff = offset - scn->segOffset;
+			scn->segOffset = offset;
 			scn->shdr.sh_addr = addr;
 
 			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
@@ -276,6 +278,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 				}
 			}
 
+			scn->segOffsetDiff = sorts[i]->phdr.p_filesz - scn->segOffset;
 			scn->segOffset = sorts[i]->phdr.p_filesz;
 			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
 		}
@@ -404,9 +407,9 @@ static int writeRela(FILE *dst, FILE *src,
 			15 : scns[sym->st_shndx].phndx);
 		PSP2_R_SET_TYPE(&rela, type);
 		PSP2_R_SET_DATSEG(&rela, dstScn->phndx);
-		printf("0x%X + 0x%X = 0x%X\n", dstScn->segOffset, rel.r_offset,
-			dstScn->segOffset + rel.r_offset);
-		PSP2_R_SET_OFFSET(&rela, dstScn->segOffset + rel.r_offset);
+		printf("0x%X + 0x%X = 0x%X\n", rel.r_offset, dstScn->segOffsetDiff,
+			rel.r_offset - dstScn->segOffsetDiff);
+		PSP2_R_SET_OFFSET(&rela, rel.r_offset - dstScn->segOffsetDiff);
 
 		if (dstScn == modinfo && sym->st_shndx != SHN_ABS) {
 			addend = scns[sym->st_shndx].shdr.sh_offset;
