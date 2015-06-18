@@ -460,11 +460,6 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 
 	for (i = 0; i < phnum; i++) {
 		for (j = 0; j < segs->shnum; j++) {
-			if (fseek(src, segs->scns[j]->orgOffset, SEEK_SET)) {
-				perror(strtab + segs->scns[j]->shdr.sh_name);
-				return errno;
-			}
-
 			if (fseek(dst, segs->scns[j]->shdr.sh_offset, SEEK_SET)) {
 				perror(strtab + segs->scns[j]->shdr.sh_name);
 				return errno;
@@ -480,6 +475,11 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 				segs->scns[j]->content = NULL;
 
 				continue;
+			}
+
+			if (fseek(src, segs->scns[j]->orgOffset, SEEK_SET)) {
+				perror(strtab + segs->scns[j]->shdr.sh_name);
+				return errno;
 			}
 
 			// Refer to updateSegs
