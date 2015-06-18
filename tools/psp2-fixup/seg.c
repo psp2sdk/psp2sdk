@@ -24,13 +24,27 @@
 #include "scn.h"
 #include "seg.h"
 
-static void mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
+static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr)
 {
-	Elf32_Half i, j;
+	Elf32_Half i, j, rela;
 	Elf32_Phdr *phdr;
 
-	for (i = 0; i < ehdr->e_shnum; i++)
+	if (f == NULL || scns == NULL || segs == NULL || ehdr == NULL)
+		return EINVAL;
+
+	for (rela = 0; segs[rela].phdr.p_type != 0x60000000; rela++)
+		if (rela >= ehdr->e_phnum) {
+			fputs("PT_SCE_RELA not found", stderr);
+			return EILSEQ;
+		}
+
+	for (i = 0; i < ehdr->e_shnum; i++) {
+		if (scns[i].shdr.sh_type == SHT_REL) {
+			f(scns + i, segs + rela, rela);
+			continue;
+		}
+
 		for (j = 0; j < ehdr->e_phnum; j++) {
 			phdr = &segs[j].phdr;
 			if (phdr->p_offset <= scns[i].shdr.sh_offset
@@ -40,7 +54,9 @@ static void mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 				break;
 			}
 		}
-				
+	}
+
+	return 0;
 }
 
 static void segCntScns(scn_t *scn, seg_t *seg, Elf32_Half index)
