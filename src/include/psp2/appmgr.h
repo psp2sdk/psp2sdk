@@ -24,12 +24,23 @@
 #include <psp2/types.h>
 
 enum AppMgrErrorCodes {
-	SCE_APPMGR_ERROR_BUSY	= 0x80802000, //!< Busy
-	SCE_APPMGR_ERROR_STATE	= 0x80802013, //!< Invalid state
-	SCE_APPMGR_ERROR_NULL_POINTER	= 0x80802016, //!< NULL pointer
-	SCE_APPMGR_ERROR_INVALID	= 0x8080201a, //!< Invalid param
-	SCE_APPMGR_ERROR_INVALID_SELF_PATH	= 0x8080201e, //!< Invalid self path
-	SCE_APPMGR_ERROR_TOO_LONG_ARGV	= 0x8080201d //!< argv is too long
+	//! Busy
+	SCE_APPMGR_ERROR_BUSY	= 0x80802000,
+
+	//! Invalid state
+	SCE_APPMGR_ERROR_STATE	= 0x80802013,
+
+	//! NULL pointer
+	SCE_APPMGR_ERROR_NULL_POINTER	= 0x80802016,
+
+	//!< Invalid param
+	SCE_APPMGR_ERROR_INVALID	= 0x8080201a,
+
+	//!< Invalid self path
+	SCE_APPMGR_ERROR_INVALID_SELF_PATH	= 0x8080201e,
+
+	//!< argv is too long
+	SCE_APPMGR_ERROR_TOO_LONG_ARGV	= 0x8080201d
 };
 
 enum AppMgrMaxAppNameLength {
@@ -59,13 +70,11 @@ enum AppMgrInfobarTransparency {
 };
 
 typedef struct SceAppMgrSystemEvent {
-	int32_t systemEvent;
-	union {
-		uint8_t reserved[60];
-	}
+	int systemEvent;
+	uint8_t reserved[60];
 };
 
-int32_t _sceAppMgrGetAppState(SceAppMgrAppState *appState, uint32_t len, uint32_t version);
+int _sceAppMgrGetAppState(SceAppMgrAppState *appState, uint32_t len, uint32_t version);
 
 /**
  * static __inline int sceAppMgrGetAppState(SceAppMgrAppState *appState) {
@@ -73,18 +82,22 @@ int32_t _sceAppMgrGetAppState(SceAppMgrAppState *appState, uint32_t len, uint32_
  * };
  */
 
-int32_t sceAppMgrRecieveSystemEvent(SceAppMgrSystemEvent *systemEvent);
+int sceAppMgrRecieveSystemEvent(SceAppMgrSystemEvent *systemEvent);
 
-int32_t sceAppMgrAcquireBgmPort(void); //!< Obtains the BGM port, even when it is not in front
+//! Obtains the BGM port, even when it is not in front
+int sceAppMgrAcquireBgmPort(void);
 
-int32_t sceAppMgrReleaseBgmPort(void); //!< Release acquired BGM port
+//! Release acquired BGM port
+int sceAppMgrReleaseBgmPort(void);
 
-int32_t sceAppMgrSetInfobarState(int visibility, int color, int transparency); //!< Set infobar state
+//! Set infobar state
+int sceAppMgrSetInfobarState(int visibility, int color, int transparency);
 
 typedef struct sceAppMgrLoadExecOptParam {
-	int reserved[256/4];
+	int reserved[256 / 4];
 };
 
-int sceAppMgrLoadExec(const char *appPath, char *const argv[], const SceAppMgrExecOptParam *optParam);
+int sceAppMgrLoadExec(const char *appPath, char * const argv[],
+	const SceAppMgrExecOptParam *optParam);
 
 #endif
