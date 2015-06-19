@@ -61,7 +61,7 @@ cont:
 	return 0;
 }
 
-int convRelToRela(FILE *fp, const scn_t *scns, const seg_t *segs,
+int convRelToRela(FILE *fp, scn_t *scns, const seg_t *segs,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
@@ -69,12 +69,12 @@ int convRelToRela(FILE *fp, const scn_t *scns, const seg_t *segs,
 		return EINVAL;
 
 	Psp2_Rela_Short *buf, *cur;
-	const scn_t *dstScn;
-	scn_t *scn;
+	scn_t *scn, *dstScn;
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
-	Elf32_Word i, j, type;
+	Elf32_Word i, type;
 	Elf32_Addr addend;
+	int res;
 
 	if (fp == NULL || scns == NULL || strtab == NULL || symtab == NULL
 		|| relScns == NULL)
@@ -108,29 +108,16 @@ int convRelToRela(FILE *fp, const scn_t *scns, const seg_t *segs,
 
 			addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (fseek(fp, segs[dstScn->phndx].phdr.p_offset
-					+ rel->r_offset, SEEK_SET))
-				{
-					perror(strtab + scn->shdr.sh_name);
-
-					free(scn->content);
-					return errno;
+				if (dstScn->content == NULL) {
+					res = loadScn(fp, dstScn,
+						strtab + scn->shdr.sh_name);
+					if (res)
+						return res;
 				}
 
-				if (fread(&j, sizeof(j), 1, fp) <= 0) {
-					free(scn->content);
-
-					strtab += scn->shdr.sh_name;
-					if (feof(fp)) {
-						fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-						return EILSEQ;
-					} else {
-						perror(strtab);
-						return errno;
-					}
-				}
-
-				addend += j;
+				addend += *(Elf32_Word *)(
+					(uintptr_t)dstScn->content
+					+ rel->r_offset - dstScn->segOffset);
 			}
 
 			PSP2_R_SET_ADDEND(cur, addend);

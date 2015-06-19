@@ -27,7 +27,7 @@
 int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
 	scn_t **relScns, Elf32_Half relShnum);
 
-int convRelToRela(FILE *fp, const scn_t *scns, const seg_t *segs,
+int convRelToRela(FILE *fp, scn_t *scns, const seg_t *segs,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum);
 

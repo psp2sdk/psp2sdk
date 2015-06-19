@@ -66,37 +66,26 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	return 0;
 }
 
-int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
+int buildStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	const char *strtab, Elf32_Sym *symtab)
 {
 	union {
 		uint8_t size;
 		sce_libgen_mark_head head;
 		sce_libgen_mark_stub stub;
-	} *markContent, *p;
+	} *p;
 	sceLib_stub *stubHeads;
 	Psp2_Rela_Short *relaFstubEnt, *relaStubEnt;
 	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
-	Elf32_Rel *relMarkContent;
+	Elf32_Rel *relMarkEnt;
 	Elf32_Sym *sym;
 	Elf32_Word i, *fnidEnt;
+	int res;
 
-	if (sceScns == NULL || srcFp == NULL
+	if (sceScns == NULL || fp == NULL
 		|| scns == NULL || strtab == NULL || symtab == NULL)
 	{
 		return EINVAL;
-	}
-
-	markContent = malloc(sceScns->mark->shdr.sh_size);
-	if (markContent == NULL) {
-		perror(strtab + sceScns->mark->shdr.sh_name);
-		return errno;
-	}
-
-	relMarkContent = malloc(sceScns->relMark->orgSize);
-	if (relMarkContent == NULL) {
-		perror(strtab + sceScns->relMark->shdr.sh_name);
-		return errno;
 	}
 
 	sceScns->relFstub->content = malloc(sceScns->relFstub->shdr.sh_size);
@@ -123,43 +112,21 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 		return errno;
 	}
 
-	if (fseek(srcFp, sceScns->mark->orgOffset, SEEK_SET)) {
-		perror(strtab + sceScns->mark->shdr.sh_name);
-		return errno;
-	}
+	res = loadScn(fp, sceScns->mark,
+		strtab + sceScns->mark->shdr.sh_name);
+	if (res)
+		return res;
 
-	if (fread(markContent, sceScns->mark->shdr.sh_size, 1, srcFp) <= 0) {
-		strtab += sceScns->mark->shdr.sh_name;
-		if (feof(srcFp)) {
-			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-			return EILSEQ;
-		} else {
-			perror(strtab);
-			return errno;
-		}
-	}
-
-	if (fseek(srcFp, sceScns->relMark->orgOffset, SEEK_SET)) {
-		perror(strtab + sceScns->relMark->shdr.sh_name);
-		return errno;
-	}
-
-	if (fread(relMarkContent, sceScns->relMark->orgSize, 1, srcFp) <= 0) {
-		strtab += sceScns->relMark->shdr.sh_name;
-		if (feof(srcFp)) {
-			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-			return EILSEQ;
-		} else {
-			perror(strtab);
-			return errno;
-		}
-	}
+	res = loadScn(fp, sceScns->relMark,
+		strtab + sceScns->relMark->shdr.sh_name);
+	if (res)
+		return res;
 
 	relaFstubEnt = sceScns->relFstub->content;
 	relaStubEnt = sceScns->relStub->content;
 	fnidEnt = sceScns->fnid->content;
 	stubHeads = sceScns->stub->content;
-	p = markContent;
+	p = sceScns->mark->content;
 	fnidOffset = 0;
 	fstubOffset = 0;
 	stubOffset = 0;
@@ -198,17 +165,20 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 			stubHeads->varNum = 0;
 			stubHeads->unkNum = 0;
 
+			relMarkEnt = sceScns->relMark->content;
 			for (i = 0; i < sceScns->relMark->orgSize / sizeof(Elf32_Rel); i++) {
-				sym = symtab + ELF32_R_SYM(relMarkContent[i].r_info);
+				sym = symtab + ELF32_R_SYM(relMarkEnt->r_info);
 				if (sym->st_value != sceScns->mark->shdr.sh_addr + offset)
 					continue;
 
 				addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
-					relMarkContent, sceScns->relMark->shdr.sh_size,
-					markContent, sceScns->mark->segOffset,
-					relMarkContent[i].r_offset
+					sceScns->relMark->content, sceScns->relMark->shdr.sh_size,
+					sceScns->mark->content, sceScns->mark->segOffset,
+					relMarkEnt->r_offset
 						- offsetof(sce_libgen_mark_stub, head),
 					scns, symtab);
+
+				relMarkEnt++;
 				relaFstubEnt++;
 				fnidEnt++;
 				fstubOffset += sizeof(Psp2_Rela_Short);
@@ -227,9 +197,6 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 		offset += p->size;
 		p = (void *)((uintptr_t)p + p->size);
 	}
-
-	free(markContent);
-	free(relMarkContent);
 
 	sceScns->relFstub->shdr.sh_type = SHT_SCE_RELA;
 	sceScns->relStub->shdr.sh_type = SHT_SCE_RELA;
