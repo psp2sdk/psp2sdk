@@ -36,7 +36,7 @@ typedef struct {
 } elf_t;
 
 int openElf(elf_t *dst, const char *path);
-int closeElf(const elf_t *elf);
+int closeElf(elf_t *elf);
 int updateElf(elf_t *elf);
 int writeElf(const char *path, elf_t *elf);
 

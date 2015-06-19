@@ -105,14 +105,19 @@ int openElf(elf_t *dst, const char *path)
 	return 0;
 }
 
-int closeElf(const elf_t *elf)
+int closeElf(elf_t *elf)
 {
 	int res;
+
 	if (elf == NULL)
 		return EINVAL;
 
-	free(elf->strtab->content);
-	free(elf->symtab->content);
+	do {
+		elf->ehdr.e_shnum--;
+		if (elf->scns[elf->ehdr.e_shnum].content != NULL)
+			free(elf->scns[elf->ehdr.e_shnum].content);
+	} while (elf->ehdr.e_shnum);
+
 	free(elf->scns);
 	res = freeSegs(elf->segs, elf->ehdr.e_phnum);
 

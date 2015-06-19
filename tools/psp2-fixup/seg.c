@@ -386,22 +386,16 @@ int writeSegs(FILE *dst, FILE *src, const seg_t *segs, Elf32_Half phnum,
 				return errno;
 			}
 
-			if (segs->scns[j]->content != NULL) {
-				if (fwrite(segs->scns[j]->content, segs->scns[j]->shdr.sh_size, 1, dst) != 1) {
-					perror(strtab + segs->scns[j]->shdr.sh_name);
-					return errno;
-				}
-
-				free(segs->scns[j]->content);
-				segs->scns[j]->content = NULL;
-
-				continue;
+			if (segs->scns[j]->content == NULL) {
+				res = writeScn(dst, src, segs->scns[j], strtab);
+				if (res)
+					return res;
+			} else if (fwrite(segs->scns[j]->content, segs->scns[j]->shdr.sh_size, 1, dst) != 1) {
+				perror(strtab + segs->scns[j]->shdr.sh_name);
+				return errno;
 			}
-
-			res = writeScn(dst, src, segs->scns[j], strtab);
-			if (res)
-				return res;
 		}
+
 
 		segs++;
 	}
