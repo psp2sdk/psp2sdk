@@ -202,6 +202,11 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
+	res = updateStubs(&elf->sceScns, elf->fp, elf->scns,
+		elf->strtab->content, elf->symtab->content);
+	if (res)
+		return res;
+
 	res = convRelToRela(elf->fp, elf->scns, elf->segs,
 		elf->strtab->content, elf->symtab->content,
 		elf->rela->scns, elf->rela->shnum);

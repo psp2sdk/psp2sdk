@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include "elf_priv.h"
-#include "stub.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,11 +43,6 @@ int main(int argc, char *argv[])
 		return res;
 
 	res = updateElf(&elf);
-	if (res)
-		goto fail;
-
-	res = buildStubs(&elf.sceScns, elf.fp, elf.scns,
-		elf.strtab->content, elf.symtab->content);
 	if (res)
 		goto fail;
 

@@ -70,7 +70,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	return 0;
 }
 
-int buildStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
+int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	const char *strtab, Elf32_Sym *symtab)
 {
 	union {

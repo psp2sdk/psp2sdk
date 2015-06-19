@@ -22,7 +22,7 @@
 #include "elf.h"
 #include "scn.h"
 
-int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
+int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	const char *strtab, Elf32_Sym *symtab);
 
 #endif
