@@ -27,6 +27,7 @@ typedef struct {
 	const char *path;
 	FILE *fp;
 	Elf32_Ehdr ehdr;
+	Elf32_Half orgShnum;
 	scn_t *scns;
 	seg_t *segs;
 	sceScns_t sceScns;

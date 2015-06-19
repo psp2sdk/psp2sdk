@@ -67,16 +67,9 @@ int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
 
 int updateSceScnsSize(sceScns_t *scns);
 
-int findSyslib(syslib_t *syslib, const scn_t *scns,
-	scn_t *ent, const scn_t *relEnt);
-
-int convRelToRela(FILE *fp, const scn_t *scns,
-	const char *strtab, const Elf32_Sym *symtab,
-	scn_t **relScns, Elf32_Half relShnum);
-
 int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
-	const sceScns_t *sceScns, const syslib_t *syslib,
-	const char *strtab, const char *str);
+	const sceScns_t *sceScns, Elf32_Addr base,
+	const syslib_t *syslib, const char *strtab, const char *str);
 
 int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab);
 

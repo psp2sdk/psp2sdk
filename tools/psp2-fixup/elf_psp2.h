@@ -112,6 +112,7 @@ enum {
 };
 
 enum {
+	SHT_INTERNAL = SHT_NULL,
 	SHT_SCE_RELA = 0x60000000
 };
 

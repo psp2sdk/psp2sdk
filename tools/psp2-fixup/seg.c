@@ -27,7 +27,7 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr,
 	Elf32_Half relaNdx, const scn_t *relMark)
 {
-	Elf32_Half i, j, rela;
+	Elf32_Half i, j;
 	Elf32_Phdr *phdr;
 
 	if (f == NULL || scns == NULL || segs == NULL
@@ -39,7 +39,7 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 	for (i = 0; i < ehdr->e_shnum; i++, scns++) {
 		if (scns->shdr.sh_type == SHT_REL) {
 			if (scns != relMark)
-				f(scns, segs + rela, rela);
+				f(scns, segs + relaNdx, relaNdx);
 			continue;
 		}
 
@@ -275,12 +275,9 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 		for (j = 0; j < sorts[i]->shnum; j++) {
 			scn = sorts[i]->scns[j];
 
-			/* It doesn't back up sh_type, but it doesn't matter
-			   because writeSegs assume sections whose sh_type were
-			   SHT_REL */
 			if (scn->shdr.sh_type == SHT_REL) {
-				scn->shdr.sh_type = SHT_SCE_RELA;
-
+				scn->shdr.sh_size /= sizeof(Elf32_Rel);
+				scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
 			}
 
 			scn->segOffsetDiff = sorts[i]->phdr.p_filesz - scn->segOffset;

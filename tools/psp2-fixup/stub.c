@@ -25,7 +25,7 @@
 
 static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	uint32_t *fnid, const Elf32_Rel *relMark, Elf32_Word relMarkSize,
-	const void *mark, Elf32_Addr offset,
+	const void *mark, Elf32_Word markSegOffset, Elf32_Addr offset,
 	const scn_t *scns, const Elf32_Sym *symtab)
 {
 	const Elf32_Sym *sym;
@@ -49,12 +49,13 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 			PSP2_R_SET_SYMSEG(relaFstub, scns[sym->st_shndx].phndx);
 			PSP2_R_SET_TYPE(relaFstub, type);
 			PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
-			PSP2_R_SET_OFFSET(relaFstub,
-				fstub->segOffset + relMark[i].r_offset);
+			PSP2_R_SET_OFFSET(relaFstub, relMark[i].r_offset);
 
 			addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1)
-				addend += *(uint32_t *)((uintptr_t)mark + relMark[i].r_offset);
+				addend += *(uint32_t *)((uintptr_t)mark
+					+ relMark[i].r_offset
+					- markSegOffset);
 			PSP2_R_SET_ADDEND(relaFstub, addend);
 		}
 	}
@@ -204,7 +205,7 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 
 				addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
 					relMarkContent, sceScns->relMark->shdr.sh_size,
-					markContent,
+					markContent, sceScns->mark->segOffset,
 					relMarkContent[i].r_offset
 						- offsetof(sce_libgen_mark_stub, head),
 					scns, symtab);
@@ -229,6 +230,9 @@ int buildStubs(sceScns_t *sceScns, FILE *srcFp, const scn_t *scns,
 
 	free(markContent);
 	free(relMarkContent);
+
+	sceScns->relFstub->shdr.sh_type = SHT_SCE_RELA;
+	sceScns->relStub->shdr.sh_type = SHT_SCE_RELA;
 
 	return 0;
 }
