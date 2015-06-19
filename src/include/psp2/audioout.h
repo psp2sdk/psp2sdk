@@ -54,7 +54,7 @@ enum AudioOutMode {
 #define PSP2_AUDIO_MIN_LEN 64		//!< Minimum granularity
 #define PSP2_AUDIO_MAX_LEN 65472	//!< Maximum granularity
 
-/***
+/**
  * Initialize audio port
  *
  * @param[in] type - One of ::AudioOutPortType
@@ -68,7 +68,7 @@ enum AudioOutMode {
 */
 int sceAudioOutOpenPort(int type, int len, int freq, int mode);
 
-/***
+/**
  * Release an audio port
  *
  * @param[in] type - Port number returned by ::sceAudioOutOpenPort
@@ -77,7 +77,7 @@ int sceAudioOutOpenPort(int type, int len, int freq, int mode);
 */
 int sceAudioOutReleasePort(int port);
 
-/***
+/**
  * Output audio (blocking function)
  *
  * @param[in] port - Port number returned by ::sceAudioOutOpenPort
@@ -98,7 +98,7 @@ enum AudioOutChannelFlag {
 	PSP2_AUDIO_VOLUME_FLAG_R_CH	= 0x2  //!< Right Channel
 };
 
-/***
+/**
  * Set volume of specified output audio port
  *
  * @param[in] port - Port number returned by ::sceAudioOutOpenPort
@@ -109,7 +109,7 @@ enum AudioOutChannelFlag {
  */
 int sceAudioOutSetVolume(int port, int ch, int *vol);
 
-/***
+/**
  * Change configuration of specified output port
  *
  * @param[in] port - Port number returned by ::sceAudioOutOpenPort
@@ -129,7 +129,7 @@ enum AudioOutConfigType {
 	PSP2_AUDIO_OUT_CONFIG_TYPE_MODE	= 2
 };
 
-/***
+/**
  * Get a parameter value of specified output port
  *
  * @param[in] port - Port number returned by ::sceAudioOutOpenPort
@@ -146,7 +146,7 @@ enum AudioOutAlcMode {
 	PSP2_AUDIO_ALC_MODE_MAX	= 2
 };
 
-/***
+/**
  * Set 'Automatic Level Control' mode on the BGM port
  * ALC is also known as 'Dynamic Normalizer'
  *
@@ -156,7 +156,7 @@ enum AudioOutAlcMode {
  */
 int sceAudioOutSetAlcMode(int mode);
 
-/***
+/**
  * Get the number of remaining samples to be output on the specified port
  *
  * @param[in] port - Port number returned by ::sceAudioOutOpenPort
@@ -165,7 +165,7 @@ int sceAudioOutSetAlcMode(int mode);
  */
 int sceAudioOutGetRestSample(int port);
 
-/***
+/**
  * Get status of port type
  * Return different value on whether the port type is used for sound generation or not.
  *
