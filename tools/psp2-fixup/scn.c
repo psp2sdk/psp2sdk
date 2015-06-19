@@ -302,14 +302,15 @@ cont:
 	return 0;
 }
 
-int writeModinfo(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
+int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
 	const sceScns_t *sceScns, const char *strtab, const char *str)
 {
 	unsigned char md[SHA_DIGEST_LENGTH];
-	_sceModuleInfo info;
+	_sceModuleInfo *info;
 	const scn_t *sp;
+	int res;
 
-	if (dst == NULL || src == NULL || scns == NULL
+	if (fp == NULL || scns == NULL
 		|| sceScns == NULL || strtab == NULL || str == NULL)
 	{
 		return EINVAL;
@@ -318,48 +319,38 @@ int writeModinfo(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
 	if (sceScns->modinfo->orgSize != sizeof(info))
 		return EILSEQ;
 
-	if (fread(&info, sizeof(info), 1, src) <= 0) {
-		strtab += sceScns->modinfo->shdr.sh_name;
-		if (feof(src)) {
-			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-			errno = EILSEQ;
-		} else
-			perror(strtab);
+	res = loadScn(fp, sceScns->modinfo, str);
+	if (res)
+		return res;
 
-		return errno;
-	}
+	info = sceScns->modinfo->content;
 
-	info.expTop = sceScns->ent->segOffset;
-	info.expBtm = info.expTop + sceScns->ent->shdr.sh_size;
+	info->expTop = sceScns->ent->segOffset;
+	info->expBtm = info->expTop + sceScns->ent->shdr.sh_size;
 
-	info.impTop = sceScns->stub->segOffset;
-	info.impBtm = info.impTop + sceScns->stub->shdr.sh_size;
+	info->impTop = sceScns->stub->segOffset;
+	info->impBtm = info->impTop + sceScns->stub->shdr.sh_size;
 
 	// TODO: module_start and module_stop
 
 	sp = findScnByType(scns, shnum, SHT_ARM_EXIDX, str);
 	if (sp != NULL) {
-		info.exidxTop = sp->segOffset;
-		info.exidxBtm = info.exidxTop + sp->shdr.sh_size;
+		info->exidxTop = sp->segOffset;
+		info->exidxBtm = info->exidxTop + sp->shdr.sh_size;
 	}
 
 	sp = findScnByName(scns, shnum, strtab, ".ARM.extab", str);
 	if (sp != NULL) {
-		info.extabTop = sp->segOffset;
-		info.extabBtm = info.extabTop + sp->shdr.sh_size;
+		info->extabTop = sp->segOffset;
+		info->extabBtm = info->extabTop + sp->shdr.sh_size;
 	}
 
-	if (info.nid == 0) {
-		SHA1((unsigned char *)info.name, strlen(info.name), md);
-		((unsigned char *)&info.nid)[0] = md[3];
-		((unsigned char *)&info.nid)[1] = md[2];
-		((unsigned char *)&info.nid)[2] = md[1];
-		((unsigned char *)&info.nid)[3] = md[0];
-	}
-
-	if (fwrite(&info, sizeof(info), 1, dst) != 1) {
-		perror(strtab + sceScns->modinfo->shdr.sh_name);
-		return errno;
+	if (info->nid == 0) {
+		SHA1((unsigned char *)info->name, strlen(info->name), md);
+		((unsigned char *)&info->nid)[0] = md[3];
+		((unsigned char *)&info->nid)[1] = md[2];
+		((unsigned char *)&info->nid)[2] = md[1];
+		((unsigned char *)&info->nid)[3] = md[0];
 	}
 
 	return 0;

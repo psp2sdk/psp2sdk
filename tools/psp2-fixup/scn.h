@@ -66,7 +66,7 @@ int convRelToRela(FILE *fp, const scn_t *scns,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum);
 
-int writeModinfo(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
+int updateModinfo(FILE *src, const scn_t *scns, Elf32_Half shnum,
 	const sceScns_t *sceScns, const char *strtab, const char *str);
 
 int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab);

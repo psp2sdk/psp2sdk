@@ -367,15 +367,14 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	return 0;
 }
 
-int writeSegs(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
-	const seg_t *segs, Elf32_Half phnum,
-	const sceScns_t *sceScns, const char *strtab, const char *str)
+int writeSegs(FILE *dst, FILE *src, const seg_t *segs, Elf32_Half phnum,
+	const char *strtab, const char *str)
 {
 	Elf32_Half i, j;
 	int res;
 
 	if (dst == NULL || src == NULL || segs == NULL
-		|| sceScns == NULL || strtab == NULL || str == NULL)
+		|| strtab == NULL || str == NULL)
 	{
 		return EINVAL;
 	}
@@ -399,10 +398,7 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
 				continue;
 			}
 
-			res = segs->scns[j] == sceScns->modinfo ?
-				writeModinfo(dst, src, scns, shnum,
-					sceScns, strtab, str) :
-				writeScn(dst, src, segs->scns[j], strtab);
+			res = writeScn(dst, src, segs->scns[j], strtab);
 			if (res)
 				return res;
 		}

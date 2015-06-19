@@ -182,6 +182,11 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
+	res = updateModinfo(elf->fp, elf->scns, elf->ehdr.e_shnum,
+		&elf->sceScns, elf->strtab->content, elf->path);
+	if (res)
+		return res;
+
 	res = updateSegs(elf->segs, elf->ehdr.e_phnum, elf->strtab->content);
 	if (res)
 		return res;
@@ -216,9 +221,8 @@ int writeElf(const char *path, elf_t *elf)
 		return res;
 	}
 
-	res = writeSegs(fp, elf->fp, elf->scns, elf->ehdr.e_shnum,
-		elf->segs, elf->ehdr.e_phnum,
-		&elf->sceScns, elf->strtab->content, path);
+	res = writeSegs(fp, elf->fp, elf->segs, elf->ehdr.e_phnum,
+		elf->strtab->content, path);
 	if (res) {
 		fclose(fp);
 		return res;

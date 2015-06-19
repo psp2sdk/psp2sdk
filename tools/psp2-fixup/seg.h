@@ -40,8 +40,7 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	const Elf32_Ehdr *ehdr, const seg_t *segs);
 
 // This function does not only write segments, but also free section contents
-int writeSegs(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
-	const seg_t *segs, Elf32_Half phnum,
-	const sceScns_t *sceScns, const char *strtab, const char *str);
+int writeSegs(FILE *dst, FILE *src, const seg_t *segs, Elf32_Half phnum,
+	const char *strtab, const char *str);
 
 #endif
