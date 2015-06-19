@@ -403,6 +403,7 @@ cont:
 
 int updateElf(elf_t *elf)
 {
+	syslib_t syslib;
 	int res;
 
 	if (elf == NULL)
@@ -426,7 +427,7 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
-	res = findSyslib(&elf->syslib, elf->fp, elf->scns, elf->ehdr.e_shnum,
+	res = findSyslib(&syslib, elf->fp, elf->scns, elf->ehdr.e_shnum,
 		elf->segs, elf->rela->scns, elf->rela->shnum,
 		elf->strtab->content, elf->symtab->content,
 		elf->sceScns.ent, elf->sceScns.relEnt);
@@ -441,7 +442,7 @@ int updateElf(elf_t *elf)
 
 	res = updateModinfo(elf->fp, elf->scns, elf->ehdr.e_shnum, &elf->sceScns,
 		elf->segs[elf->sceScns.modinfo->phndx].phdr.p_vaddr,
-		&elf->syslib, elf->strtab->content, elf->path);
+		&syslib, elf->strtab->content, elf->path);
 	if (res)
 		return res;
 
