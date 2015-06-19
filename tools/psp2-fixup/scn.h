@@ -45,11 +45,6 @@ typedef struct {
 	scn_t *modinfo;
 } sceScns_t;
 
-typedef struct {
-	Elf32_Word start;
-	Elf32_Word stop;
-} syslib_t;
-
 scn_t *findScnByName(const scn_t *scns, Elf32_Half shnum,
 	const char *strtab, const char *name, const char *str);
 
@@ -66,10 +61,6 @@ int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
 	const char *strtab, const char *path);
 
 int updateSceScnsSize(sceScns_t *scns);
-
-int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
-	const sceScns_t *sceScns, Elf32_Addr base,
-	const syslib_t *syslib, const char *strtab, const char *str);
 
 int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab);
 

@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <openssl/sha.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -199,63 +198,6 @@ int updateSceScnsSize(sceScns_t *scns)
 	scns->relStub->shdr.sh_type = SHT_INTERNAL;
 	scns->relStub->shdr.sh_size = headNum * 2 * sizeof(Psp2_Rela_Short);
 	scns->stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
-
-	return 0;
-}
-
-int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
-	const sceScns_t *sceScns, Elf32_Addr base,
-	const syslib_t *syslib, const char *strtab, const char *str)
-{
-	unsigned char md[SHA_DIGEST_LENGTH];
-	_sceModuleInfo *info;
-	const scn_t *sp;
-	int res;
-
-	if (fp == NULL || scns == NULL || sceScns == NULL
-		|| sceScns->relEnt->content == NULL || strtab == NULL || str == NULL)
-	{
-		return EINVAL;
-	}
-
-	if (sceScns->modinfo->orgSize != sizeof(_sceModuleInfo))
-		return EILSEQ;
-
-	res = loadScn(fp, sceScns->modinfo, str);
-	if (res)
-		return res;
-
-	info = sceScns->modinfo->content;
-
-	info->expTop = sceScns->ent->shdr.sh_addr - base;
-	info->expBtm = info->expTop + sceScns->ent->shdr.sh_size;
-
-	info->impTop = sceScns->stub->shdr.sh_addr - base;
-	info->impBtm = info->impTop + sceScns->stub->shdr.sh_size;
-
-
-	info->start = syslib->start - base;
-	info->stop = syslib->stop - base;
-
-	sp = findScnByType(scns, shnum, SHT_ARM_EXIDX, NULL);
-	if (sp != NULL) {
-		info->exidxTop = sp->segOffset;
-		info->exidxBtm = info->exidxTop + sp->shdr.sh_size;
-	}
-
-	sp = findScnByName(scns, shnum, strtab, ".ARM.extab", NULL);
-	if (sp != NULL) {
-		info->extabTop = sp->segOffset;
-		info->extabBtm = info->extabTop + sp->shdr.sh_size;
-	}
-
-	if (info->nid == 0) {
-		SHA1((unsigned char *)info->name, strlen(info->name), md);
-		((unsigned char *)&info->nid)[0] = md[3];
-		((unsigned char *)&info->nid)[1] = md[2];
-		((unsigned char *)&info->nid)[2] = md[1];
-		((unsigned char *)&info->nid)[3] = md[0];
-	}
 
 	return 0;
 }
