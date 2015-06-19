@@ -32,6 +32,8 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [yne] (https://github.com/yne)
 
+[xerpi] (https://github.com/xerpi)
+
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
 ## Usage
