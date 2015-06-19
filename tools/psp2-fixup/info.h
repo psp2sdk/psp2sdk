@@ -29,7 +29,7 @@ typedef struct {
 } syslib_t;
 
 int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
-	const seg_t *segs, scn_t **relScns, Elf32_Half relShnum,
+	const seg_t *segs, const seg_t *rela,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t *ent, const scn_t *relEnt);
 

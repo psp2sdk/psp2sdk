@@ -196,8 +196,7 @@ int updateElf(elf_t *elf)
 		return res;
 
 	res = findSyslib(&syslib, elf->fp, elf->scns, elf->ehdr.e_shnum,
-		elf->segs, elf->rela->scns, elf->rela->shnum,
-		elf->strtab->content, elf->symtab->content,
+		elf->segs, elf->rela, elf->strtab->content, elf->symtab->content,
 		elf->sceScns.ent, elf->sceScns.relEnt);
 	if (res)
 		return res;

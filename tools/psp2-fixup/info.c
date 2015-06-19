@@ -27,7 +27,7 @@
 #include "seg.h"
 
 int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
-	const seg_t *segs, scn_t **relScns, Elf32_Half relShnum,
+	const seg_t *segs, const seg_t *rela,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t *ent, const scn_t *relEnt)
 {
@@ -38,9 +38,9 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 	const scn_t *scn, *stubRelScn;
 	int res;
 
-	if (syslib == NULL || fp == NULL || scns == NULL || relScns == NULL
-		|| segs == NULL || strtab == NULL || symtab == NULL || ent == NULL
-		|| relEnt == NULL || relEnt->content == NULL)
+	if (syslib == NULL || fp == NULL || scns == NULL || segs == NULL
+		|| rela == NULL || strtab == NULL || symtab == NULL
+		|| ent == NULL || relEnt == NULL || relEnt->content == NULL)
 	{
 		return EINVAL;
 	}
@@ -67,13 +67,13 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 
 	i = 0;
 	do {
-		if (i >= relShnum) {
+		if (i >= rela->shnum) {
 			fprintf(stderr, "%s: Relocation table not found\n",
 				strtab + scn->shdr.sh_name);
 			return EILSEQ;
 		}
 
-		stubRelScn = relScns[i];
+		stubRelScn = rela->scns[i];
 		i++;
 	} while (stubRelScn->shdr.sh_info != sym->st_shndx);
 
