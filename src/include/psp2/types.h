@@ -108,6 +108,13 @@ typedef struct SceIVector4 {
     SceInt w;
 } SceIVector4;
 
+typedef struct SceUVector4 {
+    SceUInt x;
+    SceUInt y;
+    SceUInt z;
+    SceUInt w;
+} SceUVector4;
+
 typedef struct SceFVector4 {
     SceFloat x;
     SceFloat y;
@@ -144,6 +151,12 @@ typedef struct SceIMatrix4 {
     SceIVector4 w;
 } SceIMatrix4;
 
+typedef struct SceUMatrix4 {
+    SceUVector4 x;
+    SceUVector4 y;
+    SceUVector4 z;
+    SceUVector4 w;
+} SceUMatrix4;
 
 typedef struct SceFMatrix4 {
     SceFVector4 x;
@@ -214,7 +227,7 @@ typedef union SceUnion128 {
     SceFColor fc;
     SceIVector4 iv;
 } SceUnion128;
-        
+
 typedef struct SceDateTime {
     unsigned short year;
     unsigned short month;
@@ -228,7 +241,7 @@ typedef struct SceDateTime {
 typedef int SceMode; //!< Mode for I/O functions
 typedef SceInt64 SceOff; //!< Offset type
 
-typedef int SceUID; //!< UIDs are used to describe many different kernel objects. 
+typedef int SceUID; //!< UIDs are used to describe many different kernel objects.
 
 typedef int ScePID; //!< Process ID
 #define PSP2_KERNEL_PROCESS_ID_SELF 0 //!< Current running process ID is always 0
