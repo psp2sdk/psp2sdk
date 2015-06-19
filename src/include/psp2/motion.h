@@ -55,12 +55,12 @@ typedef struct SceMotionSensorState {
 int sceMotionGetState(SceMotionState *motionState);
 int sceMotionGetSensorState(SceMotionSensorState *sensorState, int numRecords);
 int sceMotionGetBasicOrientation(SceFVector3 *basicOrientation);
-int sceMotionRotateYaw(const float radians);
+int sceMotionRotateYaw(float radians);
 int sceMotionGetTiltCorrection();
 int sceMotionSetTiltCorrection(int setValue);
 int sceMotionGetDeadband();
 int sceMotionSetDeadband(int setValue);
-int sceMotionSetAngleThreshold(const float angle);
+int sceMotionSetAngleThreshold(float angle);
 float sceMotionGetAngleThreshold();
 int sceMotionReset();
 int sceMotionMagnetometerOn();
