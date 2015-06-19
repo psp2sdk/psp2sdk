@@ -363,34 +363,45 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	if (dst == NULL || src == NULL || scn == NULL)
 		return EINVAL;
 
-	if (scn->orgSize == 0)
+	if (scn->shdr.sh_size == 0)
 		return 0;
 
-	p = malloc(scn->orgSize);
-	if (p == NULL) {
+	if (fseek(dst, scn->shdr.sh_offset, SEEK_SET)) {
 		perror(strtab + scn->shdr.sh_name);
 		return errno;
 	}
 
-	if (fread(p, scn->orgSize, 1, src) <= 0) {
-		strtab += scn->shdr.sh_name;
-		if (feof(src)) {
-			fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-			errno = EILSEQ;
-		} else
-			perror(strtab);
+
+	if (scn->content == NULL) {
+		p = malloc(scn->orgSize);
+		if (p == NULL) {
+			perror(strtab + scn->shdr.sh_name);
+			return errno;
+		}
+
+		if (fread(p, scn->orgSize, 1, src) <= 0) {
+			strtab += scn->shdr.sh_name;
+			if (feof(src)) {
+				fprintf(stderr, "%s: Unexpected EOF\n", strtab);
+				errno = EILSEQ;
+			} else
+				perror(strtab);
+
+			free(p);
+			return errno;
+		}
+
+		if (fwrite(p, scn->orgSize, 1, dst) != 1) {
+			perror(strtab + scn->shdr.sh_name);
+			free(p);
+			return errno;
+		}
 
 		free(p);
-		return errno;
-	}
-
-	if (fwrite(p, scn->orgSize, 1, dst) != 1) {
+	} else if (fwrite(scn->content, scn->shdr.sh_size, 1, dst) != 1) {
 		perror(strtab + scn->shdr.sh_name);
-		free(p);
 		return errno;
 	}
-
-	free(p);
 
 	return 0;
 }

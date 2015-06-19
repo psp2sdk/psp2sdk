@@ -227,7 +227,7 @@ int writeElf(const char *path, elf_t *elf)
 	}
 
 	res = writeSegs(fp, elf->fp, elf->segs, elf->ehdr.e_phnum,
-		elf->strtab->content, path);
+		elf->strtab->content);
 	if (res) {
 		fclose(fp);
 		return res;

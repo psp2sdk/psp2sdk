@@ -367,35 +367,21 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	return 0;
 }
 
-int writeSegs(FILE *dst, FILE *src, const seg_t *segs, Elf32_Half phnum,
-	const char *strtab, const char *str)
+int writeSegs(FILE *dst, FILE *src,
+	const seg_t *segs, Elf32_Half phnum, const char *strtab)
 {
 	Elf32_Half i, j;
 	int res;
 
-	if (dst == NULL || src == NULL || segs == NULL
-		|| strtab == NULL || str == NULL)
-	{
+	if (dst == NULL || src == NULL || segs == NULL || strtab == NULL)
 		return EINVAL;
-	}
 
 	for (i = 0; i < phnum; i++) {
 		for (j = 0; j < segs->shnum; j++) {
-			if (fseek(dst, segs->scns[j]->shdr.sh_offset, SEEK_SET)) {
-				perror(strtab + segs->scns[j]->shdr.sh_name);
-				return errno;
-			}
-
-			if (segs->scns[j]->content == NULL) {
-				res = writeScn(dst, src, segs->scns[j], strtab);
-				if (res)
-					return res;
-			} else if (fwrite(segs->scns[j]->content, segs->scns[j]->shdr.sh_size, 1, dst) != 1) {
-				perror(strtab + segs->scns[j]->shdr.sh_name);
-				return errno;
-			}
+			res = writeScn(dst, src, segs->scns[j], strtab);
+			if (res)
+				return res;
 		}
-
 
 		segs++;
 	}

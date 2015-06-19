@@ -39,7 +39,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab);
 int writePhdrs(FILE *dstFp, const char *dst,
 	const Elf32_Ehdr *ehdr, const seg_t *segs);
 
-int writeSegs(FILE *dst, FILE *src, const seg_t *segs, Elf32_Half phnum,
-	const char *strtab, const char *str);
+int writeSegs(FILE *dst, FILE *src,
+	const seg_t *segs, Elf32_Half phnum, const char *strtab);
 
 #endif
