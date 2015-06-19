@@ -21,6 +21,7 @@
 #include "elf_priv.h"
 #include "elf_psp2.h"
 #include "elf.h"
+#include "rel.h"
 #include "scn.h"
 #include "seg.h"
 
@@ -266,136 +267,6 @@ static int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 		}
 
 		*p = symtab[ELF32_R_SYM(rel->r_info)].st_value;
-	}
-
-	return 0;
-}
-
-static int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
-	scn_t **relScns, Elf32_Half relShnum)
-{
-	const scn_t *dstScn;
-	scn_t *scn;
-	Elf32_Rel *rel;
-	Elf32_Word i;
-	int res;
-
-	if (fp == NULL || scns == NULL || strtab == NULL || relScns == NULL)
-		return EINVAL;
-
-	while (relShnum) {
-		scn = *relScns;
-		if (scn == NULL)
-			return EINVAL;
-		if (scn->shdr.sh_type != SHT_REL)
-			goto cont;
-
-		res = loadScn(fp, scn, strtab + scn->shdr.sh_name);
-		if (res)
-			return res;
-
-		dstScn = scns + scn->shdr.sh_info;
-
-		rel = scn->content;
-		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-			rel->r_offset -= dstScn->segOffsetDiff;
-			rel++;
-		}
-
-cont:
-		relScns++;
-		relShnum--;
-	}
-
-	return 0;
-}
-
-static int convRelToRela(FILE *fp, const scn_t *scns, const seg_t *segs,
-	const char *strtab, const Elf32_Sym *symtab,
-	scn_t **relScns, Elf32_Half relShnum)
-{
-	if (scns == NULL)
-		return EINVAL;
-
-	Psp2_Rela_Short *buf, *cur;
-	const scn_t *dstScn;
-	scn_t *scn;
-	const Elf32_Rel *rel;
-	const Elf32_Sym *sym;
-	Elf32_Word i, j, type;
-	Elf32_Addr addend;
-
-	if (fp == NULL || scns == NULL || strtab == NULL || symtab == NULL
-		|| relScns == NULL)
-	{
-		return EINVAL;
-	}
-
-	while (relShnum) {
-		scn = *relScns;
-
-		if (scn->shdr.sh_type != SHT_REL)
-			goto cont;
-
-		rel = scn->content;
-
-		buf = malloc(scn->shdr.sh_size);
-		cur = buf;
-
-		dstScn = scns + scn->shdr.sh_info;
-
-		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-			type = ELF32_R_TYPE(rel->r_info);
-			sym = symtab + ELF32_R_SYM(rel->r_info);
-
-			PSP2_R_SET_SHORT(cur, 1);
-			PSP2_R_SET_SYMSEG(cur, sym->st_shndx == SHN_ABS ?
-				15 : scns[sym->st_shndx].phndx);
-			PSP2_R_SET_TYPE(cur, type);
-			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
-			PSP2_R_SET_OFFSET(cur, rel->r_offset);
-
-			addend = sym->st_value;
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (fseek(fp, segs[dstScn->phndx].phdr.p_offset
-					+ rel->r_offset, SEEK_SET))
-				{
-					perror(strtab + scn->shdr.sh_name);
-
-					free(scn->content);
-					return errno;
-				}
-
-				if (fread(&j, sizeof(j), 1, fp) <= 0) {
-					free(scn->content);
-
-					strtab += scn->shdr.sh_name;
-					if (feof(fp)) {
-						fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-						return EILSEQ;
-					} else {
-						perror(strtab);
-						return errno;
-					}
-				}
-
-				addend += j;
-			}
-
-			PSP2_R_SET_ADDEND(cur, addend);
-
-			rel++;
-			cur++;
-		}
-
-		free(scn->content);
-
-		scn->shdr.sh_type = SHT_SCE_RELA;
-		scn->content = buf;
-
-cont:
-		relScns++;
-		relShnum--;
 	}
 
 	return 0;

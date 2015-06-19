@@ -14,4 +14,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 bin_PROGRAMS = psp2-fixup
-psp2_fixup_SOURCES = psp2-fixup.c elf.c scn.c seg.c stub.c
+psp2_fixup_SOURCES = psp2-fixup.c elf.c rel.c scn.c seg.c stub.c
