@@ -167,7 +167,7 @@ static int updateSymtab(Elf32_Sym *symtab, Elf32_Word size, scn_t *scns)
 
 int updateElf(elf_t *elf)
 {
-	int res;
+	int i, res;
 
 	if (elf == NULL)
 		return errno;
@@ -181,18 +181,30 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
+	for (i = 0; i < elf->rela->shnum; i++) {
+		res = loadScn(elf->fp, elf->rela->scns[i],
+			elf->strtab->content + elf->rela->scns[i]->shdr.sh_name);
+		if (res)
+			return res;
+	}
+
+	res = findSyslib(&elf->syslib, elf->scns,
+		elf->sceScns.ent, elf->sceScns.relEnt);
+	if (res)
+		return res;
+
 	res = convRelToRela(elf->fp, elf->scns,
 		elf->strtab->content, elf->symtab->content,
 		elf->rela->scns, elf->rela->shnum);
 	if (res)
 		return res;
 
-	res = updateModinfo(elf->fp, elf->scns, elf->ehdr.e_shnum,
-		&elf->sceScns, elf->strtab->content, elf->path);
+	res = updateSegs(elf->segs, elf->ehdr.e_phnum, elf->strtab->content);
 	if (res)
 		return res;
 
-	res = updateSegs(elf->segs, elf->ehdr.e_phnum, elf->strtab->content);
+	res = updateModinfo(elf->fp, elf->scns, elf->ehdr.e_shnum,
+		&elf->sceScns, &elf->syslib, elf->strtab->content, elf->path);
 	if (res)
 		return res;
 

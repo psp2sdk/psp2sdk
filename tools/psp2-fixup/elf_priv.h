@@ -33,6 +33,7 @@ typedef struct {
 	scn_t *strtab;
 	scn_t *symtab;
 	seg_t *rela;
+	syslib_t syslib;
 } elf_t;
 
 int openElf(elf_t *dst, const char *path);

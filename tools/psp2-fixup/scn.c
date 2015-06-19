@@ -200,17 +200,23 @@ int updateSceScnsSize(sceScns_t *scns)
 	return 0;
 }
 
-int convRelToRela(FILE *fp, const scn_t *scns,
-	const char *strtab, const Elf32_Sym *symtab,
+int findSyslib(syslib_t *syslib, const scn_t *scns,
+	scn_t *ent, const scn_t *relEnt)
+{
+	// TODO: Find module_start and module_stop
+	return 0;
+}
+
+int convRelToRela(FILE *fp, const scn_t *scns, const char *strtab, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
 	if (scns == NULL)
 		return EINVAL;
 
-	Psp2_Rela_Short *rela;
+	Psp2_Rela_Short *buf, *cur;
 	const scn_t *dstScn;
 	scn_t *scn;
-	Elf32_Rel rel;
+	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
 	Elf32_Word i, j, type;
 	Elf32_Addr addend;
@@ -224,49 +230,33 @@ int convRelToRela(FILE *fp, const scn_t *scns,
 	while (relShnum) {
 		scn = *relScns;
 
-		if (scn->content != NULL)
+		if (scn->orgSize != scn->shdr.sh_size)
 			goto cont;
 
 		scn->shdr.sh_size /= sizeof(Elf32_Rel);
 		scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
 
-		scn->content = malloc(scn->shdr.sh_size);
-		rela = scn->content;
+		rel = scn->content;
+
+		buf = malloc(scn->shdr.sh_size);
+		cur = buf;
 
 		dstScn = scns + scn->shdr.sh_info;
 
 		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-			if (fseek(fp, scn->orgOffset + i, SEEK_SET)) {
-				perror(strtab + scn->shdr.sh_name);
-				free(scn->content);
-				return errno;
-			}
+			type = ELF32_R_TYPE(rel->r_info);
+			sym = symtab + ELF32_R_SYM(rel->r_info);
 
-			if (fread(&rel, sizeof(rel), 1, fp) <= 0) {
-				strtab += scn->shdr.sh_name;
-				if (feof(fp)) {
-					fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-					errno = EILSEQ;
-				} else
-					perror(strtab);
-
-				free(scn->content);
-				return errno;
-			}
-
-			type = ELF32_R_TYPE(rel.r_info);
-			sym = symtab + ELF32_R_SYM(rel.r_info);
-
-			PSP2_R_SET_SHORT(rela, 1);
-			PSP2_R_SET_SYMSEG(rela, sym->st_shndx == SHN_ABS ?
+			PSP2_R_SET_SHORT(cur, 1);
+			PSP2_R_SET_SYMSEG(cur, sym->st_shndx == SHN_ABS ?
 				15 : scns[sym->st_shndx].phndx);
-			PSP2_R_SET_TYPE(rela, type);
-			PSP2_R_SET_DATSEG(rela, dstScn->phndx);
-			PSP2_R_SET_OFFSET(rela, rel.r_offset - dstScn->segOffsetDiff);
+			PSP2_R_SET_TYPE(cur, type);
+			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
+			PSP2_R_SET_OFFSET(cur, rel->r_offset - dstScn->segOffsetDiff);
 
 			addend = sym->st_value;
 			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (fseek(fp, dstScn->orgOffset + rel.r_offset, SEEK_SET)) {
+				if (fseek(fp, dstScn->orgOffset + rel->r_offset, SEEK_SET)) {
 					perror(strtab + scn->shdr.sh_name);
 
 					free(scn->content);
@@ -289,10 +279,14 @@ int convRelToRela(FILE *fp, const scn_t *scns,
 				addend += j;
 			}
 
-			PSP2_R_SET_ADDEND(rela, addend);
+			PSP2_R_SET_ADDEND(cur, addend);
 
-			rela++;
+			rel++;
+			cur++;
 		}
+
+		free(scn->content);
+		scn->content = buf;
 
 cont:
 		relScns++;
@@ -303,15 +297,16 @@ cont:
 }
 
 int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
-	const sceScns_t *sceScns, const char *strtab, const char *str)
+	const sceScns_t *sceScns, const syslib_t *syslib,
+	const char *strtab, const char *str)
 {
 	unsigned char md[SHA_DIGEST_LENGTH];
 	_sceModuleInfo *info;
 	const scn_t *sp;
 	int res;
 
-	if (fp == NULL || scns == NULL
-		|| sceScns == NULL || strtab == NULL || str == NULL)
+	if (fp == NULL || scns == NULL || sceScns == NULL
+		|| sceScns->relEnt->content == NULL || strtab == NULL || str == NULL)
 	{
 		return EINVAL;
 	}
@@ -331,7 +326,8 @@ int updateModinfo(FILE *fp, const scn_t *scns, Elf32_Half shnum,
 	info->impTop = sceScns->stub->segOffset;
 	info->impBtm = info->impTop + sceScns->stub->shdr.sh_size;
 
-	// TODO: module_start and module_stop
+	info->start = syslib->start;
+	info->stop = syslib->stop;
 
 	sp = findScnByType(scns, shnum, SHT_ARM_EXIDX, str);
 	if (sp != NULL) {
