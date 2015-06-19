@@ -30,7 +30,7 @@ typedef struct {
 } seg_t;
 
 seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
-	scn_t *scns, const scn_t *relMark);
+	scn_t *scns, seg_t **rela, const scn_t *relMark);
 
 int freeSegs(seg_t *segs, Elf32_Half segnum);
 
@@ -40,8 +40,8 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	const Elf32_Ehdr *ehdr, const seg_t *segs);
 
 // This function does not only write segments, but also free section contents
-int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
-	const seg_t *segs, Elf32_Half phnum, const sceScns_t *sceScns,
-	const char *strtab, const Elf32_Sym *symtab);
+int writeSegs(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
+	const seg_t *segs, Elf32_Half phnum,
+	const sceScns_t *sceScns, const char *strtab, const char *str);
 
 #endif

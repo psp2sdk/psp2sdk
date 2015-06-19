@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 		goto fail;
 
 	res = buildStubs(&elf.sceScns, elf.fp, elf.scns,
-		elf.strtab.content, elf.symtab.content);
+		elf.strtab->content, elf.symtab->content);
 	if (res)
 		goto fail;
 

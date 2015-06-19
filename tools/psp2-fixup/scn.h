@@ -34,20 +34,24 @@ typedef struct {
 
 typedef struct {
 	scn_t *relFstub;
+	scn_t *relEnt;
 	scn_t *relStub;
 	scn_t *fnid;
 	scn_t *fstub;
+	scn_t *ent;
 	scn_t *stub;
 	scn_t *mark;
 	scn_t *relMark;
 	scn_t *modinfo;
 } sceScns_t;
 
-scn_t *findScn(const scn_t *scns, Elf32_Half shnum,
-	const char *strtab, const char *name, const char *path);
+scn_t *findScnByName(const scn_t *scns, Elf32_Half shnum,
+	const char *strtab, const char *name, const char *str);
 
-void *loadScn(FILE *fp, const char *path, const scn_t *scn,
-	const char *strtab);
+scn_t *findScnByType(const scn_t *scns, Elf32_Half shnum,
+	Elf32_Word type, const char *str);
+
+int loadScn(FILE *fp, scn_t *scn, const char *str);
 
 scn_t *getScns(FILE *fp, const char *path, const Elf32_Ehdr *ehdr);
 
@@ -58,7 +62,12 @@ int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
 
 int updateSceScnsSize(sceScns_t *scns);
 
-int writeModinfo(FILE *dst, FILE *src, const scn_t *scn, const char *strtab);
+int convRelToRela(FILE *fp, const scn_t *scns,
+	const char *strtab, const Elf32_Sym *symtab,
+	scn_t **relScns, Elf32_Half relShnum);
+
+int writeModinfo(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
+	const sceScns_t *sceScns, const char *strtab, const char *str);
 
 int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab);
 

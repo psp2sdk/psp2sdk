@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <psp2/moduleinfo.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +24,8 @@
 #include "seg.h"
 
 static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
-	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr, const scn_t *relMark)
+	scn_t *scns, seg_t *segs, const Elf32_Ehdr *ehdr,
+	Elf32_Half relaNdx, const scn_t *relMark)
 {
 	Elf32_Half i, j, rela;
 	Elf32_Phdr *phdr;
@@ -35,12 +35,6 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 	{
 		return EINVAL;
 	}
-
-	for (rela = 0; segs[rela].phdr.p_type != 0x60000000; rela++)
-		if (rela >= ehdr->e_phnum) {
-			fputs("PT_SCE_RELA not found", stderr);
-			return EILSEQ;
-		}
 
 	for (i = 0; i < ehdr->e_shnum; i++, scns++) {
 		if (scns->shdr.sh_type == SHT_REL) {
@@ -79,14 +73,14 @@ static void segCntMapScns(scn_t *scn, seg_t *seg, Elf32_Half index)
 
 /* Load phdrs and scns included in the sections. scns will be sorted. */
 seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
-	scn_t *scns, const scn_t *relMark)
+	scn_t *scns, seg_t **rela, const scn_t *relMark)
 {
-	Elf32_Half i, j, k;
+	Elf32_Half i, j, k, relaPhndx;
 	scn_t *tmp;
 	seg_t *segs;
 
 	if (fp == NULL || path == NULL || ehdr == NULL
-		|| scns == NULL || relMark == NULL)
+		|| scns == NULL || rela == NULL || relMark == NULL)
 	{
 		return NULL;
 	}
@@ -104,6 +98,7 @@ seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
 	}
 
 	i = 0;
+	relaPhndx = 0;
 	while (i < ehdr->e_phnum) {
 		if (fread(&segs[i].phdr, sizeof(segs[i].phdr), 1, fp) <= 0) {
 			if (feof(fp)) {
@@ -116,15 +111,29 @@ seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
 			return NULL;
 		}
 
-		if (segs[i].phdr.p_type == PT_ARM_EXIDX)
-			ehdr->e_phnum--;
-		else {
-			segs[i].shnum = 0;
-			i++;
+		switch (segs[i].phdr.p_type) {
+			case PT_ARM_EXIDX:
+				ehdr->e_phnum--;
+				break;
+			case 0x60000000:
+				relaPhndx = i;
+			default:
+				segs[i].shnum = 0;
+				i++;
 		}
 	}
 
-	mapOverScnSeg(segCntScns, scns, segs, ehdr, relMark);
+	if (relaPhndx == 0) {
+		fprintf(stderr, "%s: PT_PSP2_RELA not found\n", path);
+		errno = EILSEQ;
+		free(segs);
+
+		return NULL;
+	}
+
+	*rela = segs + relaPhndx;
+
+	mapOverScnSeg(segCntScns, scns, segs, ehdr, relaPhndx, relMark);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		segs[i].scns = malloc(segs[i].shnum * sizeof(scn_t));
@@ -143,7 +152,7 @@ seg_t *getSegs(FILE *fp, const char *path, Elf32_Ehdr *ehdr,
 		segs[i].shnum = 0;
 	}
 
-	mapOverScnSeg(segCntMapScns, scns, segs, ehdr, relMark);
+	mapOverScnSeg(segCntMapScns, scns, segs, ehdr, relaPhndx, relMark);
 
 	for (i = 0; i < ehdr->e_phnum; i++) {
 		if (segs[i].phdr.p_type != PT_LOAD)
@@ -272,10 +281,6 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			if (scn->shdr.sh_type == SHT_REL) {
 				scn->shdr.sh_type = SHT_SCE_RELA;
 
-				if (scn->orgSize == scn->shdr.sh_size) {
-					scn->shdr.sh_size /= sizeof(Elf32_Rel);
-					scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
-				}
 			}
 
 			scn->segOffsetDiff = sorts[i]->phdr.p_filesz - scn->segOffset;
@@ -362,111 +367,15 @@ int writePhdrs(FILE *dstFp, const char *dst,
 	return 0;
 }
 
-static int writeRela(FILE *dst, FILE *src,
-	const scn_t *scn, const seg_t *seg, const scn_t *scns,
-	const char *strtab, const Elf32_Sym *symtab, const scn_t *modinfo)
-{
-	Psp2_Rela_Short rela;
-	const scn_t *dstScn;
-	Elf32_Rel rel;
-	const Elf32_Sym *sym;
-	Elf32_Word i, j, type;
-	Elf32_Addr addend;
-
-	if (dst == NULL || src == NULL
-		|| scn == NULL || seg == NULL || scns == NULL
-		|| strtab == NULL || symtab == NULL)
-	{
-		return EINVAL;
-	}
-
-	dstScn = scns + scn->shdr.sh_info;
-
-	for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-		if (fseek(src, scn->orgOffset + i, SEEK_SET)) {
-			perror(strtab + scn->shdr.sh_name);
-			return errno;
-		}
-
-		if (fread(&rel, sizeof(rel), 1, src) <= 0) {
-			strtab += scn->shdr.sh_name;
-			if (feof(src)) {
-				fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-				errno = EILSEQ;
-			} else
-				perror(strtab);
-
-			return errno;
-		}
-
-		type = ELF32_R_TYPE(rel.r_info);
-		sym = symtab + ELF32_R_SYM(rel.r_info);
-
-		PSP2_R_SET_SHORT(&rela, 1);
-		PSP2_R_SET_SYMSEG(&rela, sym->st_shndx == SHN_ABS ?
-			15 : scns[sym->st_shndx].phndx);
-		PSP2_R_SET_TYPE(&rela, type);
-		PSP2_R_SET_DATSEG(&rela, dstScn->phndx);
-		printf("0x%X + 0x%X = 0x%X\n", rel.r_offset, dstScn->segOffsetDiff,
-			rel.r_offset - dstScn->segOffsetDiff);
-		PSP2_R_SET_OFFSET(&rela, rel.r_offset - dstScn->segOffsetDiff);
-
-		if (dstScn == modinfo && sym->st_shndx != SHN_ABS) {
-			addend = scns[sym->st_shndx].shdr.sh_offset;
-			switch (rel.r_offset) {
-				case offsetof(SceModuleInfo, expBtm):
-				case offsetof(SceModuleInfo, impBtm):
-					addend += scns[sym->st_shndx].shdr.sh_size;
-				case offsetof(SceModuleInfo, expTop):
-				case offsetof(SceModuleInfo, impTop):
-				break;
-			default:
-				goto usual;
-			}
-		} else {
-usual:
-			addend = sym->st_value;
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (fseek(src, dstScn->orgOffset + rel.r_offset, SEEK_SET)) {
-					perror(strtab + scn->shdr.sh_name);
-					return errno;
-				}
-
-				if (fread(&j, sizeof(j), 1, src) <= 0) {
-					strtab += scn->shdr.sh_name;
-					if (feof(src)) {
-						fprintf(stderr, "%s: Unexpected EOF\n", strtab);
-						return EILSEQ;
-					} else {
-						perror(strtab);
-						return errno;
-					}
-				}
-
-				addend += j;
-			}
-		}
-
-		PSP2_R_SET_ADDEND(&rela, addend);
-
-		if (fwrite(&rela, sizeof(rela), 1, dst) != 1) {
-			perror(strtab + scn->shdr.sh_name);
-			return errno;
-		}
-	}
-
-	return 0;
-}
-
-int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
-	const seg_t *segs, Elf32_Half phnum, const sceScns_t *sceScns,
-	const char *strtab, const Elf32_Sym *symtab)
+int writeSegs(FILE *dst, FILE *src, const scn_t *scns, Elf32_Half shnum,
+	const seg_t *segs, Elf32_Half phnum,
+	const sceScns_t *sceScns, const char *strtab, const char *str)
 {
 	Elf32_Half i, j;
 	int res;
 
-	if (dst == NULL || src == NULL || scns == NULL || segs == NULL
-		|| sceScns == NULL || strtab == NULL)
+	if (dst == NULL || src == NULL || segs == NULL
+		|| sceScns == NULL || strtab == NULL || str == NULL)
 	{
 		return EINVAL;
 	}
@@ -490,21 +399,10 @@ int writeSegs(FILE *dst, FILE *src, const scn_t *scns,
 				continue;
 			}
 
-			if (fseek(src, segs->scns[j]->orgOffset, SEEK_SET)) {
-				perror(strtab + segs->scns[j]->shdr.sh_name);
-				return errno;
-			}
-
-			// Refer to updateSegs
-			if (segs->scns[j]->shdr.sh_type == SHT_SCE_RELA)
-				res = writeRela(dst, src,
-					segs->scns[j], segs, scns,
-					strtab, symtab, sceScns->modinfo);
-			else if (segs->scns[j] == sceScns->modinfo)
-				res = writeModinfo(dst, src, sceScns->modinfo, strtab);
-			else
-				res = writeScn(dst, src, segs->scns[j], strtab);
-
+			res = segs->scns[j] == sceScns->modinfo ?
+				writeModinfo(dst, src, scns, shnum,
+					sceScns, strtab, str) :
+				writeScn(dst, src, segs->scns[j], strtab);
 			if (res)
 				return res;
 		}

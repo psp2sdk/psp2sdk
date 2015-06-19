@@ -32,20 +32,18 @@ typedef struct {
 	char name[27];	//!< Name
 	uint8_t type;	//!< Type
 	void *gp;	//!< Global Pointer
-	void *expTop;	//!< Pointer to the top of export table
-	void *expBtm;	//!< Pointer to the bottom of export table
-	void *impTop;	//!< Pointer to the top of import table
-	void *impBtm;	//!< Pointer to the bottom of import table
+	uint32_t expTop;	//!< Offset of the top of export table
+	uint32_t expBtm;	//!< Offset of the bottom of export table
+	uint32_t impTop;	//!< Offset of the top of import table
+	uint32_t impBtm;	//!< Offset of the bottom of import table
 	uint32_t nid;	//!< NID
-	uint32_t unk38;	//!< Unknown
-	uint32_t unk3C;	//!< Unknown
-	uint32_t unk40;	//!< Unknown
-	void *start;	//!< Pointer to module_start function
-	void *stop;	//!< Pointer to module_stop function
-	void *exidxTop;	//!< Pointer to the top of exidx section
-	void *exidxBtm;	//!< Pointer to the bottom of exidx section
-	void *extabTop;	//!< Pointer to the top of extab section
-	void *extabBtm;	//!< Pointer to the bottom of extab section
+	uint32_t unk[3];	//!< Unknown
+	uint32_t start;	//!< Offset of module_start function
+	uint32_t stop;	//!< Offset of module_stop function
+	uint32_t exidxTop;	//!< Offset of the top of exidx section
+	uint32_t exidxBtm;	//!< Offset of the bottom of exidx section
+	uint32_t extabTop;	//!< Offset of the top of extab section
+	uint32_t extabBtm;	//!< Offset of the bottom of extab section
 } _sceModuleInfo;
 
 //! The type of structure stored in .sceModuleInfo.rodata section
@@ -61,31 +59,25 @@ typedef const _sceModuleInfo SceModuleInfo;
  */
 #define PSP2_MODULE_INFO(attribute, version, module_name)	\
 	__asm__ (".section .sceLib.stub, \"a\", %progbits;");	\
-	extern char export_top[], export_btm[];	\
-	extern char import_top[];	\
-	int module_start(SceSize argc, void *argp);	\
-	int module_stop(SceSize argc, void *argp);	\
-	extern char exidx_top[], exidx_btm[];	\
-	extern char extab_top[], extab_btm[];	\
 	SceModuleInfo module_info	\
-		__attribute__((section(".sceModuleInfo.rodata"), aligned(16)))	\
+		__attribute__((section(".sceModuleInfo.rodata")))	\
 			= {	\
 		.attr = attribute,	\
 		.ver = version,	\
 		.name = module_name,	\
 		.type = 0,	\
 		.gp = NULL,	\
-		.expTop = export_top,	\
-		.expBtm = export_btm,	\
-		.impTop = import_top,	\
-		.impBtm = import_top,	\
+		.expTop = 0,	\
+		.expBtm = 0,	\
+		.impTop = 0,	\
+		.impBtm = 0,	\
 		.nid = 0,	\
-		.start = module_start,	\
-		.stop = module_stop,	\
-		.exidxTop = exidx_top,	\
-		.exidxBtm = exidx_btm,	\
-		.extabTop = extab_top,	\
-		.extabBtm = extab_btm	\
+		.start = 0,	\
+		.stop = 0,	\
+		.exidxTop = 0,	\
+		.exidxBtm = 0,	\
+		.extabTop = 0,	\
+		.extabBtm = 0	\
 	};
 
 #endif

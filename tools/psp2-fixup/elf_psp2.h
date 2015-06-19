@@ -58,6 +58,26 @@ typedef struct {
 	uint32_t unkStubs;
 } sceLib_stub;
 
+typedef struct {
+	uint16_t attr;
+	uint16_t ver;
+	char name[27];
+	uint8_t type;
+	Elf32_Addr gp;
+	uint32_t expTop;
+	uint32_t expBtm;
+	uint32_t impTop;
+	uint32_t impBtm;
+	uint32_t nid;
+	uint32_t unk[3];
+	uint32_t start;
+	uint32_t stop;
+	uint32_t exidxTop;
+	uint32_t exidxBtm;
+	uint32_t extabTop;
+	uint32_t extabBtm;
+} _sceModuleInfo;
+
 typedef uint64_t Psp2_Rela_Short;
 
 #define PSP2_R_SET_SHORT(rela, isShort) {	\

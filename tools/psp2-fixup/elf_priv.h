@@ -30,14 +30,9 @@ typedef struct {
 	scn_t *scns;
 	seg_t *segs;
 	sceScns_t sceScns;
-	struct {
-		scn_t *scn;
-		void *content;
-	} strtab;
-	struct {
-		scn_t *scn;
-		void *content;
-	} symtab;
+	scn_t *strtab;
+	scn_t *symtab;
+	seg_t *rela;
 } elf_t;
 
 int openElf(elf_t *dst, const char *path);
