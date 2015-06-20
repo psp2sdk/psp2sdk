@@ -18,8 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2_RTC_
-#define _PSP2_RTC_
+#ifndef _PSP2_RTC_H_
+#define _PSP2_RTC_H_
+
+#include <stdint.h>
 
 /* struct/union */
 
@@ -34,24 +36,24 @@ typedef struct SceRtcTime {
 } SceRtcTime;
 
 typedef enum SceRtcCheckValidError {
-	SCE_RTC_INVALID_YEAR         = -1,
-	SCE_RTC_INVALID_MONTH        = -2,
-	SCE_RTC_INVALID_DAY          = -3,
-	SCE_RTC_INVALID_HOUR         = -4,
-	SCE_RTC_INVALID_MINUTES      = -5,
-	SCE_RTC_INVALID_SECONDS      = -6,
-	SCE_RTC_INVALID_MICROSECONDS = -7
+	SCE_RTC_INVALID_YEAR	= -1,
+	SCE_RTC_INVALID_MONTH	= -2,
+	SCE_RTC_INVALID_DAY	= -3,
+	SCE_RTC_INVALID_HOUR	= -4,
+	SCE_RTC_INVALID_MINUTES	= -5,
+	SCE_RTC_INVALID_SECONDS	= -6,
+	SCE_RTC_INVALID_MICROSECONDS	= -7
 } SceRtcCheckValidError;
 
 /* prototypes */
 
 unsigned int sceRtcGetTickResolution();
-int sceRtcGetCurrentTick(u64 *tick);
+int sceRtcGetCurrentTick(uint64_t *tick);
 int sceRtcGetCurrentClock(SceRtcTime *time, int tz);
 int sceRtcGetCurrentClockLocalTime(SceRtcTime *time);
 
-int sceRtcConvertUtcToLocalTime(const u64 *tickUTC, u64 *tickLocal);
-int sceRtcConvertLocalTimeToUTC(const u64 *tickLocal, u64 *tickUTC);
+int sceRtcConvertUtcToLocalTime(const uint64_t *tickUTC, uint64_t *tickLocal);
+int sceRtcConvertLocalTimeToUTC(const uint64_t *tickLocal, uint64_t *tickUTC);
 
 int sceRtcIsLeapYear(int year);
 
@@ -60,33 +62,33 @@ int sceRtcGetDayOfWeek(int year, int month, int day);
 
 int sceRtcCheckValid(const SceRtcTime *date);
 
-int sceRtcSetTick(SceRtcTime *date, const u64 *tick);
-int sceRtcGetTick(const SceRtcTime *date, u64 *tick);
-int sceRtcCompareTick(const u64 *tick1, const u64 *tick2);
+int sceRtcSetTick(SceRtcTime *date, const uint64_t *tick);
+int sceRtcGetTick(const SceRtcTime *date, uint64_t *tick);
+int sceRtcCompareTick(const uint64_t *tick1, const uint64_t *tick2);
 
-int sceRtcTickAddTicks(u64 *destTick, const u64 *srcTick, u64 numTicks);
-int sceRtcTickAddMicroseconds(u64 *destTick, const u64 *srcTick, u64 numMS);
-int sceRtcTickAddSeconds(u64 *destTick, const u64 *srcTick, u64 numSecs);
-int sceRtcTickAddMinutes(u64 *destTick, const u64 *srcTick, u64 numMins);
-int sceRtcTickAddHours(u64 *destTick, const u64 *srcTick, int numHours);
-int sceRtcTickAddDays(u64 *destTick, const u64 *srcTick, int numDays);
-int sceRtcTickAddWeeks(u64 *destTick, const u64 *srcTick, int numWeeks);
-int sceRtcTickAddMonths(u64 *destTick, const u64 *srcTick, int numMonths);
-int sceRtcTickAddYears(u64 *destTick, const u64 *srcTick, int numYears);
+int sceRtcTickAddTicks(uint64_t *destTick, const uint64_t *srcTick, uint64_t numTicks);
+int sceRtcTickAddMicroseconds(uint64_t *destTick, const uint64_t *srcTick, uint64_t numMS);
+int sceRtcTickAddSeconds(uint64_t *destTick, const uint64_t *srcTick, uint64_t numSecs);
+int sceRtcTickAddMinutes(uint64_t *destTick, const uint64_t *srcTick, uint64_t numMins);
+int sceRtcTickAddHours(uint64_t *destTick, const uint64_t *srcTick, int numHours);
+int sceRtcTickAddDays(uint64_t *destTick, const uint64_t *srcTick, int numDays);
+int sceRtcTickAddWeeks(uint64_t *destTick, const uint64_t *srcTick, int numWeeks);
+int sceRtcTickAddMonths(uint64_t *destTick, const uint64_t *srcTick, int numMonths);
+int sceRtcTickAddYears(uint64_t *destTick, const uint64_t *srcTick, int numYears);
 
 int sceRtcSetTime_t(SceRtcTime *date, const time_t time);
 int sceRtcGetTime_t(const SceRtcTime *date, time_t *time);
 int sceRtcSetDosTime(SceRtcTime *date, unsigned int dosTime);
 int sceRtcGetDosTime(SceRtcTime *date, unsigned int dosTime);
-int sceRtcSetWin32FileTime(SceRtcTime *date, u64 *win32Time);
-int sceRtcGetWin32FileTime(SceRtcTime *date, u64 *win32Time);
+int sceRtcSetWin32FileTime(SceRtcTime *date, uint64_t *win32Time);
+int sceRtcGetWin32FileTime(SceRtcTime *date, uint64_t *win32Time);
 
-int sceRtcParseDateTime(u64 *destTick, const char *dateString);
-int sceRtcFormatRFC2822(char *pszDateTime, const u64 *pUtc, int iTimeZoneMinutes);
-int sceRtcFormatRFC2822LocalTime(char *pszDateTime, const u64 *pUtc);
-int sceRtcFormatRFC3339(char *pszDateTime, const u64 *pUtc, int iTimeZoneMinutes);
-int sceRtcFormatRFC3339LocalTime(char *pszDateTime, const u64 *pUtc);
-int sceRtcParseRFC3339(u64 *pUtc, const char *pszDateTime);
+int sceRtcParseDateTime(uint64_t *destTick, const char *dateString);
+int sceRtcFormatRFC2822(char *pszDateTime, const uint64_t *pUtc, int iTimeZoneMinutes);
+int sceRtcFormatRFC2822LocalTime(char *pszDateTime, const uint64_t *pUtc);
+int sceRtcFormatRFC3339(char *pszDateTime, const uint64_t *pUtc, int iTimeZoneMinutes);
+int sceRtcFormatRFC3339LocalTime(char *pszDateTime, const uint64_t *pUtc);
+int sceRtcParseRFC3339(uint64_t *pUtc, const char *pszDateTime);
 
 /* missing prototypes */
 
