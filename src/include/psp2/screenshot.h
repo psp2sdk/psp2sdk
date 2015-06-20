@@ -33,28 +33,46 @@ enum ScreenshotErrorCodes {
 };
 
 enum ScreenshotMaxLen {
-	SCE_SCREENSHOT_MAX_FS_PATH	= 1024, //!< Max size of path strings (includes device name and NULL terminator)
-	SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN	= 64, //!< Max length of photo title
-	SCE_SCREENSHOT_MAX_PHOTO_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN*4), //!< Max size of photo title (includes NULL terminater)
-	SCE_SCREENSHOT_MAX_GAME_TITLE_LEN	= 64, //!< Max length of game title
-	SCE_SCREENSHOT_MAX_GAME_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_GAME_TITLE_LEN*4), //!< Max size of game title (includes NULL terminator)
-	SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN	= 128, //!< Max length of comment (description)
-	SCE_SCREENSHOT_MAX_GAME_COMMENT_SIZE	= (SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN*4) //!< Max size of comment (description) (includes NULL terminator)
+	//! Max size of path strings (includes device name and NULL terminator)
+	SCE_SCREENSHOT_MAX_FS_PATH	= 1024,
+
+	//! Max length of photo title
+	SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN	= 64,
+
+	 //! Max size of photo title (includes NULL terminater)
+	SCE_SCREENSHOT_MAX_PHOTO_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_PHOTO_TITLE_LEN * 4),
+
+
+	//! Max length of game title
+	SCE_SCREENSHOT_MAX_GAME_TITLE_LEN	= 64,
+
+	//! Max size of game title (includes NUL terminator)
+	SCE_SCREENSHOT_MAX_GAME_TITLE_SIZE	= (SCE_SCREENSHOT_MAX_GAME_TITLE_LEN * 4),
+
+	//! Max length of comment (description)
+	SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN	= 128,
+
+	//! Max size of comment (description) (includes NUL terminator)
+	SCE_SCREENSHOT_MAX_GAME_COMMENT_SIZE	= (SCE_SCREENSHOT_MAX_GAME_COMMENT_LEN * 4)
 };
 
 typedef struct ScreenshotParam {
-	const int8_t *photoTitle; //!< Photo title
-	const int8_t *gameTitle;  //!< Game title
-	const int8_t *gameComment;  //!< Game description
+	const SceWChar32 *photoTitle; //!< Photo title
+	const SceWChar32 *gameTitle;  //!< Game title
+	const SceWChar32 *gameComment;  //!< Game description
 	void *reserved; //!< Reserved range (Must be NULL)
 };
 
-int32_t sceScreenshotSetParam(const ScreenshotParam *param); //!< Set screenshot params
+//! Set screenshot params
+int sceScreenshotSetParam(const ScreenshotParam *param);
 
-int32_t sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY); //!< Set overlay image
+//! Set overlay image
+int sceScreenshotOverlayImage(const char *filepath, int offsetX, int offsetY);
 
-int32_t sceScreenshotDisable(void); //!< Disable screenshot
+//! Disable screenshot
+int sceScreenshotDisable(void);
 
-int32_t sceScreenshotEnable(void); //!< Enable screnshot
+//! Enable screnshot
+int sceScreenshotEnable(void);
 
 #endif
