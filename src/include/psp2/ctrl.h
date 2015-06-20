@@ -21,43 +21,43 @@
 #ifndef _PSP2_CTRL_H_
 #define _PSP2_CTRL_H_
 
-#include <psp2/types.h>
+#include <stdint.h>
 
 enum CtrlErrorCodes {
-	SCE_CTRL_ERROR_INVALID_ARG		= 0x80340001,
+	SCE_CTRL_ERROR_INVALID_ARG	= 0x80340001,
 	SCE_CTRL_ERROR_PRIV_REQUIRED	= 0x80340002,
-	SCE_CTRL_ERROR_FATAL			= 0x803400FF
+	SCE_CTRL_ERROR_FATAL	= 0x803400FF
 };
 
 /** Enumeration for the digital controller buttons. */
 enum CtrlButtons
 {
 	/** Select button. */
-	PSP2_CTRL_SELECT    = 0x000001,
+	PSP2_CTRL_SELECT	= 0x000001,
 	/** Start button. */
-	PSP2_CTRL_START     = 0x000008,
+	PSP2_CTRL_START	= 0x000008,
 	/** Up D-Pad button. */
-	PSP2_CTRL_UP        = 0x000010,
+	PSP2_CTRL_UP	= 0x000010,
 	/** Right D-Pad button. */
-	PSP2_CTRL_RIGHT     = 0x000020,
+	PSP2_CTRL_RIGHT	= 0x000020,
 	/** Down D-Pad button. */
-	PSP2_CTRL_DOWN      = 0x000040,
+	PSP2_CTRL_DOWN	= 0x000040,
 	/** Left D-Pad button. */
-	PSP2_CTRL_LEFT      = 0x000080,
+	PSP2_CTRL_LEFT	= 0x000080,
 	/** Left trigger. */
-	PSP2_CTRL_LTRIGGER  = 0x000100,
+	PSP2_CTRL_LTRIGGER	= 0x000100,
 	/** Right trigger. */
-	PSP2_CTRL_RTRIGGER  = 0x000200,
+	PSP2_CTRL_RTRIGGER	= 0x000200,
 	/** Triangle button. */
-	PSP2_CTRL_TRIANGLE  = 0x001000,
+	PSP2_CTRL_TRIANGLE	= 0x001000,
 	/** Circle button. */
-	PSP2_CTRL_CIRCLE    = 0x002000,
+	PSP2_CTRL_CIRCLE	= 0x002000,
 	/** Cross button. */
-	PSP2_CTRL_CROSS     = 0x004000,
+	PSP2_CTRL_CROSS	= 0x004000,
 	/** Square button. */
-	PSP2_CTRL_SQUARE    = 0x008000,
+	PSP2_CTRL_SQUARE	= 0x008000,
 	/** Any input intercepted. */
-	PSP2_CTRL_ANY		= 0x010000
+	PSP2_CTRL_ANY	= 0x010000
 };
 
 /** Controller mode. */
@@ -74,19 +74,19 @@ enum CtrlMode
 /** Returned controller data */
 typedef struct SceCtrlData {
 	/** The current read frame. */
-	unsigned int 	TimeStamp;
+	unsigned int 	timeStamp;
 	/** Bit mask containing zero or more of ::CtrlButtons. */
-	unsigned int 	Buttons;
+	unsigned int 	buttons;
 	/** Left analogue stick, X axis. */
-	unsigned char 	Lx;
+	unsigned char 	lx;
 	/** Left analogue stick, Y axis. */
-	unsigned char 	Ly;
+	unsigned char 	ly;
 	/** Right analogue stick, X axis. */
-	unsigned char 	Rx;
+	unsigned char 	rx;
 	/** Right analogue stick, Y axis. */
-	unsigned char 	Ry;
+	unsigned char 	ry;
 	/** Reserved. */
-	unsigned char 	Rsrv[16];
+	uint8_t 	reserved[16];
 } SceCtrlData;
 
 /** Structure to pass as argument to ::sceCtrlSetRapidFire */
