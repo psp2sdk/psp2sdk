@@ -108,12 +108,12 @@ typedef uint64_t Psp2_Rela_Short;
 	}
 
 enum {
-	ET_SCE_RELEXEC = 0xFE04
+	ET_PSP2_RELEXEC = 0xFE04
 };
 
 enum {
 	SHT_INTERNAL = SHT_NULL,
-	SHT_SCE_RELA = 0x60000000
+	SHT_PSP2_RELA = 0x60000000
 };
 
 #endif

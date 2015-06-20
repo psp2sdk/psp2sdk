@@ -201,8 +201,8 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 		p = (void *)((uintptr_t)p + p->size);
 	}
 
-	sceScns->relFstub->shdr.sh_type = SHT_SCE_RELA;
-	sceScns->relStub->shdr.sh_type = SHT_SCE_RELA;
+	sceScns->relFstub->shdr.sh_type = SHT_PSP2_RELA;
+	sceScns->relStub->shdr.sh_type = SHT_PSP2_RELA;
 
 	return 0;
 }

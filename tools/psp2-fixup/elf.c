@@ -139,7 +139,7 @@ static int updateEhdr(Elf32_Ehdr *ehdr, const char *path,
 	if (ehdr == NULL || segs == NULL)
 		return EINVAL;
 
-	ehdr->e_type = ET_SCE_RELEXEC;
+	ehdr->e_type = ET_PSP2_RELEXEC;
 	ehdr->e_entry = (modinfo->phndx << 30) | modinfo->segOffset;
 	ehdr->e_phoff = sizeof(Elf32_Ehdr);
 	ehdr->e_shoff = 0;

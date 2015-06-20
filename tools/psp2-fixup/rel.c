@@ -152,7 +152,7 @@ int convRelToRela(FILE *fp, scn_t *scns, const seg_t *segs,
 
 		free(scn->content);
 
-		scn->shdr.sh_type = SHT_SCE_RELA;
+		scn->shdr.sh_type = SHT_PSP2_RELA;
 		scn->content = buf;
 
 cont:
