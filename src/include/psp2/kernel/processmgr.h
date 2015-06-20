@@ -23,19 +23,19 @@
 
 #include <psp2/types.h>
 
-enum KernelProcessPrioritySystem {
+enum {
 	PSP2_KERNEL_PROCESS_PRIORITY_SYSTEM_HIGH	= 32,
 	PSP2_KERNEL_PROCESS_PRIORITY_SYSTEM_DEFAULT	= 96,
 	PSP2_KERNEL_PROCESS_PRIORITY_SYSTEM_LOW		= 159
 };
 
-enum KernelProcessPriorityUser {
+enum {
 	PSP2_KERNEL_PROCESS_PRIORITY_USER_HIGH		= 64,
 	PSP2_KERNEL_PROCESS_PRIORITY_USER_DEFAULT	= 96,
 	PSP2_KERNEL_PROCESS_PRIORITY_USER_LOW		= 127
 };
 
-enum KernelPowerTickType {
+enum {
 	/** Cancel all timers */
 	PSP2_KERNEL_POWER_TICK_DEFAULT				= 0,
 	/** Cancel automatic suspension timer */
@@ -96,4 +96,4 @@ SceUInt32 sceKernelGetProcessTimeLow(void);
 */
 SceUInt64 sceKernelGetProcessTimeWide(void);
 
-#endif /* _PSP2PROCESSMGR_H_ */
+#endif
