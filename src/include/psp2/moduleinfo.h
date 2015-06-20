@@ -67,17 +67,7 @@ typedef const _sceModuleInfo SceModuleInfo;
 		.name = module_name,	\
 		.type = 0,	\
 		.gp = NULL,	\
-		.expTop = 0,	\
-		.expBtm = 0,	\
-		.impTop = 0,	\
-		.impBtm = 0,	\
 		.nid = 0,	\
-		.start = 0,	\
-		.stop = 0,	\
-		.exidxTop = 0,	\
-		.exidxBtm = 0,	\
-		.extabTop = 0,	\
-		.extabBtm = 0	\
 	};
 
 #endif
