@@ -22,12 +22,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
-extern const char psp2MainThreadName[] __attribute__((weak));
-extern const int psp2MainThreadPriority __attribute__((weak));
-extern const SceSize psp2MainThreadStackSize __attribute__((weak));
-extern const int psp2MainThreadAttr __attribute__((weak));
-extern const int psp2MainThreadAffinity __attribute__((weak));
-extern const int psp2MainThreadOption[] __attribute__((weak));
+extern const char sceUserMainThreadName[] __attribute__((weak));
+extern const int sceUserMainThreadPriority __attribute__((weak));
+extern const SceSize sceUserMainThreadStackSize __attribute__((weak));
+extern const int psp2UserMainThreadAttr __attribute__((weak));
+extern const int psp2UserMainThreadAffinity __attribute__((weak));
+extern const int psp2UserMainThreadOption[] __attribute__((weak));
 
 extern SceModuleInfo module_info;
 
@@ -38,13 +38,13 @@ static SceUID id;
 int module_start(SceSize arglen, void *argp)
 {
 	id = sceKernelCreateThread(
-		&psp2MainThreadName == NULL ? "user_main" : psp2MainThreadName,
+		&sceUserMainThreadName == NULL ? "user_main" : sceUserMainThreadName,
 		main,
-		&psp2MainThreadPriority == NULL ? 32 : psp2MainThreadPriority,
-		&psp2MainThreadStackSize == NULL ? 1048576 : psp2MainThreadStackSize,
-		&psp2MainThreadAttr == NULL ? PSP2_THREAD_ATTR_USER : psp2MainThreadAttr,
-		&psp2MainThreadAffinity == NULL ? 0x70000 : psp2MainThreadAffinity,
-		&psp2MainThreadOption);
+		&sceUserMainThreadPriority == NULL ? 32 : sceUserMainThreadPriority,
+		&sceUserMainThreadStackSize == NULL ? 1048576 : sceUserMainThreadStackSize,
+		&psp2UserMainThreadAttr == NULL ? PSP2_THREAD_ATTR_USER : psp2UserMainThreadAttr,
+		&psp2UserMainThreadAffinity == NULL ? 0x70000 : psp2UserMainThreadAffinity,
+		&psp2UserMainThreadOption);
 	return id < 0 ? id : sceKernelStartThread(id, arglen, argp);
 }
 
