@@ -23,7 +23,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <uchar.h>
 
 /* SCE types */
 typedef int8_t SceChar8;
@@ -72,8 +71,8 @@ typedef signed char SceSByte8;
 typedef unsigned char SceByte;
 typedef unsigned char SceByte8;
 
-typedef char16_t SceWChar16;
-typedef char32_t SceWChar32;
+typedef uint16_t SceWChar16;
+typedef uint32_t SceWChar32;
 
 typedef void SceVoid;
 typedef void *ScePVoid;
