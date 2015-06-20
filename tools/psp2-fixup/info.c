@@ -23,6 +23,7 @@
 #include "elf_psp2.h"
 #include "elf.h"
 #include "info.h"
+#include "rel.h"
 #include "scn.h"
 #include "seg.h"
 
@@ -31,11 +32,12 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 	const char *strtab, const Elf32_Sym *symtab,
 	scn_t *ent, const scn_t *relEnt)
 {
-	const Elf32_Rel *rel, *stubRel;
+	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
 	const Elf32_Word *nids;
-	Elf32_Word i, j, stubOffset, *p;
-	const scn_t *scn, *stubRelScn;
+	Elf32_Word i, stubOffset, *p;
+	const scn_t *stubRel;
+	scn_t *scn;
 	int res;
 
 	if (syslib == NULL || fp == NULL || scns == NULL || segs == NULL
@@ -50,16 +52,9 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 		return res;
 
 	// Stub Table
-	i = 0;
-	for (rel = relEnt->content; rel->r_offset != ent->segOffset + 28; rel++)
-	{
-		i += sizeof(rel);
-		if (i >= relEnt->shdr.sh_size) {
-			fprintf(stderr, "%s: Relocation entry for Stub table not found\n",
-				strtab + relEnt->shdr.sh_name);
-			return EILSEQ;
-		}
-	}
+	rel = findRelByOffset(relEnt, ent->segOffset + 28, strtab);
+	if (rel == NULL)
+		return errno;
 
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 	scn = scns + sym->st_shndx;
@@ -73,30 +68,20 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 			return EILSEQ;
 		}
 
-		stubRelScn = rela->scns[i];
+		stubRel = rela->scns[i];
 		i++;
-	} while (stubRelScn->shdr.sh_info != sym->st_shndx);
-
-	stubRel = stubRelScn->content;
+	} while (stubRel->shdr.sh_info != sym->st_shndx);
 
 	// NID Table
-	i = 0;
-	for (rel = relEnt->content; rel->r_offset != ent->segOffset + 24; rel++)
-	{
-		i += sizeof(rel);
-		if (i >= relEnt->shdr.sh_size) {
-			fprintf(stderr, "%s: Relocation entry for NID table not found\n",
-				strtab + relEnt->shdr.sh_name);
-			return EILSEQ;
-		}
-	}
+	rel = findRelByOffset(relEnt, ent->segOffset + 24, strtab);
+	if (rel == NULL)
+		return errno;
 
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 	scn = scns + sym->st_shndx;
 
 	if (scn->content == NULL) {
-		res = loadScn(fp, scns + sym->st_shndx,
-			strtab + scn->shdr.sh_name);
+		res = loadScn(fp, scn, strtab + scn->shdr.sh_name);
 		if (res)
 			return res;
 	}
@@ -113,16 +98,9 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 		else
 			continue;
 
-		j = 0;
-		for (rel = stubRel; rel->r_offset != stubOffset + i * 4; rel++) {
-			j += sizeof(rel);
-			if (j >= stubRelScn->shdr.sh_size) {
-				fprintf(stderr, "%s: Relocation Entry for a function (NID: 0x%X) not found\n",
-					strtab + stubRelScn->shdr.sh_name,
-					nids[i]);
-				return EINVAL;
-			}
-		}
+		rel = findRelByOffset(stubRel, stubOffset + i * 4, strtab);
+		if (rel == NULL)
+			return errno;
 
 		*p = symtab[ELF32_R_SYM(rel->r_info)].st_value;
 	}

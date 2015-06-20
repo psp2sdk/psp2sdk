@@ -24,6 +24,9 @@
 #include "scn.h"
 #include "seg.h"
 
+Elf32_Rel *findRelByOffset(const scn_t *scn, Elf32_Addr offset,
+	const char *strtab);
+
 int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
 	scn_t **relScns, Elf32_Half relShnum);
 

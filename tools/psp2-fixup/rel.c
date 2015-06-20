@@ -22,6 +22,30 @@
 #include "rel.h"
 #include "scn.h"
 
+Elf32_Rel *findRelByOffset(const scn_t *scn, Elf32_Addr offset,
+	const char *strtab)
+{
+	Elf32_Half i;
+	Elf32_Rel *ent;
+
+	if (scn == NULL || scn->content == NULL || strtab == NULL)
+		return NULL;
+
+	ent = scn->content;
+	for (i = 0; i < scn->shdr.sh_size; i += sizeof(Elf32_Rel)) {
+		if (ent->r_offset == offset)
+			return ent;
+
+		ent++;
+	}
+
+	fprintf(stderr, "%s: Relocation entry for offset 0x%08X not found\n",
+		strtab + scn->shdr.sh_name, offset);
+
+	errno = EILSEQ;
+	return NULL;
+}
+
 int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
