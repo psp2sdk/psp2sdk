@@ -22,6 +22,7 @@
 #define _PSP2_CAMERA_H_
 
 #include <psp2/types.h>
+#include <stdint.h>
 
 enum CameraErrorCodes {
 	SCE_CAMERA_ERROR_ALREADY_INIT	= 0x802e0001,
@@ -43,162 +44,81 @@ enum CameraErrorCodes {
 
 typedef struct SceCameraInfo
 {
-	uint32_t sizeThis;
-	uint32_t wPriority;
-	uint32_t wFormat;
-	uint32_t wResolution;
-	uint32_t wFramerate;
-	uint32_t wWidth;
-	uint32_t wHeight;
-	uint32_t wRange;
-	uint32_t _padding_0;
-	uint32_t sizeIBase;
-	uint32_t sizeUBase;
-	uint32_t sizeVBase;
-	void *pvIBase;
-	void *pvUBase;
-	void *pvVBase;
-	uint32_t wPitch;
-	uint32_t wBuffer;
+	SceSize size;
+	unsigned int priority;
+	unsigned int format;
+	unsigned int resolution;
+	unsigned int framerate;
+	unsigned int width;
+	unsigned int height;
+	unsigned int range;
+	unsigned int pad;
+	SceSize sizeIBase;
+	SceSize sizeUBase;
+	SceSize sizeVBase;
+	void *pIBase;
+	void *pUBase;
+	void *pVBase;
+	unsigned int pitch;
+	void *buffer;
 };
 
 typedef struct SceCameraRead
 {
-	uint32_t sizeThis;
-	int32_t dwMode;
-	int32_t _padding_0;
-	int32_t dwStatus;
-	uint32_t qwFrame;
-	uint32_t qwTimestamp;
-	uint32_t sizeIBase;
-	uint32_t sizeUBase;
-	uint32_t sizeVBase;
-	void *pvIBase;
-	void *pvUBase;
-	void *pvVBase;
+	SceSize size;
+	int mode;
+	uint32_t pad;
+	int status;
+	unsigned int frame;
+	unsigned int timestamp;
+	SceSize sizeIBase;
+	SceSize sizeUBase;
+	SceSize sizeVBase;
+	void *pIBase;
+	void *pUBase;
+	void *pVBase;
 };
 
-int32_t sceCameraOpen(int32_t devnum, SceCameraInfo *pInfo);
-
-
-int32_t sceCameraClose(int32_t devnum);
-
-
-int32_t sceCameraStart(int32_t devnum);
-
-
-int32_t sceCameraStop(int32_t devnum);
-
-
-int32_t sceCameraRead(int32_t devnum, SceCameraRead *pRead);
-
-
-int32_t sceCameraIsActive(int32_t devnum);
-
-
-int32_t sceCameraGetSaturation(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetSaturation(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetBrightness(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetBrightness(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetContrast(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetContrast(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetSharpness(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetSharpness(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetReverse(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetReverse(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetEffect(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetEffect(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetEV(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetEV(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetZoom(int32_t devnum, int32_t *pLevel);
-
-
-int32_t sceCameraSetZoom(int32_t devnum, int32_t level);
-
-
-int32_t sceCameraGetAntiFlicker(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetAntiFlicker(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetISO(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetISO(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetGain(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetGain(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetWhiteBalance(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetWhiteBalance(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetBacklight(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetBacklight(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetNightmode(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetNightmode(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetExposureCeiling(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetExposureCeiling(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetAutoControlHold(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetAutoControlHold(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetEV(int32_t devnum, int32_t *pMode);
-
-
-int32_t sceCameraSetEV(int32_t devnum, int32_t mode);
-
-
-int32_t sceCameraGetDeviceLocation(int32_t devnum, SceFVector3 *pLocation);
-
+int sceCameraOpen(int devnum, SceCameraInfo *pInfo);
+int sceCameraClose(int devnum);
+int sceCameraStart(int devnum);
+int sceCameraStop(int devnum);
+int sceCameraRead(int devnum, SceCameraRead *pRead);
+int sceCameraIsActive(int devnum);
+int sceCameraGetSaturation(int devnum, int *pLevel);
+int sceCameraSetSaturation(int devnum, int level);
+int sceCameraGetBrightness(int devnum, int *pLevel);
+int sceCameraSetBrightness(int devnum, int level);
+int sceCameraGetContrast(int devnum, int *pLevel);
+int sceCameraSetContrast(int devnum, int level);
+int sceCameraGetSharpness(int devnum, int *pLevel);
+int sceCameraSetSharpness(int devnum, int level);
+int sceCameraGetReverse(int devnum, int *pMode);
+int sceCameraSetReverse(int devnum, int mode);
+int sceCameraGetEffect(int devnum, int *pMode);
+int sceCameraSetEffect(int devnum, int mode);
+int sceCameraGetEV(int devnum, int *pLevel);
+int sceCameraSetEV(int devnum, int level);
+int sceCameraGetZoom(int devnum, int *pLevel);
+int sceCameraSetZoom(int devnum, int level);
+int sceCameraGetAntiFlicker(int devnum, int *pMode);
+int sceCameraSetAntiFlicker(int devnum, int mode);
+int sceCameraGetISO(int devnum, int *pMode);
+int sceCameraSetISO(int devnum, int mode);
+int sceCameraGetGain(int devnum, int *pMode);
+int sceCameraSetGain(int devnum, int mode);
+int sceCameraGetWhiteBalance(int devnum, int *pMode);
+int sceCameraSetWhiteBalance(int devnum, int mode);
+int sceCameraGetBacklight(int devnum, int *pMode);
+int sceCameraSetBacklight(int devnum, int mode);
+int sceCameraGetNightmode(int devnum, int *pMode);
+int sceCameraSetNightmode(int devnum, int mode);
+int sceCameraGetExposureCeiling(int devnum, int *pMode);
+int sceCameraSetExposureCeiling(int devnum, int mode);
+int sceCameraGetAutoControlHold(int devnum, int *pMode);
+int sceCameraSetAutoControlHold(int devnum, int mode);
+int sceCameraGetEV(int devnum, int *pMode);
+int sceCameraSetEV(int devnum, int mode);
+int sceCameraGetDeviceLocation(int devnum, SceFVector3 *pLocation);
 
 #endif
