@@ -22,6 +22,7 @@
 #define _PSP2_AUDIOENC_H_
 
 #include <psp2/types.h>
+#include <stdint.h>
 
 enum AudioencErrorCodes {
 	SCE_AUDIOENC_ERROR_API_FAIL	= 0x80860000,
@@ -66,65 +67,65 @@ enum AudioEncCelpBitRates {
 
 /** Initialization structure to provide to ::SceAudioencInitParam */
 typedef struct SceAudioencInitStreamParam {
-	uint32_t size;	//!< Size of this structure
-	uint32_t totalStreams;	//!< Total number of audio streams
+	SceSize size;	//!< Size of this structure
+	unsigned int totalStreams;	//!< Total number of audio streams
 };
 
 /** Information structure for CELP */
 typedef struct SceAudioencInfoCelp {
-	uint32_t size;	//!< sizeof(SceAudioencInfoCelp)
-	uint32_t excitationMode;	//!< Excitation mode
-	uint32_t samplingRate; //!< Sampling rate
-	uint32_t bitRate;	//!< Bit rate
+	SceSize size;	//!< sizeof(SceAudioencInfoCelp)
+	unsigned int excitationMode;	//!< Excitation mode
+	unsigned int samplingRate; //!< Sampling rate
+	usigned int bitRate;	//!< Bit rate
 };
 
 /** Optional information structure for CELP */
 typedef struct SceAudioencOptInfoCelp {
-	uint32_t size;	//!< sizeof(SceAudioencOptInfoCelp)
-	uint8_t	header[32];	//!< Header buffer
-	uint32_t headerSize;	//!< Header size
-	uint32_t encoderVersion;	//!< Encoder version
+	SceSize size;	//!< sizeof(SceAudioencOptInfoCelp)
+	uint8_t header[32];	//!< Header buffer
+	SceSize headerSize;	//!< Header size
+	unsigned int encoderVersion;	//!< Encoder version
 };
 
 /** Initialization structure to pass as argument to ::sceAudioencInitLibrary */
 typedef union SceAudioencInitParam {
-	uint32_t size;	//!< sizeof(SceAudioencInitParam)
+	SceSize size;	//!< sizeof(SceAudioencInitParam)
 	SceAudioencInitStreamParam celp; //!< See ::SceAudioencInitStreamParam
 };
 
 /** Audio encoder info */
 typedef union SceAudioencInfo {
-	uint32_t	size;	//!< sizeof(SceAudioencInfo)
-	SceAudioencInfoCelp	celp;
+	SceSize size;	//!< sizeof(SceAudioencInfo)
+	SceAudioencInfoCelp celp;
 };
 
 /** Audio encoder optional info */
 typedef union SceAudioencOptInfo {
-	uint32_t	size;	//!< Size of this structure
-	SceAudioencOptInfoCelp	celp;
+	SceSize size;	//!< Size of this structure
+	SceAudioencOptInfoCelp celp;
 };
 
 typedef struct SceAudioencCtrl {
-	uint32_t size;	//!< sizeof(SceAudioencCtrl)
-	int32_t handle;	//!< Encoder handle
-	uint8_t *pInputPcm;	//!< Pointer to elementary stream
-	uint32_t inputPcmSize;	//!< Size of elementary stream used actually (in byte)
-	uint32_t maxPcmSize;	//!< Max size of elementary stream used (in byte)
+	SceSize size;	//!< sizeof(SceAudioencCtrl)
+	int handle;	//!< Encoder handle
+	void *pInputPcm;	//!< Pointer to elementary stream
+	SceSize inputPcmSize;	//!< Size of elementary stream used actually (in byte)
+	SceSize maxPcmSize;	//!< Max size of elementary stream used (in byte)
 	void *pOutputEs;	//!< Pointer to PCM
-	uint32_t outputEsSize;	//!< Size of PCM output actually (in byte)
-	uint32_t maxEsSize;	//!< Max size of PCM output (in byte)
-	uint32_t wordLength;	//!< PCM bit depth
+	SceSize outputEsSize;	//!< Size of PCM output actually (in byte)
+	SceSize maxEsSize;	//!< Max size of PCM output (in byte)
+	SceSize wordLength;	//!< PCM bit depth
 	SceAudioencInfo *pInfo;	//!< Pointer to ::SceAudioencInfo
 	SceAudioencOptInfo *pOptInfo;	//!< Pointer to ::SceAudioencOptInfo
 };
 
-extern int sceAudioencInitLibrary(int codecType, SceAudioencInitParam *pInitParam);
-extern int sceAudioencTermLibrary(SceUInt32 codecType);
-extern int sceAudioencCreateEncoder(SceAudioencCtrl *pCtrl, int codecType);
-extern int sceAudioencDeleteEncoder(SceAudioencCtrl *pCtrl);
-extern int sceAudioencEncode(SceAudioencCtrl *pCtrl);
-extern int sceAudioencClearContext(SceAudioencCtrl *pCtrl);
-extern int sceAudioencGetOptInfo(SceAudioencCtrl *pCtrl);
-extern int sceAudioencGetInternalError(SceAudioencCtrl *pCtrl, int *pInternalError);
+int sceAudioencInitLibrary(int codecType, SceAudioencInitParam *pInitParam);
+int sceAudioencTermLibrary(unsigned int codecType);
+int sceAudioencCreateEncoder(SceAudioencCtrl *pCtrl, int codecType);
+int sceAudioencDeleteEncoder(SceAudioencCtrl *pCtrl);
+int sceAudioencEncode(SceAudioencCtrl *pCtrl);
+int sceAudioencClearContext(SceAudioencCtrl *pCtrl);
+int sceAudioencGetOptInfo(SceAudioencCtrl *pCtrl);
+int sceAudioencGetInternalError(SceAudioencCtrl *pCtrl, int *pInternalError);
 
 #endif
