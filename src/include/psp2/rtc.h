@@ -12,7 +12,8 @@
 #ifndef _PSP2_RTC_H_
 #define _PSP2_RTC_H_
 
-#include <stdint.h>
+#include <psp2/types.h>
+#include <time.h>
 
 /* struct/union */
 

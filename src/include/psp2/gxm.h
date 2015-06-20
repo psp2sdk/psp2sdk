@@ -17,29 +17,29 @@
 // Error Codes
 
 enum {
-	SCE_GXM_ERROR_UNINITIALIZED	= 0x805B0000,
-	SCE_GXM_ERROR_ALREADY_INITIALIZED	= 0x805B0001,
-	SCE_GXM_ERROR_OUT_OF_MEMORY	= 0x805B0002,
-	SCE_GXM_ERROR_INVALID_VALUE	= 0x805B0003,
-	SCE_GXM_ERROR_INVALID_POINTER	= 0x805B0004,
-	SCE_GXM_ERROR_INVALID_ALIGNMENT	= 0x805B0005,
-	SCE_GXM_ERROR_NOT_WITHIN_SCENE	= 0x805B0006,
-	SCE_GXM_ERROR_WITHIN_SCENE	= 0x805B0007,
-	SCE_GXM_ERROR_NULL_PROGRAM	= 0x805B0008,
-	SCE_GXM_ERROR_UNSUPPORTED	= 0x805B0009,
-	SCE_GXM_ERROR_PATCHER_INTERNAL	= 0x805B000A,
-	SCE_GXM_ERROR_RESERVE_FAILED	= 0x805B000B,
-	SCE_GXM_ERROR_PROGRAM_IN_USE	= 0x805B000C,
-	SCE_GXM_ERROR_INVALID_INDEX_COUNT	= 0x805B000D,
-	SCE_GXM_ERROR_INVALID_POLYGON_MODE	= 0x805B000E,
-	SCE_GXM_ERROR_INVALID_SAMPLER_RESULT_TYPE_PRECISION	= 0x805B000F,
+	SCE_GXM_ERROR_UNINITIALIZED					= 0x805B0000,
+	SCE_GXM_ERROR_ALREADY_INITIALIZED				= 0x805B0001,
+	SCE_GXM_ERROR_OUT_OF_MEMORY					= 0x805B0002,
+	SCE_GXM_ERROR_INVALID_VALUE					= 0x805B0003,
+	SCE_GXM_ERROR_INVALID_POINTER					= 0x805B0004,
+	SCE_GXM_ERROR_INVALID_ALIGNMENT					= 0x805B0005,
+	SCE_GXM_ERROR_NOT_WITHIN_SCENE					= 0x805B0006,
+	SCE_GXM_ERROR_WITHIN_SCENE					= 0x805B0007,
+	SCE_GXM_ERROR_NULL_PROGRAM					= 0x805B0008,
+	SCE_GXM_ERROR_UNSUPPORTED					= 0x805B0009,
+	SCE_GXM_ERROR_PATCHER_INTERNAL					= 0x805B000A,
+	SCE_GXM_ERROR_RESERVE_FAILED					= 0x805B000B,
+	SCE_GXM_ERROR_PROGRAM_IN_USE					= 0x805B000C,
+	SCE_GXM_ERROR_INVALID_INDEX_COUNT				= 0x805B000D,
+	SCE_GXM_ERROR_INVALID_POLYGON_MODE				= 0x805B000E,
+	SCE_GXM_ERROR_INVALID_SAMPLER_RESULT_TYPE_PRECISION		= 0x805B000F,
 	SCE_GXM_ERROR_INVALID_SAMPLER_RESULT_TYPE_COMPONENT_COUNT	= 0x805B0010,
-	SCE_GXM_ERROR_UNIFORM_BUFFER_NOT_RESERVED	= 0x805B0011,
-	SCE_GXM_ERROR_INVALID_AUXILIARY_SURFACE	= 0x805B0013,
-	SCE_GXM_ERROR_INVALID_PRECOMPUTED_DRAW	= 0x805B0014,
-	SCE_GXM_ERROR_INVALID_PRECOMPUTED_VERTEX_STATE	= 0x805B0015,
-	SCE_GXM_ERROR_INVALID_PRECOMPUTED_FRAGMENT_STATE	= 0x805B0016,
-	SCE_GXM_ERROR_DRIVER	= 0x805B0017
+	SCE_GXM_ERROR_UNIFORM_BUFFER_NOT_RESERVED			= 0x805B0011,
+	SCE_GXM_ERROR_INVALID_AUXILIARY_SURFACE				= 0x805B0013,
+	SCE_GXM_ERROR_INVALID_PRECOMPUTED_DRAW				= 0x805B0014,
+	SCE_GXM_ERROR_INVALID_PRECOMPUTED_VERTEX_STATE			= 0x805B0015,
+	SCE_GXM_ERROR_INVALID_PRECOMPUTED_FRAGMENT_STATE		= 0x805B0016,
+	SCE_GXM_ERROR_DRIVER						= 0x805B0017
 };
 
 typedef void (SceGxmDisplayQueueCallback)(const void *callbackData);
@@ -316,7 +316,7 @@ typedef enum SceGxmColorSurfaceType {
 	SCE_GXM_COLOR_SURFACE_LINEAR	= 0x00000000u,
 	SCE_GXM_COLOR_SURFACE_TILED	= 0x04000000u,
 	SCE_GXM_COLOR_SURFACE_SWIZZLED	= 0x08000000u
-};
+} SceGxmColorSurfaceType;
 
 typedef enum SceGxmColorSurfaceGammaMode {
 	SCE_GXM_COLOR_SURFACE_GAMMA_NONE	= 0x00000000u,
@@ -801,9 +801,9 @@ typedef enum SceGxmTextureAnisoMode {
 
 typedef enum SceGxmTextureType {
 	SCE_GXM_TEXTURE_SWIZZLED	= 0x00000000u,
-	SCE_GXM_TEXTURE_CUBE	= 0x40000000u,
-	SCE_GXM_TEXTURE_LINEAR	= 0x60000000u,
-	SCE_GXM_TEXTURE_TILED	= 0x80000000u,
+	SCE_GXM_TEXTURE_CUBE		= 0x40000000u,
+	SCE_GXM_TEXTURE_LINEAR		= 0x60000000u,
+	SCE_GXM_TEXTURE_TILED		= 0x80000000u,
 	SCE_GXM_TEXTURE_LINEAR_STRIDED	= 0xc0000000u
 } SceGxmTextureType;
 
@@ -820,19 +820,19 @@ typedef enum SceGxmTextureMipFilter {
 } SceGxmTextureMipFilter;
 
 typedef enum SceGxmTextureAddrMode {
-	SCE_GXM_TEXTURE_ADDR_REPEAT	= 0x00000000u,
-	SCE_GXM_TEXTURE_ADDR_MIRROR	= 0x00000001u,
-	SCE_GXM_TEXTURE_ADDR_CLAMP	= 0x00000002u,
-	SCE_GXM_TEXTURE_ADDR_MIRROR_CLAMP	= 0x00000003u,
+	SCE_GXM_TEXTURE_ADDR_REPEAT			= 0x00000000u,
+	SCE_GXM_TEXTURE_ADDR_MIRROR			= 0x00000001u,
+	SCE_GXM_TEXTURE_ADDR_CLAMP			= 0x00000002u,
+	SCE_GXM_TEXTURE_ADDR_MIRROR_CLAMP		= 0x00000003u,
 	SCE_GXM_TEXTURE_ADDR_REPEAT_IGNORE_BORDER	= 0x00000004u,
-	SCE_GXM_TEXTURE_ADDR_CLAMP_FULL_BORDER	= 0x00000005u,
+	SCE_GXM_TEXTURE_ADDR_CLAMP_FULL_BORDER		= 0x00000005u,
 	SCE_GXM_TEXTURE_ADDR_CLAMP_IGNORE_BORDER	= 0x00000006u,
-	SCE_GXM_TEXTURE_ADDR_CLAMP_HALF_BORDER	= 0x00000007u
+	SCE_GXM_TEXTURE_ADDR_CLAMP_HALF_BORDER		= 0x00000007u
 } SceGxmTextureAddrMode;
 
 typedef enum SceGxmTextureGammaMode {
 	SCE_GXM_TEXTURE_GAMMA_NONE	= 0x00000000u,
-	SCE_GXM_TEXTURE_GAMMA_R	= 0x08000000u,
+	SCE_GXM_TEXTURE_GAMMA_R		= 0x08000000u,
 	SCE_GXM_TEXTURE_GAMMA_GR	= 0x18000000u,
 	SCE_GXM_TEXTURE_GAMMA_BGR	= 0x08000000u
 } SceGxmTextureGammaMode;
@@ -881,7 +881,7 @@ typedef enum SceGxmViewportMode {
 
 typedef enum SceGxmWBufferMode {
 	SCE_GXM_WBUFFER_DISABLED	= 0x00000000u,
-	SCE_GXM_WBUFFER_ENABLED	= 0x00004000u
+	SCE_GXM_WBUFFER_ENABLED		= 0x00004000u
 } SceGxmWBufferMode;
 
 typedef enum SceGxmDepthStencilForceLoadMode {
@@ -895,7 +895,7 @@ typedef enum SceGxmDepthStencilForceStoreMode {
 } SceGxmDepthStencilForceStoreMode;
 
 typedef enum SceGxmSceneFlags {
-	SCE_GXM_SCENE_FRAGMENT_SET_DEPENDENCY	= 0x00000001u,
+	SCE_GXM_SCENE_FRAGMENT_SET_DEPENDENCY		= 0x00000001u,
 	SCE_GXM_SCENE_VERTEX_WAIT_FOR_DEPENDENCY	= 0x00000002u
 } SceGxmSceneFlags;
 
@@ -904,7 +904,7 @@ typedef enum SceGxmMidSceneFlags {
 } SceGxmMidSceneFlags;
 
 typedef enum SceGxmColorSurfaceScaleMode {
-	SCE_GXM_COLOR_SURFACE_SCALE_NONE	= 0x00000000u,
+	SCE_GXM_COLOR_SURFACE_SCALE_NONE		= 0x00000000u,
 	SCE_GXM_COLOR_SURFACE_SCALE_MSAA_DOWNSCALE	= 0x00000001u
 } SceGxmColorSurfaceScaleMode;
 
@@ -915,12 +915,12 @@ typedef enum SceGxmOutputRegisterSize {
 
 typedef enum SceGxmVisibilityTestMode {
 	SCE_GXM_VISIBILITY_TEST_DISABLED	= 0x00000000u,
-	SCE_GXM_VISIBILITY_TEST_ENABLED	= 0x00004000u
+	SCE_GXM_VISIBILITY_TEST_ENABLED		= 0x00004000u
 } SceGxmVisibilityTestMode;
 
 typedef enum SceGxmVisibilityTestOp {
 	SCE_GXM_VISIBILITY_TEST_OP_INCREMENT	= 0x00000000u,
-	SCE_GXM_VISIBILITY_TEST_OP_SET	= 0x00040000u
+	SCE_GXM_VISIBILITY_TEST_OP_SET		= 0x00040000u
 } SceGxmVisibilityTestOp;
 
 typedef enum SceGxmBlendFunc {
@@ -943,7 +943,7 @@ typedef enum SceGxmBlendFactor {
 	SCE_GXM_BLEND_FACTOR_ONE_MINUS_DST_ALPHA,
 	SCE_GXM_BLEND_FACTOR_SRC_ALPHA_SATURATE,
 	SCE_GXM_BLEND_FACTOR_DST_ALPHA_SATURATE
-} enum SceGxmBlendFactor;
+} SceGxmBlendFactor;
 
 typedef enum SceGxmColorMask {
 	SCE_GXM_COLOR_MASK_NONE	= 0,
@@ -964,21 +964,21 @@ typedef struct SceGxmBlendInfo {
 	SceGxmBlendFactor alphaDst : 4;
 } SceGxmBlendInfo;
 
-typedef struct SceGxmRenderTarget;
+typedef struct SceGxmRenderTarget SceGxmRenderTarget;
 
-typedef struct SceGxmSyncObject;
+typedef struct SceGxmSyncObject SceGxmSyncObject;
 
 typedef struct SceGxmVertexAttribute {
-	u16 streamIndex;
-	u16 offset;
+	unsigned short streamIndex;
+	unsigned short offset;
 	SceGxmAttributeFormat format;
-	u8 componentCount;
-	u16 regIndex;
+	unsigned char componentCount;
+	unsigned short regIndex;
 } SceGxmVertexAttribute;
 
 typedef struct SceGxmVertexStream {
-	u16 stride;
-	u16 indexSource;
+	unsigned short stride;
+	unsigned short indexSource;
 } SceGxmVertexStream;
 
 typedef struct SceGxmTexture {
@@ -1021,12 +1021,12 @@ typedef struct SceGxmValidRegion {
 	unsigned int yMax;
 } SceGxmValidRegion;
 
-typedef struct SceGxmContext;
+typedef struct SceGxmContext SceGxmContext;
 
-typedef enum {
-	SCE_GXM_MINIMUM_CONTEXT_HOST_MEM_SIZE	= 2048,
-	SCE_GXM_DEFAULT_VDM_RING_BUFFER_SIZE	= (128 * 1024),
-	SCE_GXM_DEFAULT_VERTEX_RING_BUFFER_SIZE	= (2 * 1024 * 1024),
+enum {
+	SCE_GXM_MINIMUM_CONTEXT_HOST_MEM_SIZE		= 2048,
+	SCE_GXM_DEFAULT_VDM_RING_BUFFER_SIZE		= (128 * 1024),
+	SCE_GXM_DEFAULT_VERTEX_RING_BUFFER_SIZE		= (2 * 1024 * 1024),
 	SCE_GXM_DEFAULT_FRAGMENT_RING_BUFFER_SIZE	= (512 * 1024),
 	SCE_GXM_DEFAULT_FRAGMENT_USSE_RING_BUFFER_SIZE	= (16 * 1024),
 };
@@ -1045,9 +1045,9 @@ typedef struct SceGxmContextParams {
 	unsigned int fragmentUsseRingBufferOffset;
 } SceGxmContextParams;
 
-typedef struct SceGxmVertexProgram;
+typedef struct SceGxmVertexProgram SceGxmVertexProgram;
 
-typedef struct SceGxmFragmentProgram;
+typedef struct SceGxmFragmentProgram SceGxmFragmentProgram;
 
 typedef enum {
 	SCE_GXM_PRECOMPUTED_VERTEX_STATE_WORD_COUNT   = 7,
@@ -1075,9 +1075,9 @@ typedef enum {
 	SCE_GXM_MAX_AUXILIARY_SURFACES = 3,
 };
 
-typedef struct SceGxmProgram;
+typedef struct SceGxmProgram SceGxmProgram;
 
-typedef struct SceGxmProgramParameter;
+typedef struct SceGxmProgramParameter SceGxmProgramParameter;
 
 typedef enum SceGxmProgramType {
 	SCE_GXM_VERTEX_PROGRAM,
@@ -1123,9 +1123,9 @@ typedef enum SceGxmParameterSemantic {
 	SCE_GXM_PARAMETER_SEMANTIC_TEXCOORD
 } SceGxmParameterSemantic;
 
-typedef struct SceGxmShaderPatcher;
+typedef struct SceGxmShaderPatcher SceGxmShaderPatcher;
 
-typedef struct SceGxmRegisteredProgram;
+typedef struct SceGxmRegisteredProgram SceGxmRegisteredProgram;
 
 typedef SceGxmRegisteredProgram *SceGxmShaderPatcherId;
 
@@ -1221,7 +1221,7 @@ int sceGxmDraw(SceGxmContext *context, SceGxmPrimitiveType primType, SceGxmIndex
 int sceGxmDrawInstanced(SceGxmContext *context, SceGxmPrimitiveType primType, SceGxmIndexFormat indexType, const void *indexData, unsigned int indexCount, unsigned int indexWrap);
 int sceGxmSetVisibilityBuffer(SceGxmContext *context, void *bufferBase, unsigned int stridePerCore);
 
-int sceGxmBeginScene(SceGxmContext *context, unsigned int flags, const SceGxmRenderTarget>renderTarget, const SceGxmValidRegion *validRegion, SceGxmSyncObject *vertexSyncObject, SceGxmSyncObject *fragmentSyncObject, const SceGxmColorSurface *colorSurface, const SceGxmDepthStencilSurface *depthStencil);
+int sceGxmBeginScene(SceGxmContext *context, unsigned int flags, const SceGxmRenderTarget *renderTarget, const SceGxmValidRegion *validRegion, SceGxmSyncObject *vertexSyncObject, SceGxmSyncObject *fragmentSyncObject, const SceGxmColorSurface *colorSurface, const SceGxmDepthStencilSurface *depthStencil);
 int sceGxmMidSceneFlush(SceGxmContext *context, unsigned int flags, SceGxmSyncObject *vertexSyncObject, const SceGxmNotification *vertexNotification);
 int sceGxmEndScene(SceGxmContext *context, const SceGxmNotification *vertexNotification, const SceGxmNotification *fragmentNotification);
 

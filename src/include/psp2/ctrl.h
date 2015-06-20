@@ -17,7 +17,7 @@
 enum {
 	SCE_CTRL_ERROR_INVALID_ARG	= 0x80340001,
 	SCE_CTRL_ERROR_PRIV_REQUIRED	= 0x80340002,
-	SCE_CTRL_ERROR_FATAL	= 0x803400FF
+	SCE_CTRL_ERROR_FATAL		= 0x803400FF
 };
 
 /** Enumeration for the digital controller buttons. */
@@ -25,15 +25,15 @@ enum {
 	/** Select button. */
 	PSP2_CTRL_SELECT	= 0x000001,
 	/** Start button. */
-	PSP2_CTRL_START	= 0x000008,
+	PSP2_CTRL_START		= 0x000008,
 	/** Up D-Pad button. */
-	PSP2_CTRL_UP	= 0x000010,
+	PSP2_CTRL_UP		= 0x000010,
 	/** Right D-Pad button. */
-	PSP2_CTRL_RIGHT	= 0x000020,
+	PSP2_CTRL_RIGHT		= 0x000020,
 	/** Down D-Pad button. */
-	PSP2_CTRL_DOWN	= 0x000040,
+	PSP2_CTRL_DOWN		= 0x000040,
 	/** Left D-Pad button. */
-	PSP2_CTRL_LEFT	= 0x000080,
+	PSP2_CTRL_LEFT		= 0x000080,
 	/** Left trigger. */
 	PSP2_CTRL_LTRIGGER	= 0x000100,
 	/** Right trigger. */
@@ -43,16 +43,15 @@ enum {
 	/** Circle button. */
 	PSP2_CTRL_CIRCLE	= 0x002000,
 	/** Cross button. */
-	PSP2_CTRL_CROSS	= 0x004000,
+	PSP2_CTRL_CROSS		= 0x004000,
 	/** Square button. */
 	PSP2_CTRL_SQUARE	= 0x008000,
 	/** Any input intercepted. */
-	PSP2_CTRL_ANY	= 0x010000
+	PSP2_CTRL_ANY		= 0x010000
 };
 
 /** Controller mode. */
-enum
-{
+enum {
 	/** Digitial buttons only. */
 	PSP2_CTRL_MODE_DIGITAL = 0,
 	/** Digital buttons + Analog support. */
