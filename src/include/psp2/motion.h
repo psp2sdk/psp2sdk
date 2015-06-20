@@ -18,10 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2_MOTION_
-#define _PSP2_MOTION_
+#ifndef _PSP2_MOTION_H_
+#define _PSP2_MOTION_H_
 
 #include <psp2/types.h>
+#include <stdint.h>
 
 /* struct */
 
@@ -29,25 +30,25 @@ typedef struct SceMotionState {
 	unsigned int timestamp;
 	SceFVector3 acceleration;
 	SceFVector3 angularVelocity;
-	unsigned char reserve1[12];
+	uint8_t reserved1[12];
 	SceFQuaternion deviceQuat;
 	SceUMatrix4 rotationMatrix;
 	SceUMatrix4 nedMatrix;
-	unsigned char reserve2[4];
+	uint32_t reserved2;
 	SceFVector3 basicOrientation;
 	SceULong64 hostTimestamp;
-	unsigned char reserve3[40];
+	uint8_t reserved[40];
 } SceMotionState;
 
 typedef struct SceMotionSensorState {
 	SceFVector3 accelerometer;
 	SceFVector3 gyro;
-	unsigned char reserve1[12];
+	uint8_t reserved1[12];
 	unsigned int timestamp;
 	unsigned int counter;
-	unsigned char reserve2[4];
+	uint32_t reserved2;
 	SceULong64 hostTimestamp;
-	unsigned char reserve3[8];
+	uint8_t reserved3[8];
 } SceMotionSensorState;
 
 /* prototypes */
@@ -56,17 +57,17 @@ int sceMotionGetState(SceMotionState *motionState);
 int sceMotionGetSensorState(SceMotionSensorState *sensorState, int numRecords);
 int sceMotionGetBasicOrientation(SceFVector3 *basicOrientation);
 int sceMotionRotateYaw(float radians);
-int sceMotionGetTiltCorrection();
+int sceMotionGetTiltCorrection(void);
 int sceMotionSetTiltCorrection(int setValue);
-int sceMotionGetDeadband();
+int sceMotionGetDeadband(void);
 int sceMotionSetDeadband(int setValue);
 int sceMotionSetAngleThreshold(float angle);
-float sceMotionGetAngleThreshold();
-int sceMotionReset();
-int sceMotionMagnetometerOn();
-int sceMotionMagnetometerOff();
-int sceMotionGetMagnetometerState();
-int sceMotionStartSampling();
-int sceMotionStopSampling();
+float sceMotionGetAngleThreshold(void);
+int sceMotionReset(void);
+int sceMotionMagnetometerOn(void);
+int sceMotionMagnetometerOff(void);
+int sceMotionGetMagnetometerState(void);
+int sceMotionStartSampling(void);
+int sceMotionStopSampling(void);
 
 #endif
