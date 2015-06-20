@@ -24,7 +24,7 @@
 #include <psp2/types.h>
 
 
-enum DisplayErrorCodes {
+enum {
 	SCE_DISPLAY_ERROR_OK	= 0,
 	SCE_DISPLAY_ERROR_INVALID_HEAD	= 0x80290000,
 	SCE_DISPLAY_ERROR_INVALID_VALUE	= 0x80290001,
@@ -39,7 +39,7 @@ enum DisplayErrorCodes {
 
 #define PSP2_DISPLAY_PIXELFORMAT_A8B8G8R8 0x00000000U
 
-enum DisplaySetBufSync {
+enum {
 	/** Buffer change effective immediately */
 	PSP2_DISPLAY_SETBUF_IMMEDIATE = 0,
 	/** Buffer change effective next frame */

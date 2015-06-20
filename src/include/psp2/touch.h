@@ -24,7 +24,7 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
-enum TouchErrorCodes {
+enum {
 	SCE_TOUCH_ERROR_INVALID_ARG	= 0x80350001,
 	SCE_TOUCH_ERROR_PRIV_REQUIRED	= 0x80350002,
 	SCE_TOUCH_ERROR_FATAL	= 0x803500ff

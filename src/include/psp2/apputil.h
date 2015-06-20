@@ -21,7 +21,7 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
-enum SceAppUtilErrorCodes {
+enum {
 	SCE_APPUTIL_ERROR_PARAMETER	= 0x80100600,
 	SCE_APPUTIL_ERROR_NOT_INITIALIZED	= 0x80100601,
 	SCE_APPUTIL_ERROR_NO_MEMORY	= 0x80100602,

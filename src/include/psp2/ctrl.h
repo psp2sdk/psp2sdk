@@ -23,15 +23,14 @@
 
 #include <stdint.h>
 
-enum CtrlErrorCodes {
+enum {
 	SCE_CTRL_ERROR_INVALID_ARG	= 0x80340001,
 	SCE_CTRL_ERROR_PRIV_REQUIRED	= 0x80340002,
 	SCE_CTRL_ERROR_FATAL	= 0x803400FF
 };
 
 /** Enumeration for the digital controller buttons. */
-enum CtrlButtons
-{
+enum {
 	/** Select button. */
 	PSP2_CTRL_SELECT	= 0x000001,
 	/** Start button. */
@@ -61,7 +60,7 @@ enum CtrlButtons
 };
 
 /** Controller mode. */
-enum CtrlMode
+enum
 {
 	/** Digitial buttons only. */
 	PSP2_CTRL_MODE_DIGITAL = 0,

@@ -24,7 +24,7 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
-enum CameraErrorCodes {
+enum {
 	SCE_CAMERA_ERROR_ALREADY_INIT	= 0x802e0001,
 	SCE_CAMERA_ERROR_NOT_INIT	= 0x802e0002,
 	SCE_CAMERA_ERROR_ALREADY_OPEN	= 0x802e0003,

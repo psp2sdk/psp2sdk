@@ -21,7 +21,7 @@
 #ifndef _PSP2_AUDIOIN_H_
 #define _PSP2_AUDIOIN_H_
 
-enum AudioInErrorCodes {
+enum {
 	//! Undefined error
 	SCE_AUDIO_IN_ERROR_FATAL	= 0x80260100,
 
@@ -56,12 +56,12 @@ enum AudioInErrorCodes {
 	SCE_AUDIO_IN_ERROR_BUSY	= 0x8026010A
 };
 
-enum AudioInPortType {
+enum {
 	PSP2_AUDIO_IN_PORT_TYPE_VOICE	= 0,
 	PSP2_AUDIO_IN_PORT_TYPE_RAW	= 0x0002
 };
 
-enum AudioInMode {
+enum {
 	PSP2_AUDIO_IN_PARAM_FORMAT_S16_MONO	= 0,
 	PSP2_AUDIO_IN_GETSTATUS_MUTE	= 1
 };

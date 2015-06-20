@@ -21,7 +21,7 @@
 #ifndef _PSP2_AUDIOOUT_H_
 #define _PSP2_AUDIOOUT_H_
 
-enum AudioOutErrorCodes {
+enum {
 	SCE_AUDIO_OUT_ERROR_NOT_OPENED	= 0x80260001,
 	SCE_AUDIO_OUT_ERROR_BUSY	= 0x80260002,
 	SCE_AUDIO_OUT_ERROR_INVALID_PORT	= 0x80260003,
@@ -37,7 +37,7 @@ enum AudioOutErrorCodes {
 	SCE_AUDIO_OUT_ERROR_OUT_OF_MEMORY	= 0x8026000D
 };
 
-enum AudioOutPortType {
+enum {
 	//! Used for main audio output, freq must be set to 48000 Hz
 	PSP2_AUDIO_OUT_PORT_TYPE_MAIN	= 0,
 
@@ -48,7 +48,7 @@ enum AudioOutPortType {
 	PSP2_AUDIO_OUT_PORT_TYPE_VOICE	= 2
 };
 
-enum AudioOutMode {
+enum {
 	PSP2_AUDIO_OUT_MODE_MONO	= 0,
 	PSP2_AUDIO_OUT_MODE_STEREO	= 1
 };
@@ -142,7 +142,7 @@ enum AudioOutConfigType {
 int sceAudioOutGetConfig(int port, int type);
 
 /** Argument 'mode' to specify to ::sceAudioOutSetAlcMode */
-enum AudioOutAlcMode {
+enum {
 	PSP2_AUDIO_ALC_OFF		= 0,
 	PSP2_AUDIO_ALC_MODE1	= 1,
 	PSP2_AUDIO_ALC_MODE_MAX	= 2

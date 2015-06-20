@@ -24,7 +24,7 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
-enum AudioencErrorCodes {
+enum {
 	SCE_AUDIOENC_ERROR_API_FAIL	= 0x80860000,
 	SCE_AUDIOENC_ERROR_INVALID_TYPE	= 0x80860001,
 	SCE_AUDIOENC_ERROR_INVALID_INIT_PARAM	= 0x80860002,
@@ -42,7 +42,7 @@ enum AudioencErrorCodes {
 	SCE_AUDIOENC_ERROR_INVALID_ALIGNMENT	= 0x8086000E
 };
 
-enum AudioencCelpErrorCodes {
+enum {
 	SCE_AUDIOENC_CELP_ERROR_INVALID_CONFIG	= 0x80861001,
 };
 
@@ -58,7 +58,7 @@ enum AudioencCelpErrorCodes {
 
 #define PSP2_AUDIOENC_CELP_SAMPLING_RATE_8KHZ	(8000)	//!< CELP encoder default sampling rate
 
-enum AudioEncCelpBitRates {
+enum {
 	PSP2_AUDIOENC_CELP_BIT_RATE_3850BPS = 3850,
 	PSP2_AUDIOENC_CELP_BIT_RATE_4650BPS = 4650,
 	PSP2_AUDIOENC_CELP_BIT_RATE_5700BPS = 5700,
