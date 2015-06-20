@@ -18,8 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PSP2_POWER_
-#define _PSP2_POWER_
+#ifndef _PSP2_POWER_H_
+#define _PSP2_POWER_H_
+
+#include <psp2/types.h>
 
 /* callback */
 typedef void (*ScePowerCallback)(int unknown, int powerInfo);
