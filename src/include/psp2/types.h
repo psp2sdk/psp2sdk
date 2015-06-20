@@ -23,6 +23,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <uchar.h>
 
 /* SCE types */
 typedef int8_t SceChar8;
@@ -53,8 +54,11 @@ typedef unsigned int SceSize;
 typedef int SceSSize;
 
 typedef int SceBool;
-#define PSP2_TRUE (1)
-#define PSP2_FALSE (0)
+
+enum {
+	PSP2_FALSE,
+	PSP2_TRUE
+};
 
 typedef float SceFloat;
 typedef float SceFloat32;
@@ -68,11 +72,11 @@ typedef signed char SceSByte8;
 typedef unsigned char SceByte;
 typedef unsigned char SceByte8;
 
-typedef short unsigned int SceWChar16;
-typedef unsigned int SceWChar32;
+typedef char16_t SceWChar16;
+typedef char32_t SceWChar32;
 
 typedef void SceVoid;
-typedef void* ScePVoid;
+typedef void *ScePVoid;
 
 typedef int SceIntPtr;
 typedef unsigned int SceUIntPtr;
@@ -249,4 +253,4 @@ typedef int ScePID; //!< Process ID
 typedef char* SceName; //!< Names are used to describe object names
 #define PSP2_UID_NAMELEN 31 //!< Maximum length for kernel object names
 
-#endif /* _PSP2TYPES_H_ */
+#endif
