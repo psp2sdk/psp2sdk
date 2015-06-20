@@ -1,6 +1,5 @@
 *.o
 *.a
-*.in
 *.m4
 *.log
 
@@ -12,6 +11,8 @@ autom4te.cache
 config.status
 configure
 .deps
+Doxyfile
+Makefile.in
 Makefile
 
 psp2-fixup

@@ -14,8 +14,8 @@ script:
  - export REV=dirty-$(git describe --always)
 
  - cd src
- - (cat Doxyfile; echo PROJECT_NUMBER=$REV) | doxygen -
  - ./autogen.sh $FLAGS
+ - doxygen
  - make install
  - cd ..
 
