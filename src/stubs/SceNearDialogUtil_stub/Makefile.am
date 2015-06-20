@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceNearDialogUtil-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -24,12 +15,12 @@ NIDS = 0x1265745d 0x1341672d 0x200d6143 0x28394cd7 	\
 	0xaf4740d1 0xb04b9676 0xbf1b4bb9 0xccb5ff48 	\
 	0xd46e5257 0xd6ffc962 0xda56f2f1 0xdbefb12e 	\
 	0xe2a90639 0xe493d3b8 0xeca38e35 0xf3fbffe9 	\
-	0xf684c554 
+	0xf684c554
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceNearDialogUtil_stub.a
-libSceNearDialogUtil_stub_a_SOURCES = SceNearDialogUtil_stub.S 
+libSceNearDialogUtil_stub_a_SOURCES = SceNearDialogUtil_stub.S
 am_libSceNearDialogUtil_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

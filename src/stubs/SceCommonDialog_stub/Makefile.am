@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceCommonDialog-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -40,12 +31,12 @@ NIDS = 0x013e7f74 0x0150a451 0x032206d8 0x043a353e 	\
 	0xcf0431fd 0xd29fe607 0xd4c37375 0xd5a6b473 	\
 	0xd6387e24 0xd699d9b4 0xd855414c 0xdc346979 	\
 	0xddc52a46 0xde1f3928 0xe37069d5 0xe525bdb0 	\
-	0xf4f600ca 0xfdfe6042 0xffa35858 
+	0xf4f600ca 0xfdfe6042 0xffa35858
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceCommonDialog_stub.a
-libSceCommonDialog_stub_a_SOURCES = SceCommonDialog_stub.S 
+libSceCommonDialog_stub_a_SOURCES = SceCommonDialog_stub.S
 am_libSceCommonDialog_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceSas-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -24,12 +15,12 @@ NIDS = 0x007e63e6 0x011788be 0x0be8204d 0x1568017a 	\
 	0x820d5f82 0xb0444e69 0xb1756efc 0xb6642276 	\
 	0xbad546a0 0xbb7d6790 0xbd496983 0xc838db6f 	\
 	0xcdf2ddd5 0xde6227b8 0xecce0db8 0xf1c63cb9 	\
-	0xfd1a0cbf 
+	0xfd1a0cbf
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceSas_stub.a
-libSceSas_stub_a_SOURCES = SceSas_stub.S 
+libSceSas_stub_a_SOURCES = SceSas_stub.S
 am_libSceSas_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

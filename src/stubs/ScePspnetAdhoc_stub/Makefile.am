@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _ScePspnetAdhoc-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -22,12 +13,12 @@ NIDS = 0x02098b69 0x0291ef5b 0x051d8368 0x0a0423dd 	\
 	0x6c0b4971 0x81498625 0x87805e13 0x8f683810 	\
 	0x97a80065 0xa083bf7c 0xa40f17e0 0xad5f570d 	\
 	0xb56238ba 0xb7b6a662 0xca249f53 0xd3230114 	\
-	0xe2fe9dd6 0xe45f0801 0xf2ec12cd 0xfca965f6 
+	0xe2fe9dd6 0xe45f0801 0xf2ec12cd 0xfca965f6
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libScePspnetAdhoc_stub.a
-libScePspnetAdhoc_stub_a_SOURCES = ScePspnetAdhoc_stub.S 
+libScePspnetAdhoc_stub_a_SOURCES = ScePspnetAdhoc_stub.S
 am_libScePspnetAdhoc_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

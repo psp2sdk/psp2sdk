@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceRtc-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -26,12 +17,12 @@ NIDS = 0x0572eddc 0x0a05e201 0x1282c436 0x147f2138 	\
 	0xb5c4e95f 0xc7385158 0xc995de02 0xccea2b54 	\
 	0xcd89f464 0xcddd25fe 0xd7622935 0xdf6c3e1b 	\
 	0xe713c640 0xf17fd8b5 0xf2b238e2 0xf8b22b07 	\
-	0x258be8ec 
+	0x258be8ec
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceRtc_stub.a
-libSceRtc_stub_a_SOURCES = SceRtcUser_stub.S SceRtc_stub.S 
+libSceRtc_stub_a_SOURCES = SceRtcUser_stub.S SceRtc_stub.S
 am_libSceRtc_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

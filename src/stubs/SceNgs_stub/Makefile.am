@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceNgs-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -32,12 +23,12 @@ NIDS = 0x01a52e3a 0x0a92e4ec 0x0a93ea96 0x0d5399cf 	\
 	0xce53bc33 0xd0c9ae5a 0xd124bfb1 0xd668b49c 	\
 	0xd7786e99 0xdc7c0f05 0xdd5ca10b 0xe0ac8776 	\
 	0xe9b572b7 0xed14cf4a 0xf6b68c31 0xf964120e 	\
-	0xfa0a0f34 0xfb8174b1 0xfbe515d4 0xfe1a98e9 
+	0xfa0a0f34 0xfb8174b1 0xfbe515d4 0xfe1a98e9
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceNgs_stub.a
-libSceNgs_stub_a_SOURCES = SceNgs_stub.S 
+libSceNgs_stub_a_SOURCES = SceNgs_stub.S
 am_libSceNgs_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

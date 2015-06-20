@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceFios2-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -53,12 +44,12 @@ NIDS = 0x030306f4 0x057252f2 0x06d97629 0x0c81d80e 	\
 	0xe6a66c70 0xe76c8ec3 0xea9855ba 0xee681e1d 	\
 	0xf21213b9 0xf3c84d0f 0xf4c6b72a 0xf4f54e09 	\
 	0xf6cacfc7 0xf85c208b 0xf8beac88 0xfe1e1d28 	\
-	0xfef940b7 0xff04af72 
+	0xfef940b7 0xff04af72
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceFios2_stub.a
-libSceFios2_stub_a_SOURCES = SceFios2_stub.S 
+libSceFios2_stub_a_SOURCES = SceFios2_stub.S
 am_libSceFios2_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

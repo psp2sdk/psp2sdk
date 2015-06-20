@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceNpTus-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -31,12 +22,12 @@ NIDS = 0x0374c127 0x0a5d05f1 0x0cfac523 0x1989cc51 	\
 	0xd26b9f4c 0xd51b39ed 0xd53d3692 0xd62d2a0b 	\
 	0xd8d5caba 0xd97e51ec 0xe1d6d4cf 0xea588f23 	\
 	0xf1d9529e 0xf4d40b19 0xf6d24df7 0xf91887ec 	\
-	0xfc0c5159 0xfc300e7e 0xfe92d6cb 
+	0xfc0c5159 0xfc300e7e 0xfe92d6cb
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceNpTus_stub.a
-libSceNpTus_stub_a_SOURCES = SceNpTus_stub.S 
+libSceNpTus_stub_a_SOURCES = SceNpTus_stub.S
 am_libSceNpTus_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

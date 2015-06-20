@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceNpCommerce2-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -26,12 +17,12 @@ NIDS = 0x021dc797 0x0550c016 0x118e1c5e 0x123e55f4 	\
 	0xb88db7c2 0xb99958ae 0xba5a5784 0xbbddf866 	\
 	0xc47cdb59 0xc594adc2 0xc73f209a 0xd6a5b200 	\
 	0xde45f84f 0xe7486a60 0xe81b8bad 0xf6f23623 	\
-	0xfdb39774 0xffc8b18b 
+	0xfdb39774 0xffc8b18b
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceNpCommerce2_stub.a
-libSceNpCommerce2_stub_a_SOURCES = SceNpCommerce2_stub.S 
+libSceNpCommerce2_stub_a_SOURCES = SceNpCommerce2_stub.S
 am_libSceNpCommerce2_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceLibm-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -66,7 +57,7 @@ NIDS = 0x0056061b 0x0197c9d5 0x0212323e 0x025f51ce 	\
 	0xe6067ac0 0xe6988b7b 0xe6bb3dcf 0xe8c1f6f8 	\
 	0xeaab2055 0xeb027358 0xf1d7c851 0xf247ee99 	\
 	0xf2c0af49 0xfd2a3464 0xfd431619 0xfdfa4558 	\
-	0xff4eae04 
+	0xff4eae04
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
