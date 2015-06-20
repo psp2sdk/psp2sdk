@@ -1,5 +1,5 @@
 # psp2sdk
-An open-sourced SDK for PSP2, aiming to integrate with devkitARM
+The free SDK for PSP2, aiming to integrate with devkitARM
 
 ## Help us out!
 Want to help out? Awesome.
