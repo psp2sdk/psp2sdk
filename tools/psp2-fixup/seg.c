@@ -36,22 +36,22 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 		return EINVAL;
 	}
 
-	for (i = 0; i < ehdr->e_shnum; i++, scns++) {
-		if (scns->shdr.sh_type == SHT_REL) {
-			if (scns != relMark)
-				f(scns, segs + relaNdx, relaNdx);
+	for (i = 0; i < ehdr->e_shnum; i++) {
+		if (scns[i].shdr.sh_type == SHT_REL) {
+			if (scns[scns[i].shdr.sh_info].shdr.sh_flags & SHF_ALLOC)
+				f(scns + i, segs + relaNdx, relaNdx);
 			continue;
 		}
 
-		if (!(scns->shdr.sh_flags & SHF_ALLOC))
+		if (!(scns[i].shdr.sh_flags & SHF_ALLOC))
 			continue;
 
 		for (j = 0; j < ehdr->e_phnum; j++) {
 			phdr = &segs[j].phdr;
-			if (phdr->p_offset <= scns->shdr.sh_offset
-				&& scns->shdr.sh_offset + scns->shdr.sh_size
+			if (phdr->p_offset <= scns[i].shdr.sh_offset
+				&& scns[i].shdr.sh_offset + scns[i].shdr.sh_size
 					<= phdr->p_offset + phdr->p_filesz) {
-				f(scns, segs + j, j);
+				f(scns + i, segs + j, j);
 				break;
 			}
 		}
