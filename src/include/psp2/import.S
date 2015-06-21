@@ -15,7 +15,7 @@
 
 .macro PSP2_IMPORT_HEAD nid, name, num, ver, pkgVer
 #ifdef HEAD
-	.section .sce_libgen_mark
+	.section .sce_libgen_mark, "", %progbits
 	.align	2
 	.global	_\name\()_\num\()_stub_head
 _\name\()_\num\()_stub_head:
@@ -32,7 +32,7 @@ _sce_package_version_\name:
 
 	.size	_\name\()_\num\()_stub_head, .-_\name\()_\num\()_stub_head
 
-	.section .sceImport.rodata
+	.section .sceImport.rodata, "a", %progbits
 	.global	_\name\()_stub_str
 _\name\()_stub_str:
 	.asciz	"\name"
@@ -46,20 +46,20 @@ _\name\()_stub_str:
 _NID_\name = \nid
 #elif defined(FUNC)
 .if FUNC == \nid
-	.section .sceFStub.rodata
+	.section .sceFStub.rodata, "a", %progbits
 	.word	0
 
-	.section .sceRefs.rodata
+	.section .sceRefs.rodata, "a", %progbits
 	.word	0
 	.word	0
 	.word	0
 	.word	0
 	.word	0
 
-	.section .sceFNID.rodata
+	.section .sceFNID.rodata, "a", %progbits
 	.word	0
 
-	.section .sceStubs.text.\module\().\name
+	.section .sceStubs.text.\module\().\name, "ax", %progbits
 	.align	2
 	.global	\name
 \name:
@@ -69,7 +69,7 @@ _NID_\name = \nid
 	.word	0
 	.size	\name, .-\name
 
-	.section .sce_libgen_mark
+	.section .sce_libgen_mark, "", %progbits
 	.word	0x00000114
 	.word	_\module\()_\moduleNum\()_stub_head
 	.word	\name
