@@ -210,7 +210,7 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	if (dst == NULL || src == NULL || scn == NULL)
 		return EINVAL;
 
-	if (scn->shdr.sh_size == 0)
+	if (scn->shdr.sh_size == 0 || scn->shdr.sh_type == SHT_NOBITS)
 		return 0;
 
 	if (fseek(dst, scn->shdr.sh_offset, SEEK_SET)) {
