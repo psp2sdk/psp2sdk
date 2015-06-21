@@ -159,7 +159,7 @@ static int updateSymtab(Elf32_Sym *symtab, Elf32_Word size, scn_t *scns)
 		if (symtab->st_shndx != SHN_UNDEF
 			&& symtab->st_shndx < SHN_LORESERVE)
 		{
-			symtab->st_value -= scns[symtab->st_shndx].addrDiff;
+			symtab->st_value += scns[symtab->st_shndx].addrDiff;
 		}
 
 		symtab++;
