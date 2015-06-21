@@ -29,6 +29,7 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 {
 	Elf32_Half i, j;
 	Elf32_Phdr *phdr;
+	Elf32_Shdr *shdr;
 
 	if (f == NULL || scns == NULL || segs == NULL
 		|| ehdr == NULL || relMark == NULL)
@@ -37,19 +38,22 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 	}
 
 	for (i = 0; i < ehdr->e_shnum; i++) {
-		if (scns[i].shdr.sh_type == SHT_REL) {
-			if (scns[scns[i].shdr.sh_info].shdr.sh_flags & SHF_ALLOC)
+		shdr = &scns[i].shdr;
+
+		if (shdr->sh_type == SHT_REL) {
+			if (scns[shdr->sh_info].shdr.sh_flags & SHF_ALLOC)
 				f(scns + i, segs + relaNdx, relaNdx);
+
 			continue;
 		}
 
-		if (!(scns[i].shdr.sh_flags & SHF_ALLOC))
+		if (!(shdr->sh_flags & SHF_ALLOC))
 			continue;
 
 		for (j = 0; j < ehdr->e_phnum; j++) {
 			phdr = &segs[j].phdr;
-			if (phdr->p_offset <= scns[i].shdr.sh_offset
-				&& scns[i].shdr.sh_offset + scns[i].shdr.sh_size
+			if (phdr->p_offset <= shdr->sh_offset
+				&& shdr->sh_offset + shdr->sh_size
 					<= phdr->p_offset + phdr->p_filesz) {
 				f(scns + i, segs + j, j);
 				break;
