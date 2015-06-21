@@ -82,7 +82,7 @@ typedef uint64_t Psp2_Rela_Short;
 
 #define PSP2_R_SET_SHORT(rela, isShort) {	\
 		*(rela) &= 0xFFFFFFFFFFFFFFF0;	\
-		*(rela) |= (isShort);	\
+		*(rela) |= (isShort) ? 1 : 0;	\
 	}
 #define PSP2_R_SET_SYMSEG(rela, symseg) {	\
 		*(rela) &= 0xFFFFFFFFFFFFFF0F;	\
