@@ -248,12 +248,11 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			newAddr = addr;
 
 			gap = addr & (scn->shdr.sh_addralign - 1);
-			if (gap)
-				newAddr += scn->shdr.sh_addralign - gap;
-
-			gap = newAddr - addr;
-			if (gap)
+			if (gap) {
+				gap = scn->shdr.sh_addralign - gap;
+				newAddr += gap;
 				sorts[i]->phdr.p_filesz += gap;
+			}
 
 			scn->addrDiff = addr - scn->shdr.sh_addr;
 			offset = addr - sorts[i]->phdr.p_vaddr;
