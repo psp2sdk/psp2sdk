@@ -197,8 +197,7 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
-	res = convRelToRela(elf->fp, elf->scns, elf->segs,
-		elf->strtab->content, elf->symtab->content,
+	res = convRelToRela(elf->scns, elf->symtab->content,
 		elf->rela->scns, elf->rela->shnum);
 	if (res)
 		return res;

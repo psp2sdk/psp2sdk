@@ -20,6 +20,7 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 {
 	Elf32_Half i, j;
 	Elf32_Phdr *phdr;
+	Elf32_Shdr *shdr;
 
 	if (f == NULL || scns == NULL || segs == NULL
 		|| ehdr == NULL || relMark == NULL)
@@ -27,19 +28,25 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 		return EINVAL;
 	}
 
-	for (i = 0; i < ehdr->e_shnum; i++, scns++) {
-		if (scns->shdr.sh_type == SHT_REL) {
-			if (scns != relMark)
-				f(scns, segs + relaNdx, relaNdx);
+	for (i = 0; i < ehdr->e_shnum; i++) {
+		shdr = &scns[i].shdr;
+
+		if (shdr->sh_type == SHT_REL) {
+			if (scns[shdr->sh_info].shdr.sh_flags & SHF_ALLOC)
+				f(scns + i, segs + relaNdx, relaNdx);
+
 			continue;
 		}
 
+		if (!(shdr->sh_flags & SHF_ALLOC))
+			continue;
+
 		for (j = 0; j < ehdr->e_phnum; j++) {
 			phdr = &segs[j].phdr;
-			if (phdr->p_offset <= scns->shdr.sh_offset
-				&& scns->shdr.sh_offset + scns->shdr.sh_size
+			if (phdr->p_offset <= shdr->sh_offset
+				&& shdr->sh_offset + shdr->sh_size
 					<= phdr->p_offset + phdr->p_filesz) {
-				f(scns, segs + j, j);
+				f(scns + i, segs + j, j);
 				break;
 			}
 		}
@@ -231,7 +238,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			addr = (addr & ~and) + sorts[i]->phdr.p_align;
 
 		sorts[i]->phdr.p_vaddr = addr;
-		sorts[i]->phdr.p_memsz -= sorts[i]->phdr.p_filesz;
+		sorts[i]->phdr.p_memsz = 0;
 		sorts[i]->phdr.p_filesz = 0;
 
 		for (j = 0; j < sorts[i]->shnum; j++) {
@@ -239,44 +246,48 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			newAddr = addr;
 
 			gap = addr & (scn->shdr.sh_addralign - 1);
-			if (gap)
-				newAddr += scn->shdr.sh_addralign - gap;
-
-			gap = newAddr - addr;
-			if (gap)
+			if (gap) {
+				gap = scn->shdr.sh_addralign - gap;
+				newAddr += gap;
 				sorts[i]->phdr.p_filesz += gap;
+				sorts[i]->phdr.p_memsz += gap;
+			}
 
 			scn->addrDiff = addr - scn->shdr.sh_addr;
-			offset = addr - sorts[i]->phdr.p_vaddr;
+			offset = sorts[i]->phdr.p_filesz;
 			scn->segOffsetDiff = offset - scn->segOffset;
 			scn->segOffset = offset;
 			scn->shdr.sh_addr = addr;
 
-			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
+			if (scn->shdr.sh_type != SHT_NOBITS)
+				sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
+
+			sorts[i]->phdr.p_memsz += scn->shdr.sh_size;
 			addr += scn->shdr.sh_size;
 		}
-
-		sorts[i]->phdr.p_memsz += sorts[i]->phdr.p_filesz;
 	}
 
 	for (i = loadNum; i < segnum; i++) {
-		sorts[i]->phdr.p_memsz -= sorts[i]->phdr.p_filesz;
+		sorts[i]->phdr.p_memsz = 0;
 		sorts[i]->phdr.p_filesz = 0;
 
 		for (j = 0; j < sorts[i]->shnum; j++) {
 			scn = sorts[i]->scns[j];
 
-			if (scn->shdr.sh_type == SHT_REL) {
-				scn->shdr.sh_size /= sizeof(Elf32_Rel);
-				scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
-			}
-
 			scn->segOffsetDiff = sorts[i]->phdr.p_filesz - scn->segOffset;
 			scn->segOffset = sorts[i]->phdr.p_filesz;
-			sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
-		}
 
-		sorts[i]->phdr.p_memsz += sorts[i]->phdr.p_filesz;
+			if (scn->shdr.sh_type != SHT_NOBITS) {
+				if (scn->shdr.sh_type == SHT_REL) {
+					scn->shdr.sh_size /= sizeof(Elf32_Rel);
+					scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
+				}
+
+				sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
+			}
+
+			sorts[i]->phdr.p_memsz += scn->shdr.sh_size;
+		}
 	}
 
 	for (i = 1; i < loadNum; i++) {

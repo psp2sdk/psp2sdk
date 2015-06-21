@@ -187,7 +187,8 @@ int updateSceScnsSize(sceScns_t *scns)
 	scns->relFstub->shdr.sh_size = stubNum * sizeof(Psp2_Rela_Short);
 
 	scns->relStub->shdr.sh_type = SHT_INTERNAL;
-	scns->relStub->shdr.sh_size = headNum * 2 * sizeof(Psp2_Rela_Short);
+	// name, function NID table, and function stub table
+	scns->relStub->shdr.sh_size = headNum * 3 * sizeof(Psp2_Rela_Short);
 	scns->stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
 
 	return 0;
@@ -200,7 +201,7 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	if (dst == NULL || src == NULL || scn == NULL)
 		return EINVAL;
 
-	if (scn->shdr.sh_size == 0)
+	if (scn->shdr.sh_size == 0 || scn->shdr.sh_type == SHT_NOBITS)
 		return 0;
 
 	if (fseek(dst, scn->shdr.sh_offset, SEEK_SET)) {
@@ -212,6 +213,11 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 	if (scn->content == NULL) {
 		p = malloc(scn->orgSize);
 		if (p == NULL) {
+			perror(strtab + scn->shdr.sh_name);
+			return errno;
+		}
+
+		if (fseek(src, scn->orgOffset, SEEK_SET)) {
 			perror(strtab + scn->shdr.sh_name);
 			return errno;
 		}

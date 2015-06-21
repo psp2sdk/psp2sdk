@@ -63,7 +63,7 @@ int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
 		dstScn = scns + scn->shdr.sh_info;
 
 		rel = scn->content;
-		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
+		for (i = 0; i < scn->orgSize; i += sizeof(Elf32_Rel)) {
 			rel->r_offset -= dstScn->segOffsetDiff;
 			rel++;
 		}
@@ -76,26 +76,17 @@ cont:
 	return 0;
 }
 
-int convRelToRela(FILE *fp, scn_t *scns, const seg_t *segs,
-	const char *strtab, const Elf32_Sym *symtab,
+int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
-	if (scns == NULL)
-		return EINVAL;
-
 	Psp2_Rela_Short *buf, *cur;
 	scn_t *scn, *dstScn;
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
-	Elf32_Word i, type;
-	Elf32_Addr addend;
-	int res;
+	Elf32_Word i;
 
-	if (fp == NULL || scns == NULL || strtab == NULL || symtab == NULL
-		|| relScns == NULL)
-	{
+	if (scns == NULL || symtab == NULL || relScns == NULL)
 		return EINVAL;
-	}
 
 	while (relShnum) {
 		scn = *relScns;
@@ -111,31 +102,15 @@ int convRelToRela(FILE *fp, scn_t *scns, const seg_t *segs,
 		dstScn = scns + scn->shdr.sh_info;
 
 		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
-			type = ELF32_R_TYPE(rel->r_info);
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 
 			PSP2_R_SET_SHORT(cur, 1);
 			PSP2_R_SET_SYMSEG(cur, sym->st_shndx == SHN_ABS ?
 				15 : scns[sym->st_shndx].phndx);
-			PSP2_R_SET_TYPE(cur, type);
+			PSP2_R_SET_TYPE(cur, ELF32_R_TYPE(rel->r_info));
 			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
 			PSP2_R_SET_OFFSET(cur, rel->r_offset);
-
-			addend = sym->st_value;
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
-				if (dstScn->content == NULL) {
-					res = loadScn(fp, dstScn,
-						strtab + scn->shdr.sh_name);
-					if (res)
-						return res;
-				}
-
-				addend += *(Elf32_Word *)(
-					(uintptr_t)dstScn->content
-					+ rel->r_offset - dstScn->segOffset);
-			}
-
-			PSP2_R_SET_ADDEND(cur, addend);
+			PSP2_R_SET_ADDEND(cur, sym->st_value);
 
 			rel++;
 			cur++;
