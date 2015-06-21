@@ -64,7 +64,7 @@ int updateRel(FILE *fp, const scn_t *scns, const char *strtab,
 
 		rel = scn->content;
 		for (i = 0; i < scn->orgSize; i += sizeof(Elf32_Rel)) {
-			rel->r_offset -= dstScn->segOffsetDiff;
+			rel->r_offset += dstScn->segOffsetDiff;
 			rel++;
 		}
 
