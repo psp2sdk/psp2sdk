@@ -263,10 +263,10 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			}
 
 			scn->addrDiff = addr - scn->shdr.sh_addr;
+			scn->shdr.sh_addr = addr;
 			offset = sorts[i]->phdr.p_filesz;
 			scn->segOffsetDiff = offset - scn->segOffset;
 			scn->segOffset = offset;
-			scn->shdr.sh_addr = addr;
 
 			if (scn->shdr.sh_type != SHT_NOBITS)
 				sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
