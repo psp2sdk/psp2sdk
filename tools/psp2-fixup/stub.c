@@ -32,8 +32,6 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 {
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
-	Elf32_Word type;
-	Elf32_Addr addend;
 
 	if (relaFstub == NULL || fstub == NULL || fnid == NULL
 		|| relMark == NULL || relMark->content == NULL
@@ -48,21 +46,14 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	if (rel == NULL)
 		return errno;
 
-	type = ELF32_R_TYPE(rel->r_info);
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 
 	PSP2_R_SET_SHORT(relaFstub, 1);
 	PSP2_R_SET_SYMSEG(relaFstub, scns[sym->st_shndx].phndx);
-	PSP2_R_SET_TYPE(relaFstub, type);
+	PSP2_R_SET_TYPE(relaFstub, ELF32_R_TYPE(rel->r_info));
 	PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
 	PSP2_R_SET_OFFSET(relaFstub, fstubOffset);
-
-	addend = sym->st_value;
-	if (type == R_ARM_ABS32 || type == R_ARM_TARGET1)
-		addend += *(uint32_t *)((uintptr_t)mark
-			+ rel->r_offset - mark->segOffset);
-
-	PSP2_R_SET_ADDEND(relaFstub, addend);
+	PSP2_R_SET_ADDEND(relaFstub, sym->st_value);
 
 	*fnid = *(uint32_t *)((uintptr_t)mark->content
 		+ markOffset - mark->segOffset
@@ -84,8 +75,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
 	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
-	Elf32_Word i, type, *fnidEnt;
-	Elf32_Addr addend;
+	Elf32_Word i, *fnidEnt;
 	int res;
 
 	if (sceScns == NULL || fp == NULL
@@ -152,21 +142,15 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 			if (rel == NULL)
 				return errno;
 
-			type = ELF32_R_TYPE(rel->r_info);
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 
 			PSP2_R_SET_SHORT(relaStubEnt, 1);
 			PSP2_R_SET_SYMSEG(relaStubEnt, scns[sym->st_shndx].phndx);
-			PSP2_R_SET_TYPE(relaStubEnt, type);
+			PSP2_R_SET_TYPE(relaStubEnt, ELF32_R_TYPE(rel->r_info));
 			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
 			PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
 				+ offsetof(sceLib_stub, name));
-
-			addend = sym->st_value;
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1)
-				addend += p->head.name;
-
-			PSP2_R_SET_ADDEND(relaStubEnt, addend);
+			PSP2_R_SET_ADDEND(relaStubEnt, sym->st_value);
 
 			relaStubEnt++;
 
