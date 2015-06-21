@@ -88,9 +88,6 @@ cont:
 int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
-	if (scns == NULL)
-		return EINVAL;
-
 	Psp2_Rela_Short *buf, *cur;
 	scn_t *scn, *dstScn;
 	const Elf32_Rel *rel;
