@@ -196,7 +196,8 @@ int updateSceScnsSize(sceScns_t *scns)
 	scns->relFstub->shdr.sh_size = stubNum * sizeof(Psp2_Rela_Short);
 
 	scns->relStub->shdr.sh_type = SHT_INTERNAL;
-	scns->relStub->shdr.sh_size = headNum * 2 * sizeof(Psp2_Rela_Short);
+	// name, function NID table, and function stub table
+	scns->relStub->shdr.sh_size = headNum * 3 * sizeof(Psp2_Rela_Short);
 	scns->stub->shdr.sh_size = headNum * sizeof(sceLib_stub);
 
 	return 0;

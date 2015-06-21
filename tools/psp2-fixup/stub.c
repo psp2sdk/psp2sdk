@@ -82,9 +82,10 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	sceLib_stub *stubHeads;
 	Psp2_Rela_Short *relaFstubEnt, *relaStubEnt;
 	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
-	Elf32_Rel *relMarkEnt;
+	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
-	Elf32_Word i, *fnidEnt;
+	Elf32_Word i, type, *fnidEnt;
+	Elf32_Addr addend;
 	int res;
 
 	if (sceScns == NULL || fp == NULL
@@ -143,6 +144,33 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 			stubHeads->flags = 0;
 			stubHeads->nid = p->head.nid;
 
+			// Resolve name
+			rel = findRelByOffset(sceScns->relMark,
+				sceScns->mark->shdr.sh_addr + offset
+					+ offsetof(sce_libgen_mark_head, name),
+				strtab);
+			if (rel == NULL)
+				return errno;
+
+			type = ELF32_R_TYPE(rel->r_info);
+			sym = symtab + ELF32_R_SYM(rel->r_info);
+
+			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SYMSEG(relaStubEnt, scns[sym->st_shndx].phndx);
+			PSP2_R_SET_TYPE(relaStubEnt, type);
+			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+			PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
+				+ offsetof(sceLib_stub, name));
+
+			addend = sym->st_value;
+			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1)
+				addend += p->head.name;
+
+			PSP2_R_SET_ADDEND(relaStubEnt, addend);
+
+			relaStubEnt++;
+
+			// Resolve function NID table
 			PSP2_R_SET_SHORT(relaStubEnt, 1);
 			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fnid->phndx);
 			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
@@ -152,6 +180,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 			PSP2_R_SET_ADDEND(relaStubEnt, fnidOffset);
 			relaStubEnt++;
 
+			// Resolve function stub table
 			PSP2_R_SET_SHORT(relaStubEnt, 1);
 			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fstub->phndx);
 			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
@@ -161,11 +190,13 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 			PSP2_R_SET_ADDEND(relaStubEnt, fstubOffset);
 			relaStubEnt++;
 
+			// TODO: Support other types
 			stubHeads->varNids = 0;
 			stubHeads->varStubs = 0;
 			stubHeads->unkNids = 0;
 			stubHeads->unkStubs = 0;
 
+			// Resolve nids and stubs
 			stubHeads->funcNum = 0;
 			stubHeads->varNum = 0;
 			stubHeads->unkNum = 0;
