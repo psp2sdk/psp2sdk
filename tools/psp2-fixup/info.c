@@ -26,7 +26,7 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
 	const Elf32_Word *nids;
-	Elf32_Word i, stubOffset, *p;
+	Elf32_Word i, stubOffset, type, *p;
 	const scn_t *stubRel;
 	scn_t *scn;
 	int res;
@@ -51,7 +51,10 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 	scn = scns + sym->st_shndx;
-	stubOffset = sym->st_value - segs[scn->phndx].phdr.p_vaddr;
+	type = ELF32_R_TYPE(rel->r_info);
+	stubOffset = (type == R_ARM_ABS32 || type == R_ARM_TARGET1 ?
+		*(Elf32_Word *)((uintptr_t)ent->content + 28) : sym->st_value)
+		- segs[scn->phndx].phdr.p_vaddr;
 
 	i = 0;
 	do {
@@ -79,8 +82,11 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 			return res;
 	}
 
+	type = ELF32_R_TYPE(rel->r_info);
 	nids = (void *)((uintptr_t)scn->content
-		+ sym->st_value - scn->shdr.sh_addr);
+		+ (type == R_ARM_ABS32 || type == R_ARM_TARGET1 ?
+			*(Elf32_Word *)((uintptr_t)ent->content + 24) : sym->st_value)
+		- scn->shdr.sh_addr);
 
 	// Resolve
 	for (i = 0; i < ((Elf32_Half *)ent->content)[3]; i++) {

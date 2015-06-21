@@ -63,7 +63,7 @@ static void segCntScns(scn_t *scn, seg_t *seg, Elf32_Half index)
 static void segCntMapScns(scn_t *scn, seg_t *seg, Elf32_Half index)
 {
 	scn->phndx = index;
-	scn->segOffset = scn->shdr.sh_offset - seg->phdr.p_offset;
+	scn->segOffset = scn->shdr.sh_addr - seg->phdr.p_vaddr;
 
 	seg->scns[seg->shnum] = scn;
 	seg->shnum++;
@@ -255,12 +255,15 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 
 			scn->addrDiff = addr - scn->shdr.sh_addr;
 			scn->shdr.sh_addr = addr;
-			offset = sorts[i]->phdr.p_filesz;
+			offset = sorts[i]->phdr.p_memsz;
 			scn->segOffsetDiff = offset - scn->segOffset;
 			scn->segOffset = offset;
 
-			if (scn->shdr.sh_type != SHT_NOBITS)
+			if (scn->shdr.sh_type != SHT_NOBITS
+				|| j < sorts[i]->shnum - 1)
+			{
 				sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
+			}
 
 			sorts[i]->phdr.p_memsz += scn->shdr.sh_size;
 			addr += scn->shdr.sh_size;
@@ -274,15 +277,17 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 		for (j = 0; j < sorts[i]->shnum; j++) {
 			scn = sorts[i]->scns[j];
 
-			scn->segOffsetDiff = sorts[i]->phdr.p_filesz - scn->segOffset;
-			scn->segOffset = sorts[i]->phdr.p_filesz;
+			scn->segOffsetDiff = sorts[i]->phdr.p_memsz - scn->segOffset;
+			scn->segOffset = sorts[i]->phdr.p_memsz;
 
-			if (scn->shdr.sh_type != SHT_NOBITS) {
-				if (scn->shdr.sh_type == SHT_REL) {
-					scn->shdr.sh_size /= sizeof(Elf32_Rel);
-					scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
-				}
+			if (scn->shdr.sh_type == SHT_REL) {
+				scn->shdr.sh_size /= sizeof(Elf32_Rel);
+				scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
+			}
 
+			if (scn->shdr.sh_type != SHT_NOBITS
+				|| j < sorts[i]->shnum - 1)
+			{
 				sorts[i]->phdr.p_filesz += scn->shdr.sh_size;
 			}
 
