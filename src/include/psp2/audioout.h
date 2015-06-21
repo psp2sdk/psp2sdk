@@ -4,29 +4,20 @@
  *
  * Copyright (C) 2015 PSP2SDK Project
  *
- * This library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
- 
+
 #ifndef _PSP2_AUDIOOUT_H_
 #define _PSP2_AUDIOOUT_H_
 
 enum {
-	SCE_AUDIO_OUT_ERROR_NOT_OPENED	= 0x80260001,
-	SCE_AUDIO_OUT_ERROR_BUSY	= 0x80260002,
+	SCE_AUDIO_OUT_ERROR_NOT_OPENED		= 0x80260001,
+	SCE_AUDIO_OUT_ERROR_BUSY		= 0x80260002,
 	SCE_AUDIO_OUT_ERROR_INVALID_PORT	= 0x80260003,
 	SCE_AUDIO_OUT_ERROR_INVALID_POINTER	= 0x80260004,
-	SCE_AUDIO_OUT_ERROR_PORT_FULL	= 0x80260005,
+	SCE_AUDIO_OUT_ERROR_PORT_FULL		= 0x80260005,
 	SCE_AUDIO_OUT_ERROR_INVALID_SIZE	= 0x80260006,
 	SCE_AUDIO_OUT_ERROR_INVALID_FORMAT	= 0x80260007,
 	SCE_AUDIO_OUT_ERROR_INVALID_SAMPLE_FREQ	= 0x80260008,
@@ -53,7 +44,7 @@ enum {
 	PSP2_AUDIO_OUT_MODE_STEREO	= 1
 };
 
-#define PSP2_AUDIO_MIN_LEN 64	//!< Minimum granularity
+#define PSP2_AUDIO_MIN_LEN 64		//!< Minimum granularity
 #define PSP2_AUDIO_MAX_LEN 65472	//!< Maximum granularity
 
 /**
@@ -143,7 +134,7 @@ int sceAudioOutGetConfig(int port, int type);
 
 /** Argument 'mode' to specify to ::sceAudioOutSetAlcMode */
 enum {
-	PSP2_AUDIO_ALC_OFF		= 0,
+	PSP2_AUDIO_ALC_OFF	= 0,
 	PSP2_AUDIO_ALC_MODE1	= 1,
 	PSP2_AUDIO_ALC_MODE_MAX	= 2
 };
@@ -152,7 +143,7 @@ enum {
  * Set 'Automatic Level Control' mode on the BGM port
  * ALC is also known as 'Dynamic Normalizer'
  *
- * @param[in] mode - One of 
+ * @param[in] mode - One of
  *
  * @return 0 on success, < 0 on error.
  */

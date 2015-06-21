@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceVideodec-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -21,12 +12,12 @@ NIDS = 0x0eb2e4e7 0x17c6ac9e 0x230a78ff 0x25f31020 	\
 	0x7c460d75 0x87cfd23b 0x8a0e359e 0x9648d853 	\
 	0x97e95edb 0xa8cf1942 0xb2a428db 0xb4bc325b 	\
 	0xc300bf46 0xc67c1a80 0xd6190a06 0xe82bb69b 	\
-	0xf1af65a3 
+	0xf1af65a3
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceVideodec_stub.a
-libSceVideodec_stub_a_SOURCES = SceVideodecUser_stub.S 
+libSceVideodec_stub_a_SOURCES = SceVideodecUser_stub.S
 am_libSceVideodec_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

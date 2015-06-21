@@ -2,20 +2,11 @@
  * \file
  * \brief Header file which defines camera related variables and functions
  *
- * Copyright (C); 2015 PSP2SDK Project
+ * Copyright (C) 2015 PSP2SDK Project
  *
- * This library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option); any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 #ifndef _PSP2_CAMERA_H_
@@ -25,25 +16,24 @@
 #include <stdint.h>
 
 enum {
-	SCE_CAMERA_ERROR_ALREADY_INIT	= 0x802e0001,
-	SCE_CAMERA_ERROR_NOT_INIT	= 0x802e0002,
-	SCE_CAMERA_ERROR_ALREADY_OPEN	= 0x802e0003,
-	SCE_CAMERA_ERROR_NOT_OPEN	= 0x802e0004,
-	SCE_CAMERA_ERROR_ALREADY_START	= 0x802e0005,
-	SCE_CAMERA_ERROR_NOT_START	= 0x802e0006,
-	SCE_CAMERA_ERROR_FORMAT_UNKNOWN	= 0x802e0007,
+	SCE_CAMERA_ERROR_ALREADY_INIT		= 0x802e0001,
+	SCE_CAMERA_ERROR_NOT_INIT		= 0x802e0002,
+	SCE_CAMERA_ERROR_ALREADY_OPEN		= 0x802e0003,
+	SCE_CAMERA_ERROR_NOT_OPEN		= 0x802e0004,
+	SCE_CAMERA_ERROR_ALREADY_START		= 0x802e0005,
+	SCE_CAMERA_ERROR_NOT_START		= 0x802e0006,
+	SCE_CAMERA_ERROR_FORMAT_UNKNOWN		= 0x802e0007,
 	SCE_CAMERA_ERROR_RESOLUTION_UNKNOWN	= 0x802e0008,
-	SCE_CAMERA_ERROR_BAD_FRAMERATE	= 0x802e0009,
-	SCE_CAMERA_ERROR_TIMEOUT	= 0x802e000a,
-	SCE_CAMERA_ERROR_EXCLUSIVE	= 0x802e000b,
+	SCE_CAMERA_ERROR_BAD_FRAMERATE		= 0x802e0009,
+	SCE_CAMERA_ERROR_TIMEOUT		= 0x802e000a,
+	SCE_CAMERA_ERROR_EXCLUSIVE		= 0x802e000b,
 	SCE_CAMERA_ERROR_ATTRIBUTE_UNKNOWN	= 0x802e000c,
-	SCE_CAMERA_ERROR_MAX_PROCESS	= 0x802e000d,
-	SCE_CAMERA_ERROR_NOT_ACTIVE	= 0x802e000e,
-	SCE_CAMERA_ERROR_FATAL	= 0x802e00ff
+	SCE_CAMERA_ERROR_MAX_PROCESS		= 0x802e000d,
+	SCE_CAMERA_ERROR_NOT_ACTIVE		= 0x802e000e,
+	SCE_CAMERA_ERROR_FATAL			= 0x802e00ff
 };
 
-typedef struct SceCameraInfo
-{
+typedef struct SceCameraInfo {
 	SceSize size;
 	unsigned int priority;
 	unsigned int format;
@@ -61,10 +51,9 @@ typedef struct SceCameraInfo
 	void *pVBase;
 	unsigned int pitch;
 	void *buffer;
-};
+} SceCameraInfo;
 
-typedef struct SceCameraRead
-{
+typedef struct SceCameraRead {
 	SceSize size;
 	int mode;
 	uint32_t pad;
@@ -77,7 +66,7 @@ typedef struct SceCameraRead
 	void *pIBase;
 	void *pUBase;
 	void *pVBase;
-};
+} SceCameraRead;
 
 int sceCameraOpen(int devnum, SceCameraInfo *pInfo);
 int sceCameraClose(int devnum);

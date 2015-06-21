@@ -4,18 +4,9 @@
  *
  * Copyright (C) 2015 PSP2SDK Project
  *
- * This library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 #ifndef _PSP2_AUDIOIN_H_
@@ -23,13 +14,13 @@
 
 enum {
 	//! Undefined error
-	SCE_AUDIO_IN_ERROR_FATAL	= 0x80260100,
+	SCE_AUDIO_IN_ERROR_FATAL		= 0x80260100,
 
 	//! Bad value of port number
-	SCE_AUDIO_IN_ERROR_INVALID_PORT	= 0x80260101,
+	SCE_AUDIO_IN_ERROR_INVALID_PORT		= 0x80260101,
 
 	//! Invalid sample length
-	SCE_AUDIO_IN_ERROR_INVALID_SIZE	= 0x80260102,
+	SCE_AUDIO_IN_ERROR_INVALID_SIZE		= 0x80260102,
 
 	//! Invalid sample frequency
 	SCE_AUDIO_IN_ERROR_INVALID_SAMPLE_FREQ	= 0x80260103,
@@ -44,16 +35,16 @@ enum {
 	SCE_AUDIO_IN_ERROR_INVALID_PORT_PARAM	= 0x80260106,
 
 	//! Cannot open no ports
-	SCE_AUDIO_IN_ERROR_PORT_FULL	= 0x80260107,
+	SCE_AUDIO_IN_ERROR_PORT_FULL		= 0x80260107,
 
 	//! Not enough memory
 	SCE_AUDIO_IN_ERROR_OUT_OF_MEMORY	= 0x80260108,
 
 	//! Port is not opened
-	SCE_AUDIO_IN_ERROR_NOT_OPENED	= 0x80260109,
+	SCE_AUDIO_IN_ERROR_NOT_OPENED		= 0x80260109,
 
 	//! Tried to input while busy
-	SCE_AUDIO_IN_ERROR_BUSY	= 0x8026010A
+	SCE_AUDIO_IN_ERROR_BUSY			= 0x8026010A
 };
 
 enum {
@@ -63,7 +54,7 @@ enum {
 
 enum {
 	PSP2_AUDIO_IN_PARAM_FORMAT_S16_MONO	= 0,
-	PSP2_AUDIO_IN_GETSTATUS_MUTE	= 1
+	PSP2_AUDIO_IN_GETSTATUS_MUTE		= 1
 };
 
 //! Open port

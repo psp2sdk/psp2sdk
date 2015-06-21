@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceNpMatching2-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -28,12 +19,12 @@ NIDS = 0x0124641c 0x11beffa8 0x1c60bc5b 0x1e70d5b5 	\
 	0xc8b0c9ee 0xd22c4989 0xd3096c55 0xd48baf13 	\
 	0xe0be0510 0xebb1fe74 0xf049bec1 0xf0cb1dd3 	\
 	0xf2847e3b 0xf3a43c50 0xf486991b 0xf9e35566 	\
-	0xfa51949b 0xfdc7b2c9 
+	0xfa51949b 0xfdc7b2c9
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceNpMatching2_stub.a
-libSceNpMatching2_stub_a_SOURCES = SceNpMatching2_stub.S 
+libSceNpMatching2_stub_a_SOURCES = SceNpMatching2_stub.S
 am_libSceNpMatching2_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceRudp-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -23,12 +14,12 @@ NIDS = 0x104e4d3b 0x18668bd8 0x22c9aa29 0x24e36e39 	\
 	0x6b74ca22 0x772c07e8 0x8b766108 0x8d45ba52 	\
 	0x943d96ec 0xa9b92efe 0xade196dc 0xbd87a5ca 	\
 	0xc9acbdf0 0xd620b557 0xd77928c5 0xe1dd9645 	\
-	0xe68005e3 0xf1151d91 
+	0xe68005e3 0xf1151d91
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceRudp_stub.a
-libSceRudp_stub_a_SOURCES = SceLibRudp_stub.S 
+libSceRudp_stub_a_SOURCES = SceLibRudp_stub.S
 am_libSceRudp_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

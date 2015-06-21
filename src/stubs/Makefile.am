@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 SUBDIRS = SceNpUtility_stub SceHmac_stub SceCodecEnginePerf_stub SceLiveArea_stub 	\
 	SceTouch_stub SceSsl_stub SceSha256_stub SceDisplay_stub 	\
@@ -39,4 +30,4 @@ SUBDIRS = SceNpUtility_stub SceHmac_stub SceCodecEnginePerf_stub SceLiveArea_stu
 	SceFace_stub SceSfmt607_stub SceLibc_stub SceClipboard_stub 	\
 	SceFios2_stub SceAtrac_stub SceRtc_stub SceSas_stub 	\
 	SceScreenShot_stub SceRazorHud_stub SceSha512t_stub SceMd5_stub 	\
-	SceNpTus_stub SceCtrl_stub SceAppUtil_stub 
+	SceNpTus_stub SceCtrl_stub SceAppUtil_stub

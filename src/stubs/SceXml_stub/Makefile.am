@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceXml-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -62,12 +53,12 @@ NIDS = 0x016a9adb 0x02e8f7fa 0x035f013b 0x0580c02e 	\
 	0xecc1f1a4 0xecfa6a2a 0xef4fa027 0xf1db18b1 	\
 	0xf2c8950d 0xf351d753 0xf399f763 0xf65270fc 	\
 	0xfa921c6e 0xfb207925 0xfb9edbf9 0xfbcf0d3e 	\
-	0xfc61fdf1 0xfe99676e 
+	0xfc61fdf1 0xfe99676e
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceXml_stub.a
-libSceXml_stub_a_SOURCES = SceLibXml_stub.S 
+libSceXml_stub_a_SOURCES = SceLibXml_stub.S
 am_libSceXml_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

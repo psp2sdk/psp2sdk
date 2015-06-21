@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceAppUtil-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -26,12 +17,12 @@ NIDS = 0x0f4ee55f 0x1b36af8c 0x22297d59 0x266a7646 	\
 	0xa7fe1bf7 0xb220b00b 0xb5edcbff 0xc560e716 	\
 	0xc97d5d9e 0xcd7fd67a 0xd1c6ab8e 0xdaffe671 	\
 	0xe6057a85 0xe61453b0 0xeb720402 0xee0dbed9 	\
-	0xee85804d 0xf19d0423 
+	0xee85804d 0xf19d0423
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceAppUtil_stub.a
-libSceAppUtil_stub_a_SOURCES = SceAppUtil_stub.S 
+libSceAppUtil_stub_a_SOURCES = SceAppUtil_stub.S
 am_libSceAppUtil_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 

@@ -1,17 +1,8 @@
 # Copyright (C) 2015 PSP2SDK Project
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceAtrac-0001_
 ENTRIES_PREFIX = $(PREFIX)F00_
@@ -21,12 +12,12 @@ NIDS = 0x008ef251 0x01bfb98c 0x075b0c63 0x1a34b331 	\
 	0x5b36cdb5 0x5c22e927 0x67981334 0x68dfc199 	\
 	0x6ca2f08a 0x722f5004 0x90b512ac 0x9bdb14f7 	\
 	0xaca5f9cc 0xbf34605d 0xd1997678 0xd81d7280 	\
-	0xd9409e57 0xdc27e7c2 0xdc768033 0xe7d9dc4f 
+	0xd9409e57 0xdc27e7c2 0xdc768033 0xe7d9dc4f
 
 ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
 
 lib_LIBRARIES = libSceAtrac_stub.a
-libSceAtrac_stub_a_SOURCES = SceAtrac_stub.S 
+libSceAtrac_stub_a_SOURCES = SceAtrac_stub.S
 am_libSceAtrac_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
