@@ -80,6 +80,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
 	Elf32_Word i, type, *fnidEnt;
+	Elf32_Addr addend;
 	int res;
 
 	if (sceScns == NULL || fp == NULL
@@ -196,22 +197,36 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 			relMarkEnt = sceScns->relMark->content;
 			for (i = 0; i < sceScns->relMark->orgSize / sizeof(Elf32_Rel); i++) {
 				sym = symtab + ELF32_R_SYM(relMarkEnt->r_info);
-				if (sym->st_value != sceScns->mark->shdr.sh_addr + offset)
-					continue;
+				type = ELF32_R_TYPE(relMarkEnt->r_info);
 
-				addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
+				if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
+					if (scns + sym->st_shndx != sceScns->mark)
+						goto cont;
+
+					addend = *(Elf32_Word *)((uintptr_t)sceScns->mark->content
+						+ relMarkEnt->r_offset - sceScns->mark->shdr.sh_addr);
+				} else
+					addend = sym->st_value;
+
+				if (addend != sceScns->mark->shdr.sh_addr + offset)
+					goto cont;
+
+				res = addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
 					sceScns->relMark, sceScns->mark,
 					fstubOffset,
 					relMarkEnt->r_offset
 						- offsetof(sce_libgen_mark_stub, head),
 					scns, strtab, symtab);
+				if (res)
+					return res;
 
-				relMarkEnt++;
 				relaFstubEnt++;
 				fnidEnt++;
 				fstubOffset += sizeof(Psp2_Rela_Short);
 				fnidOffset += 4;
 				stubHeads->funcNum++;
+cont:
+				relMarkEnt++;
 			}
 
 			stubOffset += sizeof(sceLib_stub);
