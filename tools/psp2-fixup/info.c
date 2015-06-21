@@ -38,9 +38,11 @@ int findSyslib(syslib_t *syslib, FILE *fp, scn_t *scns, Elf32_Half shnum,
 		return EINVAL;
 	}
 
-	res = loadScn(fp, ent, strtab + ent->shdr.sh_name);
-	if (res)
-		return res;
+	if (ent->content == NULL) {
+		res = loadScn(fp, ent, strtab + ent->shdr.sh_name);
+		if (res)
+			return res;
+	}
 
 	// Stub Table
 	rel = findRelByOffset(relEnt, ent->segOffset + 28, strtab);
