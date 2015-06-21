@@ -226,6 +226,11 @@ int writeScn(FILE *dst, FILE *src, const scn_t *scn, const char *strtab)
 			return errno;
 		}
 
+		if (fseek(src, scn->orgOffset, SEEK_SET)) {
+			perror(strtab + scn->shdr.sh_name);
+			return errno;
+		}
+
 		if (fread(p, scn->orgSize, 1, src) <= 0) {
 			strtab += scn->shdr.sh_name;
 			if (feof(src)) {
