@@ -143,8 +143,11 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 
 				addend = *(Elf32_Word *)((uintptr_t)dstScn->content
 					+ rel->r_offset - dstScn->segOffset);
-			} else
+			} else {
 				addend = sym->st_value;
+				if (type == R_ARM_CALL)
+					addend -= 8;
+			}
 
 			if (sym->st_shndx == SHN_ABS)
 				symseg = 15;
