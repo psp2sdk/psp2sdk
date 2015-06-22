@@ -35,8 +35,8 @@ SECTIONS
 	.sceExport.rodata : { *(.sceExport.rodata) } :text
 	.sceImport.rodata : { *(.sceImport.rodata) } :text
 
-	.sceFNID.rodata : { KEEP(*(.sceFNID.rodata)) } :text
-	.sceFStub.rodata : { KEEP(*(.sceFStub.rodata)) } :text
+	.sceFNID.rodata BLOCK(4) : { KEEP(*(.sceFNID.rodata)) } :text
+	.sceFStub.rodata BLOCK(4) : { KEEP(*(.sceFStub.rodata)) } :text
 
 	.rodata : { *(.rodata) } :text
 
