@@ -60,7 +60,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	PSP2_R_SET_ADDEND(relaFstub, addend);
 
 	*fnid = *(Elf32_Word *)((uintptr_t)mark->content
-		+ markOffset - mark->segOffset
+		+ markOffset - mark->shdr.sh_addr
 		+ offsetof(sce_libgen_mark_stub, nid));
 
 	return 0;
