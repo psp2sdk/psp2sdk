@@ -21,7 +21,7 @@ Elf32_Rel *findRelByOffset(const scn_t *scn, Elf32_Addr offset,
 int updateRel(FILE *fp, scn_t *scns, const char *strtab,
 	scn_t **relScns, Elf32_Half relShnum);
 
-int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
+int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum);
 
 #endif

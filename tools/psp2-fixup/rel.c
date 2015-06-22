@@ -91,7 +91,7 @@ cont:
 	return 0;
 }
 
-int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
+int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
 	Psp2_Rela_Short *buf, *cur;
@@ -100,6 +100,7 @@ int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
 	const Elf32_Sym *sym;
 	Elf32_Addr addend;
 	Elf32_Word i, type;
+	Elf32_Half symseg;
 
 	if (scns == NULL || symtab == NULL || relScns == NULL)
 		return EINVAL;
@@ -122,8 +123,6 @@ int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 
 			PSP2_R_SET_SHORT(cur, 1);
-			PSP2_R_SET_SYMSEG(cur, sym->st_shndx == SHN_ABS ?
-				15 : scns[sym->st_shndx].phndx);
 			PSP2_R_SET_TYPE(cur, type);
 			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
 			PSP2_R_SET_OFFSET(cur, rel->r_offset);
@@ -137,6 +136,14 @@ int convRelToRela(scn_t *scns, const Elf32_Sym *symtab,
 			} else
 				addend = sym->st_value;
 
+			if (sym->st_shndx == SHN_ABS)
+				symseg = 15;
+			else {
+				symseg = scns[sym->st_shndx].phndx;
+				addend -= segs[symseg].phdr.p_vaddr;
+			}
+
+			PSP2_R_SET_SYMSEG(cur, symseg);
 			PSP2_R_SET_ADDEND(cur, addend);
 
 			rel++;

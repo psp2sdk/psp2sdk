@@ -18,12 +18,14 @@
 // fstubOffset and markOffset should be relative to segment
 static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	Elf32_Word *fnid, const scn_t *relMark, const scn_t *mark,
-	Elf32_Addr fstubOffset, Elf32_Addr markOffset, const scn_t *scns,
+	Elf32_Addr fstubOffset, Elf32_Addr markOffset,
+	const scn_t *scns, const seg_t *segs,
 	const char *strtab, const Elf32_Sym *symtab)
 {
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
 	Elf32_Word type;
+	Elf32_Half symseg;
 	Elf32_Addr addend;
 
 	if (relaFstub == NULL || fstub == NULL || fnid == NULL
@@ -41,9 +43,10 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 
 	type = ELF32_R_TYPE(rel->r_info);
 	sym = symtab + ELF32_R_SYM(rel->r_info);
+	symseg = scns[sym->st_shndx].phndx;
 
 	PSP2_R_SET_SHORT(relaFstub, 1);
-	PSP2_R_SET_SYMSEG(relaFstub, scns[sym->st_shndx].phndx);
+	PSP2_R_SET_SYMSEG(relaFstub, symseg);
 	PSP2_R_SET_TYPE(relaFstub, type);
 	PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
 	PSP2_R_SET_OFFSET(relaFstub, fstubOffset);
@@ -57,6 +60,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	} else
 		addend = sym->st_value;
 
+	addend -= segs[symseg].phdr.p_vaddr;
 	PSP2_R_SET_ADDEND(relaFstub, addend);
 
 	*fnid = *(Elf32_Word *)((uintptr_t)mark->content
@@ -66,7 +70,8 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	return 0;
 }
 
-int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
+int updateStubs(sceScns_t *sceScns, FILE *fp,
+	const scn_t *scns, const seg_t *segs,
 	const char *strtab, Elf32_Sym *symtab)
 {
 	union {
@@ -80,11 +85,12 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
 	Elf32_Word i, type, *fnidEnt;
+	Elf32_Half symseg;
 	Elf32_Addr addend;
 	int res;
 
-	if (sceScns == NULL || fp == NULL
-		|| scns == NULL || strtab == NULL || symtab == NULL)
+	if (sceScns == NULL || fp == NULL || scns == NULL || segs == NULL
+		|| strtab == NULL || symtab == NULL)
 	{
 		return EINVAL;
 	}
@@ -149,17 +155,19 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 
 			type = ELF32_R_TYPE(rel->r_info);
 			sym = symtab + ELF32_R_SYM(rel->r_info);
+			symseg = scns[sym->st_shndx].phndx;
 
 			PSP2_R_SET_SHORT(relaStubEnt, 1);
-			PSP2_R_SET_SYMSEG(relaStubEnt, scns[sym->st_shndx].phndx);
+			PSP2_R_SET_SYMSEG(relaStubEnt, symseg);
 			PSP2_R_SET_TYPE(relaStubEnt, type);
 			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
 			PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
 				+ offsetof(sceLib_stub, name));
 
 			PSP2_R_SET_ADDEND(relaStubEnt,
-				type == R_ARM_ABS32 || type == R_ARM_TARGET1 ?
-				sym->st_value : p->head.name);
+				(type == R_ARM_ABS32 || type == R_ARM_TARGET1 ?
+					sym->st_value : p->head.name)
+				- segs[symseg].phdr.p_vaddr);
 
 			relaStubEnt++;
 
@@ -216,7 +224,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
 					fstubOffset,
 					relMarkEnt->r_offset
 						- offsetof(sce_libgen_mark_stub, head),
-					scns, strtab, symtab);
+					scns, segs, strtab, symtab);
 				if (res)
 					return res;
 

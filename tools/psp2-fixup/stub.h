@@ -12,8 +12,10 @@
 #include <stdio.h>
 #include "elf.h"
 #include "scn.h"
+#include "seg.h"
 
-int updateStubs(sceScns_t *sceScns, FILE *fp, const scn_t *scns,
+int updateStubs(sceScns_t *sceScns, FILE *fp,
+	const scn_t *scns, const seg_t *segs,
 	const char *strtab, Elf32_Sym *symtab);
 
 #endif

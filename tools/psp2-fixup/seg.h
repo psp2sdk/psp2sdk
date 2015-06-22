@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include "elf.h"
 #include "scn.h"
-#include "stub.h"
 
 typedef struct {
 	Elf32_Phdr phdr;
