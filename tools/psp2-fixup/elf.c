@@ -182,7 +182,8 @@ int updateElf(elf_t *elf)
 	if (res)
 		return res;
 
-	res = updateRel(elf->fp, elf->scns, elf->strtab->content,
+	res = updateRel(elf->fp, elf->scns,
+		elf->strtab->content, elf->symtab->content,
 		elf->rela->scns, elf->rela->shnum);
 	if (res)
 		return res;

@@ -37,37 +37,50 @@ Elf32_Rel *findRelByOffset(const scn_t *scn, Elf32_Addr offset,
 	return NULL;
 }
 
-int updateRel(FILE *fp, scn_t *scns, const char *strtab,
+int updateRel(FILE *fp, scn_t *scns,
+	const char *strtab, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
 	scn_t *dstScn;
 	scn_t *scn;
 	Elf32_Rel *rel;
-	Elf32_Word i, type;
+	Elf32_Word i, st_shndx, type;
 	int res;
 
-	if (fp == NULL || scns == NULL || strtab == NULL || relScns == NULL)
+	if (fp == NULL || scns == NULL || strtab == NULL || symtab == NULL
+		|| relScns == NULL)
+	{
 		return EINVAL;
+	}
 
 	while (relShnum) {
 		scn = *relScns;
 		if (scn == NULL)
 			return EINVAL;
-		if (scn->shdr.sh_type != SHT_REL)
-			goto cont;
+		if (scn->shdr.sh_type == SHT_REL) {
+			res = loadScn(fp, scn, strtab + scn->shdr.sh_name);
+			if (res)
+				return res;
 
-		res = loadScn(fp, scn, strtab + scn->shdr.sh_name);
-		if (res)
-			return res;
+			dstScn = scns + scn->shdr.sh_info;
 
-		dstScn = scns + scn->shdr.sh_info;
+			rel = scn->content;
+			for (i = 0; i < scn->orgSize;
+				i += sizeof(Elf32_Rel), rel++)
+			{
+				rel->r_offset += dstScn->segOffsetDiff;
 
-		rel = scn->content;
-		for (i = 0; i < scn->orgSize; i += sizeof(Elf32_Rel)) {
-			rel->r_offset += dstScn->segOffsetDiff;
+				type = ELF32_R_TYPE(rel->r_info);
+				if (type != R_ARM_ABS32 && type != R_ARM_TARGET1)
+					continue;
 
-			type = ELF32_R_TYPE(rel->r_info);
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
+				st_shndx = symtab[ELF32_R_SYM(rel->r_info)].st_shndx;
+				if (st_shndx == SHN_UNDEF
+					|| st_shndx >= SHN_LORESERVE)
+				{
+					continue;
+				}
+
 				if (dstScn->content == NULL) {
 					res = loadScn(fp, dstScn,
 						strtab + dstScn->shdr.sh_name);
@@ -77,13 +90,10 @@ int updateRel(FILE *fp, scn_t *scns, const char *strtab,
 
 				*(Elf32_Word *)((uintptr_t)dstScn->content
 					+ rel->r_offset - dstScn->segOffset)
-						+= dstScn->addrDiff;
+						+= scns[st_shndx].addrDiff;
 			}
-
-			rel++;
 		}
 
-cont:
 		relScns++;
 		relShnum--;
 	}
