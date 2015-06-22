@@ -196,7 +196,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 {
 	scn_t *scn;
 	seg_t **sorts, *tmp;
-	Elf32_Addr addr, newAddr;
+	Elf32_Addr addr;
 	Elf32_Off offset;
 	Elf32_Half i, j, loadNum;
 	Elf32_Word and, gap;
@@ -243,12 +243,11 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 
 		for (j = 0; j < sorts[i]->shnum; j++) {
 			scn = sorts[i]->scns[j];
-			newAddr = addr;
 
 			gap = addr & (scn->shdr.sh_addralign - 1);
 			if (gap) {
 				gap = scn->shdr.sh_addralign - gap;
-				newAddr += gap;
+				addr += gap;
 				sorts[i]->phdr.p_filesz += gap;
 				sorts[i]->phdr.p_memsz += gap;
 			}
