@@ -38,9 +38,11 @@ _NID_\name = \nid
 #elif defined(FUNC)
 .if FUNC == \nid
 	.section .sceFStub.rodata, "a", %progbits
+	.align	2
 	.word	0
 
 	.section .sceRefs.rodata, "a", %progbits
+	.align	2
 	.word	0
 	.word	0
 	.word	0
@@ -48,6 +50,7 @@ _NID_\name = \nid
 	.word	0
 
 	.section .sceFNID.rodata, "a", %progbits
+	.align	2
 	.word	0
 
 	.section .sceStubs.text.\module\().\name, "ax", %progbits
@@ -61,6 +64,7 @@ _NID_\name = \nid
 	.size	\name, .-\name
 
 	.section .sce_libgen_mark, "", %progbits
+	.align	2
 	.word	0x00000114
 	.word	_\module\()_\moduleNum\()_stub_head
 	.word	\name

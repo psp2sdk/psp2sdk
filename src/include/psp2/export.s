@@ -18,6 +18,7 @@
 .macro PSP2_EXPORT_FUNC_START
 	.section .sceExport.rodata
 	.subsection 1
+	.align	2
 .NIDTBL_FUNC_TOP:
 .endm
 
@@ -39,6 +40,7 @@
 .macro PSP2_EXPORT_VAR_START
 	.section .sceExport.rodata
 	.subsection 1
+	.align	2
 .NIDTBL_VAR_TOP:
 .endm
 
@@ -59,6 +61,7 @@
 
 .macro PSP2_EXPORT_END ver, flag, nid, name
 	.section .sceLib.ent
+	.align	2
 	.short	0x0020
 	.short	\ver
 	.short	\flag
