@@ -23,5 +23,6 @@ SceUID sceKernelCreateThread(const char *name, void *entry,
 	int affinity, const void *option);
 int sceKernelStartThread(SceUID thid, SceSize arglen, void *argp);
 int sceKernelDeleteThread(SceUID thid);
+SceUID sceKernelGetThreadId();
 
 #endif
