@@ -17,7 +17,7 @@
 
 // fstubOffset and markOffset should be relative to segment
 static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
-	uint32_t *fnid, const scn_t *relMark, const scn_t *mark,
+	Elf32_Word *fnid, const scn_t *relMark, const scn_t *mark,
 	Elf32_Addr fstubOffset, Elf32_Addr markOffset, const scn_t *scns,
 	const char *strtab, const Elf32_Sym *symtab)
 {
@@ -59,7 +59,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 
 	PSP2_R_SET_ADDEND(relaFstub, addend);
 
-	*fnid = *(uint32_t *)((uintptr_t)mark->content
+	*fnid = *(Elf32_Word *)((uintptr_t)mark->content
 		+ markOffset - mark->segOffset
 		+ offsetof(sce_libgen_mark_stub, nid));
 
