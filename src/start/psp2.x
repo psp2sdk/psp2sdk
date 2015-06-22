@@ -20,17 +20,8 @@ SECTIONS
 
 	.sceModuleInfo.rodata : { *(.sceModuleInfo.rodata) } :text
 
-	.sceLib.ent :
-	{
-		export_top = .;
-		*(.sceLib.ent)
-		export_btm = .;
-	} :text
-	.sceLib.stub :
-	{
-		import_top = .;
-		*(.sceLib.stub)
-	} :text
+	.sceLib.ent : { *(.sceLib.ent) } :text
+	.sceLib.stub : { *(.sceLib.stub) } :text
 
 	.sceExport.rodata : { *(.sceExport.rodata) } :text
 	.sceImport.rodata : { *(.sceImport.rodata) } :text
