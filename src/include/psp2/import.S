@@ -56,6 +56,7 @@ _NID_\name = \nid
 	.section .sceStubs.text.\module\().\name, "ax", %progbits
 	.align	2
 	.global	\name
+	.type	\name, %function
 \name:
 	mvn	r0, #0
 	bx	lr
@@ -79,7 +80,7 @@ _NID_\name = \nid
 #ifdef FUNC
 .if FUNC == \nid
 	.global	\alias
-	.type	\alias, @function
+	.type	\alias, %function
 \alias = \funcname
 .endif
 #endif
