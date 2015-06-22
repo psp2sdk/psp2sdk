@@ -56,7 +56,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 			return EINVAL;
 
 		addend = *(Elf32_Word *)((uintptr_t)mark->content
-			+ rel->r_offset - mark->segOffset);
+			+ rel->r_offset - mark->shdr.sh_addr);
 	} else
 		addend = sym->st_value;
 
