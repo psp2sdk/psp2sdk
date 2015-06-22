@@ -230,8 +230,8 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 
 				relaFstubEnt++;
 				fnidEnt++;
-				fstubOffset += sizeof(Psp2_Rela_Short);
-				fnidOffset += 4;
+				fstubOffset += sizeof(Elf32_Addr);
+				fnidOffset += sizeof(Elf32_Word);
 				stubHeads->funcNum++;
 cont:
 				relMarkEnt++;
