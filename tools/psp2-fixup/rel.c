@@ -137,7 +137,9 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
 			PSP2_R_SET_OFFSET(cur, rel->r_offset);
 
-			if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
+			if (sym->st_shndx != SHN_ABS
+				&& (type == R_ARM_ABS32 || type == R_ARM_TARGET1))
+			{
 				if (dstScn->content == NULL)
 					return EINVAL;
 
