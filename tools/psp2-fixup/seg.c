@@ -45,7 +45,7 @@ static int mapOverScnSeg(void (* f)(scn_t *, seg_t *, Elf32_Half),
 			phdr = &segs[j].phdr;
 			if (phdr->p_offset <= shdr->sh_offset
 				&& shdr->sh_offset + shdr->sh_size
-					<= phdr->p_offset + phdr->p_filesz) {
+					<= phdr->p_offset + phdr->p_memsz) {
 				f(scns + i, segs + j, j);
 				break;
 			}
