@@ -5,7 +5,7 @@
 @ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 .macro PSP2_EXPORT_START
-	.section .sceExport.rodata
+	.section .sceExport.rodata, "a", %progbits
 	.subsection 1
 	.align	2
 .NIDTBL_TOP:
@@ -60,7 +60,7 @@
 .endm
 
 .macro PSP2_EXPORT_END ver, flag, nid, name
-	.section .sceLib.ent
+	.section .sceLib.ent, "a", %progbits
 	.align	2
 	.short	0x0020
 	.short	\ver
