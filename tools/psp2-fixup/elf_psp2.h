@@ -69,33 +69,31 @@ typedef struct {
 	uint32_t extabBtm;
 } _sceModuleInfo;
 
-typedef uint64_t Psp2_Rela_Short;
+typedef Elf32_Word Psp2_Rela[3];
 
 #define PSP2_R_SET_SHORT(rela, isShort) {	\
-		*(rela) &= 0xFFFFFFFFFFFFFFF0;	\
-		*(rela) |= (isShort) ? 1 : 0;	\
+		(*(rela))[0] &= 0xFFFFFFF0;	\
+		(*(rela))[0] |= (isShort) ? 1 : 0;	\
 	}
 #define PSP2_R_SET_SYMSEG(rela, symseg) {	\
-		*(rela) &= 0xFFFFFFFFFFFFFF0F;	\
-		*(rela) |= (symseg) << 4;	\
+		(*(rela))[0] &= 0xFFFFFF0F;	\
+		(*(rela))[0] |= (symseg) << 4;	\
 	}
 #define PSP2_R_SET_TYPE(rela, code) {	\
-		*(rela) &= 0xFFFFFFFFFFFF00FF;	\
-		*(rela) |= (code) << 8;	\
+		(*(rela))[0] &= 0xFFFF00FF;	\
+		(*(rela))[0] |= (code) << 8;	\
 	}
 #define PSP2_R_SET_DATSEG(rela, datseg) {	\
-		*(rela) &= 0xFFFFFFFFFFF0FFFF;	\
-		*(rela) |= (datseg) << 16;	\
-	}
-
-#define PSP2_R_SET_OFFSET(rela, offset) {	\
-		*(rela) &= 0xFFF00000000FFFFF;	\
-		*(rela) |= (uint64_t)(offset) << 20;	\
+		(*(rela))[0] &= 0xFFF0FFFF;	\
+		(*(rela))[0] |= (datseg) << 16;	\
 	}
 
 #define PSP2_R_SET_ADDEND(rela, addend) {	\
-		*(rela) &= 0x000FFFFFFFFFFFFF;	\
-		*(rela) |= (uint64_t)(addend) << 52;	\
+		(*(rela))[1] = addend;	\
+	}
+
+#define PSP2_R_SET_OFFSET(rela, offset) {	\
+		(*(rela))[2] = offset;	\
 	}
 
 enum {

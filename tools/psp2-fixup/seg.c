@@ -281,7 +281,7 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 
 			if (scn->shdr.sh_type == SHT_REL) {
 				scn->shdr.sh_size /= sizeof(Elf32_Rel);
-				scn->shdr.sh_size *= sizeof(Psp2_Rela_Short);
+				scn->shdr.sh_size *= sizeof(Psp2_Rela);
 			}
 
 			if (scn->shdr.sh_type != SHT_NOBITS

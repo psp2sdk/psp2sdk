@@ -104,7 +104,7 @@ int updateRel(FILE *fp, scn_t *scns,
 int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 	scn_t **relScns, Elf32_Half relShnum)
 {
-	Psp2_Rela_Short *buf, *cur;
+	Psp2_Rela *buf, *cur;
 	scn_t *scn, *dstScn;
 	const Elf32_Rel *rel;
 	const Elf32_Sym *sym;
@@ -132,7 +132,7 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 			type = ELF32_R_TYPE(rel->r_info);
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 
-			PSP2_R_SET_SHORT(cur, 1);
+			PSP2_R_SET_SHORT(cur, 0);
 			PSP2_R_SET_TYPE(cur, type);
 			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
 			PSP2_R_SET_OFFSET(cur, rel->r_offset);

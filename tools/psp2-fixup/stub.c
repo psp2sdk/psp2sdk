@@ -16,7 +16,7 @@
 #include "stub.h"
 
 // fstubOffset and markOffset should be relative to segment
-static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
+static int addStub(Psp2_Rela *relaFstub, const scn_t *fstub,
 	Elf32_Word *fnid, const scn_t *relMark, const scn_t *mark,
 	Elf32_Addr fstubOffset, Elf32_Addr markOffset,
 	const scn_t *scns, const seg_t *segs,
@@ -45,7 +45,7 @@ static int addStub(Psp2_Rela_Short *relaFstub, const scn_t *fstub,
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 	symseg = scns[sym->st_shndx].phndx;
 
-	PSP2_R_SET_SHORT(relaFstub, 1);
+	PSP2_R_SET_SHORT(relaFstub, 0);
 	PSP2_R_SET_SYMSEG(relaFstub, symseg);
 	PSP2_R_SET_TYPE(relaFstub, type);
 	PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
@@ -80,7 +80,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 		sce_libgen_mark_stub stub;
 	} *p;
 	sceLib_stub *stubHeads;
-	Psp2_Rela_Short *relaFstubEnt, *relaStubEnt;
+	Psp2_Rela *relaFstubEnt, *relaStubEnt;
 	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
 	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
@@ -157,7 +157,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 			symseg = scns[sym->st_shndx].phndx;
 
-			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SHORT(relaStubEnt, 0);
 			PSP2_R_SET_SYMSEG(relaStubEnt, symseg);
 			PSP2_R_SET_TYPE(relaStubEnt, type);
 			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
@@ -172,7 +172,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 			relaStubEnt++;
 
 			// Resolve function NID table
-			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SHORT(relaStubEnt, 0);
 			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fnid->phndx);
 			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
 			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
@@ -182,7 +182,7 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 			relaStubEnt++;
 
 			// Resolve function stub table
-			PSP2_R_SET_SHORT(relaStubEnt, 1);
+			PSP2_R_SET_SHORT(relaStubEnt, 0);
 			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fstub->phndx);
 			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
 			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
