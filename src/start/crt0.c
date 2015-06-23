@@ -22,24 +22,54 @@ extern const int psp2UserMainThreadOption[] __attribute__((weak));
 
 extern SceModuleInfo module_info;
 
-int main(SceSize arglen, void *argp);
+int main(int argc, char *argv[]);
 
 static SceUID id;
 
-int module_start(SceSize arglen, void *argp)
+static int _main(SceSize arglen, void *argp)
 {
+	SceSize i, j;
+	int argc;
+	char ***argv;
+
+	argc = 0;
+	for (i = 0; i < arglen; i++)
+		if (((char *)argp)[i] == '\0')
+			argc++;
+
+	argv = __builtin_alloca(sizeof(char *) * argc);
+
+	j = 0;
+	(*argv)[j] = argp;
+	j++;
+
+	for (i = 0; i < arglen; i++)
+		if (((char *)argp)[i] == '\0') {
+			(*argv)[j] = (char *)argp + i + 1;
+
+			j++;
+			if (j >= argc)
+				break;
+		}
+
+	return main(argc, *argv);
+}
+
+static int module_start(SceSize arglen, void *argp)
+{
+	return main(arglen, argp);
 	id = sceKernelCreateThread(
 		&sceUserMainThreadName == NULL ? "user_main" : sceUserMainThreadName,
-		main,
-		&sceUserMainThreadPriority == NULL ? 32 : sceUserMainThreadPriority,
+		_main,
+		&sceUserMainThreadPriority == NULL ? 0x10000100 : sceUserMainThreadPriority,
 		&sceUserMainThreadStackSize == NULL ? 1048576 : sceUserMainThreadStackSize,
-		&psp2UserMainThreadAttr == NULL ? PSP2_THREAD_ATTR_USER : psp2UserMainThreadAttr,
-		&psp2UserMainThreadAffinity == NULL ? 0x70000 : psp2UserMainThreadAffinity,
+		&psp2UserMainThreadAttr == NULL ? 0 : psp2UserMainThreadAttr,
+		&psp2UserMainThreadAffinity == NULL ? 0 : psp2UserMainThreadAffinity,
 		&psp2UserMainThreadOption);
 	return id < 0 ? id : sceKernelStartThread(id, arglen, argp);
 }
 
-int module_stop()
+static int module_stop()
 {
 	return sceKernelDeleteThread(id);
 }

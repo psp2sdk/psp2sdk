@@ -14,10 +14,6 @@
 
 #include <psp2/types.h>
 
-enum {
-	PSP2_THREAD_ATTR_USER = 0x80000000
-};
-
 SceUID sceKernelCreateThread(const char *name, void *entry,
 	unsigned int initPriority, SceSize stackSize, unsigned attr,
 	int affinity, const void *option);
