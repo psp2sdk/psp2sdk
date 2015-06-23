@@ -16,6 +16,7 @@
 #include <stdint.h>
 
 enum {
+	SCE_CAMERA_ERROR_PARAM		        = 0x802e0000,
 	SCE_CAMERA_ERROR_ALREADY_INIT		= 0x802e0001,
 	SCE_CAMERA_ERROR_NOT_INIT		= 0x802e0002,
 	SCE_CAMERA_ERROR_ALREADY_OPEN		= 0x802e0003,
@@ -35,31 +36,31 @@ enum {
 
 typedef struct SceCameraInfo {
 	SceSize size;
-	unsigned int priority;
-	unsigned int format;
-	unsigned int resolution;
-	unsigned int framerate;
-	unsigned int width;
-	unsigned int height;
-	unsigned int range;
-	unsigned int pad;
+	uint16_t priority;
+	uint16_t format;
+	uint16_t resolution;
+	uint16_t framerate;
+	uint16_t width;
+	uint16_t height;
+	uint16_t range;
+	uint16_t pad;
 	SceSize sizeIBase;
 	SceSize sizeUBase;
 	SceSize sizeVBase;
 	void *pIBase;
 	void *pUBase;
 	void *pVBase;
-	unsigned int pitch;
-	void *buffer;
+	uint16_t pitch;
+	uint16_t buffer;
 } SceCameraInfo;
 
 typedef struct SceCameraRead {
 	SceSize size;
-	int mode;
-	uint32_t pad;
-	int status;
-	unsigned int frame;
-	unsigned int timestamp;
+	int32_t mode;
+	int32_t pad;
+	int32_t status;
+	uint64_t frame;
+	uint64_t timestamp;
 	SceSize sizeIBase;
 	SceSize sizeUBase;
 	SceSize sizeVBase;
