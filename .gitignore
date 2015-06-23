@@ -20,5 +20,6 @@ configure
 Doxyfile
 Makefile.in
 Makefile
+psp2.specs
 
 psp2-fixup
