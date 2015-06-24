@@ -40,6 +40,7 @@ script:
  - make install
  - make clean
  - cd ..
+ - cp /usr/x86_64-w64-mingw32/bin/libeay32.dll out/bin
  - zip -0rq psp2sdk-$REV-x86_64-w64-mingw32.zip out
  - rm -Rf out
 
