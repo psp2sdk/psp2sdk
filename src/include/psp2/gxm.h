@@ -55,6 +55,7 @@ typedef struct SceGxmInitializeParams {
 typedef enum SceGxmMemoryAttribFlags {
 	SCE_GXM_MEMORY_ATTRIB_READ	= 1,
 	SCE_GXM_MEMORY_ATTRIB_WRITE	= 2,
+	SCE_GXM_MEMORY_ATTRIB_RW	= (SCE_GXM_MEMORY_ATTRIB_READ | SCE_GXM_MEMORY_ATTRIB_WRITE)
 } SceGxmMemoryAttribFlags;
 
 typedef enum SceGxmAttributeFormat {
@@ -1049,7 +1050,7 @@ typedef struct SceGxmVertexProgram SceGxmVertexProgram;
 
 typedef struct SceGxmFragmentProgram SceGxmFragmentProgram;
 
-typedef enum {
+enum {
 	SCE_GXM_PRECOMPUTED_VERTEX_STATE_WORD_COUNT   = 7,
 	SCE_GXM_PRECOMPUTED_FRAGMENT_STATE_WORD_COUNT = 9,
 	SCE_GXM_PRECOMPUTED_DRAW_WORD_COUNT           = 11,
@@ -1067,7 +1068,7 @@ typedef struct SceGxmPrecomputedDraw {
 	unsigned int data[SCE_GXM_PRECOMPUTED_DRAW_WORD_COUNT];
 } SceGxmPrecomputedDraw;
 
-typedef enum {
+enum {
 	SCE_GXM_MAX_VERTEX_ATTRIBUTES  = 16,
 	SCE_GXM_MAX_VERTEX_STREAMS     = 4,
 	SCE_GXM_MAX_TEXTURE_UNITS      = 16,
