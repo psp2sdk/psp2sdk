@@ -354,6 +354,10 @@ typedef enum SceGxmMultisampleMode {
 	SCE_GXM_MULTISAMPLE_4X
 } SceGxmMultisampleMode;
 
+typedef enum SceGxmTextureAlignmentMode {
+    SCE_GXM_TEXTURE_ALIGNMENT
+} SceGxmTextureAlignmentMode;
+
 typedef enum SceGxmTextureSwizzle4Mode {
 	SCE_GXM_TEXTURE_SWIZZLE4_ABGR	= 0x00000000u,
 	SCE_GXM_TEXTURE_SWIZZLE4_ARGB	= 0x00001000u,
