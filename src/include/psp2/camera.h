@@ -56,9 +56,9 @@ typedef struct SceCameraInfo {
 
 typedef struct SceCameraRead {
 	SceSize size;
-	int32_t mode;
-	int32_t pad;
-	int32_t status;
+	int mode;
+	int pad;
+	int status;
 	uint64_t frame;
 	uint64_t timestamp;
 	SceSize sizeIBase;
