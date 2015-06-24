@@ -53,17 +53,17 @@ enum {
 /** Controller mode. */
 enum {
 	/** Digitial buttons only. */
-	PSP2_CTRL_MODE_DIGITAL = 0,
+	PSP2_CTRL_MODE_DIGITAL	= 0x000000,
 	/** Digital buttons + Analog support. */
-	PSP2_CTRL_MODE_ANALOG,
+	PSP2_CTRL_MODE_ANALOG	= 0x000001,
 	/** Same as ::PSP2_CTRL_MODE_ANALOG, but with larger range for analog sticks. */
-	PSP2_CTRL_MODE_ANALOG_WIDE
+	PSP2_CTRL_MODE_ANALOG_WIDE = 0x000002
 };
 
 /** Returned controller data */
 typedef struct SceCtrlData {
 	/** The current read frame. */
-	unsigned int 	timeStamp;
+	uint64_t	timeStamp;
 	/** Bit mask containing zero or more of ::CtrlButtons. */
 	unsigned int 	buttons;
 	/** Left analogue stick, X axis. */

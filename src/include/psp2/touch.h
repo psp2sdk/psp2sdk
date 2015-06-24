@@ -52,8 +52,8 @@ typedef struct SceTouchData {
 } SceTouchData;
 
 enum {
-	PSP2_TOUCH_PORT_FRONT,	//!< Front touch panel id
-	PSP2_TOUCH_PORT_BACK,	//!< Back touch panel id
+	PSP2_TOUCH_PORT_FRONT	= 0x000000,	//!< Front touch panel id
+	PSP2_TOUCH_PORT_BACK	= 0x000001,	//!< Back touch panel id
 
 	PSP2_TOUCH_PORT_MAX_NUM	//!< Number of touch panels
 };
