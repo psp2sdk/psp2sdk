@@ -9,8 +9,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PSP2_GXT_
-#define _PSP2_GXT_
+#ifndef _PSP2_GXT_H_
+#define _PSP2_GXT_H_
 
 #include "gxm.h"
 

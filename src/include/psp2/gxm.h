@@ -355,7 +355,7 @@ typedef enum SceGxmMultisampleMode {
 } SceGxmMultisampleMode;
 
 typedef enum SceGxmTextureAlignmentMode {
-    SCE_GXM_TEXTURE_ALIGNMENT
+	SCE_GXM_TEXTURE_ALIGNMENT
 } SceGxmTextureAlignmentMode;
 
 typedef enum SceGxmTextureSwizzle4Mode {
