@@ -63,9 +63,7 @@ enum {
 /** Returned controller data */
 typedef struct SceCtrlData {
 	/** The current read frame. */
-	unsigned int 	timeStamp;
-	/** Unknown. */
-	unsigned int	unk0;
+	uint64_t	timeStamp;
 	/** Bit mask containing zero or more of ::CtrlButtons. */
 	unsigned int 	buttons;
 	/** Left analogue stick, X axis. */
