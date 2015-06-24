@@ -87,7 +87,7 @@ int sceAppMgrSetInfobarState(int visibility, int color, int transparency);
 
 typedef struct sceAppMgrLoadExecOptParam {
 	int reserved[256 / 4];
-};
+} sceAppMgrLoadExecOptParam;
 
 int sceAppMgrLoadExec(const char *appPath, char * const argv[],
 	const SceAppMgrExecOptParam *optParam);
