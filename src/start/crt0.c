@@ -18,7 +18,7 @@ extern const int sceUserMainThreadPriority __attribute__((weak));
 extern const SceSize sceUserMainThreadStackSize __attribute__((weak));
 extern const int psp2UserMainThreadAttr __attribute__((weak));
 extern const int psp2UserMainThreadAffinity __attribute__((weak));
-extern const int psp2UserMainThreadOption[] __attribute__((weak));
+extern const SceKernelThreadOptParam psp2UserMainThreadOption __attribute__((weak));
 
 extern SceModuleInfo module_info;
 
