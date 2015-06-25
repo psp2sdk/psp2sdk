@@ -1,3 +1,5 @@
+![PSP2SDK](https://dl.dropboxusercontent.com/u/46691658/psp2sdk_xsmall.png)
+
 # psp2sdk
 The free SDK for PSP2, aiming to integrate with devkitARM
 
