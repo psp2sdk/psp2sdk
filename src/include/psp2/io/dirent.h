@@ -13,6 +13,7 @@
 #define _PSP2_IO_DRENT_H_
 
 #include <psp2/types.h>
+#include <psp2/io/stat.h>
 
 /** Describes a single directory entry */
 typedef struct SceIoDirent {
