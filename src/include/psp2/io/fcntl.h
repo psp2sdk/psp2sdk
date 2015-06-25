@@ -15,16 +15,16 @@
 /* Note: Not all of these sceIoOpen() flags are not compatible with the
    open() flags found in sys/unistd.h. */
 enum {
-	PSP2_O_RDONLY	= 0x0001,
-	PSP2_O_WRONLY	= 0x0002,
-	PSP2_O_RDWR	= (PSP2_O_RDONLY | PSP2_O_WRONLY),
-	PSP2_O_NBLOCK	= 0x0004,
-	PSP2_O_DIROPEN	= 0x0008,  // Internal use for dopen
-	PSP2_O_APPEND	= 0x0100,
-	PSP2_O_CREAT	= 0x0200,
-	PSP2_O_TRUNC	= 0x0400,
-	PSP2_O_EXCL	= 0x0800,
-	PSP2_O_NOWAIT	= 0x8000
+	PSP2_O_RDONLY   = 0x0001,
+	PSP2_O_WRONLY   = 0x0002,
+	PSP2_O_RDWR     = (PSP2_O_RDONLY | PSP2_O_WRONLY),
+	PSP2_O_NBLOCK   = 0x0004,
+	PSP2_O_DIROPEN  = 0x0008,  // Internal use for dopen
+	PSP2_O_APPEND   = 0x0100,
+	PSP2_O_CREAT    = 0x0200,
+	PSP2_O_TRUNC    = 0x0400,
+	PSP2_O_EXCL     = 0x0800,
+	PSP2_O_NOWAIT   = 0x8000
 };
 
 enum {
