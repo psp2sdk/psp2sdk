@@ -27,7 +27,7 @@ typedef int (*SceKernelThreadEntry)(SceSize args, void *argp);
 /** Additional options used when creating threads. */
 typedef struct SceKernelThreadOptParam {
 	/** Size of the ::SceKernelThreadOptParam structure. */
-	SceSize 	size;
+	SceSize         size;
 	/** Attributes */
 	SceUInt32       attr;
 } SceKernelThreadOptParam;
@@ -88,7 +88,7 @@ typedef struct SceKernelThreadInfo {
  * @see sceKernelGetThreadRunStatus.
  */
 typedef struct SceKernelThreadRunStatus {
-	SceSize        size;
+	SceSize size;
 	struct {
 		SceUID processId;
 		SceUID threadId;
@@ -461,7 +461,7 @@ int sceKernelGetSemaInfo(SceUID semaid, SceKernelSemaInfo *info);
 /** Additional options used when creating mutexes. */
 typedef struct SceKernelMutexOptParam {
 	/** Size of the ::SceKernelMutexOptParam structure. */
-	SceSize 	size;
+	SceSize         size;
 	int             ceilingPriority;
 } SceKernelMutexOptParam;
 
@@ -591,13 +591,13 @@ int sceKernelGetMutexInfo(SceUID mutexid, SceKernelMutexInfo info);
 
 /** Structure to hold the event flag information */
 typedef struct SceKernelEventFlagInfo {
-	SceSize 	size;
+	SceSize         size;
 	SceUID          evfId; // Needs confirmation
 	char 		name[32];
-	SceUInt 	attr;
-	SceUInt 	initPattern;
-	SceUInt 	currentPattern;
-	int 		numWaitThreads;
+	SceUInt         attr;
+	SceUInt         initPattern;
+	SceUInt         currentPattern;
+	int             numWaitThreads;
 } SceKernelEventFlagInfo;
 
 typedef struct SceKernelEventFlagOptParam {
