@@ -8,8 +8,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _PSP2_NET
-#define _PSP2_NET
+#ifndef _PSP2_NET_NET_H_
+#define _PSP2_NET_NET_H_
 
 /** Net Error Codes */
 enum NetErrorCodes {
@@ -705,14 +705,14 @@ typedef struct SceNetIcmpHeader {
 int sceNetInit(SceNetInitParam *param);
 int sceNetTerm(void);
 
-int sceNetShowIfconfig(void);
+int sceNetShowIfconfig(void *p, int b);
 int sceNetShowRoute(void);
 int sceNetShowNetstat(void);
 
 int sceNetEmulationSet(SceNetEmulationParam *param, int flags);
 int sceNetEmulationGet(SceNetEmulationParam *param, int flags);
 
-int sceNetResolverCreate(const char *name,SceNetResolverParam *param,int flags);
+int sceNetResolverCreate(const char *name, SceNetResolverParam *param, int flags);
 int sceNetResolverStartNtoa(int rid, const char *hostname, SceNetInAddr *addr, int timeout, int retry, int flags);
 int sceNetResolverStartAton(int rid, const SceNetInAddr *addr, char *hostname, int len, int timeout, int retry, int flags);
 int sceNetResolverGetError(int rid, int *result);
