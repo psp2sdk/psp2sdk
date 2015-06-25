@@ -15,10 +15,7 @@
 #include <psp2/types.h>
 
 /** 64-bit system clock type. */
-typedef struct SceKernelSysClock {
-	SceUInt32   low;
-	SceUInt32   hi;
-} SceKernelSysClock;
+typedef SceUInt64 SceKernelSysClock;
 
 /* Threads. */
 

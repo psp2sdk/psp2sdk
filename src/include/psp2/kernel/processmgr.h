@@ -12,6 +12,7 @@
 #ifndef _PSP2_KERNEL_PROCESSMGR_H_
 #define _PSP2_KERNEL_PROCESSMGR_H_
 
+#include <psp2/kernel/threadmgr.h>
 #include <psp2/types.h>
 
 enum {
@@ -36,14 +37,6 @@ enum {
 	/** Cancel OLED dimming timer */
 	PSP2_KERNEL_POWER_TICK_DISABLE_OLED_DIMMING	= 6
 };
-
-typedef union _SceKernelSysClock {
-	struct	{
-		unsigned int low; //!< Same as ::sceKernelGetProcessTimeLow
-		unsigned int hi;
-	} u;
-	SceUInt64 quad;
-} SceKernelSysClock;
 
 /***
  * Exit current Process with specified return code
