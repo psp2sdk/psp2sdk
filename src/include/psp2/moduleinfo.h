@@ -48,6 +48,28 @@ typedef const _sceModuleInfo SceModuleInfo;
  * \param version Version
  * \param module_name Name
  */
+
+#ifdef __cplusplus
+
+/* Declare a module.  This must be specified in the source of a library or executable. */
+#define PSP2_MODULE_INFO(attribute, version, module_name)	\
+	__asm__ (".section .sceLib.stub, \"a\", %progbits;");	\
+	extern SceModuleInfo module_info	\
+		__attribute__((section(".sceModuleInfo.rodata")))	\
+			= {	\
+		attribute,	\
+		version,	\
+		#module_name,	\
+		0,	\
+		NULL,	\
+		0,	\
+		0,	\
+		0,	\
+		0,	\
+		0,	\
+	};
+#else
+/* Declare a module.  This must be specified in the source of a library or executable. */
 #define PSP2_MODULE_INFO(attribute, version, module_name)	\
 	__asm__ (".section .sceLib.stub, \"a\", %progbits;");	\
 	SceModuleInfo module_info	\
@@ -60,5 +82,6 @@ typedef const _sceModuleInfo SceModuleInfo;
 		.gp = NULL,	\
 		.nid = 0,	\
 	};
+#endif
 
 #endif

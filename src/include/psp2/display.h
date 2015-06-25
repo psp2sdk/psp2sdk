@@ -12,6 +12,10 @@
 #ifndef _PSP2_DISPLAY_H_
 #define _PSP2_DISPLAY_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <psp2/types.h>
 
 
@@ -155,5 +159,9 @@ int sceDisplayRegisterVblankStartCallback(SceUID uid);
  * @param[in] uid - Callback UID
  */
 int sceDisplayUnregisterVblankStartCallback(SceUID uid);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

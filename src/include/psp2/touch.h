@@ -12,6 +12,10 @@
 #ifndef _PSP2_TOUCH_H_
 #define _PSP2_TOUCH_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <psp2/types.h>
 #include <stdint.h>
 
@@ -118,5 +122,9 @@ int sceTouchEnableTouchForce(unsigned int port);
  * @param[in]	nBufs	Number of buffers to receive touch data.
  */
 int sceTouchPeek(unsigned int port, SceTouchData *pData, unsigned int nBufs);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

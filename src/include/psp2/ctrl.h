@@ -12,6 +12,10 @@
 #ifndef _PSP2_CTRL_H_
 #define _PSP2_CTRL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 enum {
@@ -170,5 +174,9 @@ int sceCtrlSetRapidFire(int port, int idx, const SceCtrlRapidFireRule* pRule);
  * @return 0, <0 on error.
  */
 int sceCtrlClearRapidFire(int port, int idx);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PSP2CTRL_H_ */
