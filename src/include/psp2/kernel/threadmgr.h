@@ -593,7 +593,7 @@ int sceKernelGetMutexInfo(SceUID mutexid, SceKernelMutexInfo info);
 typedef struct SceKernelEventFlagInfo {
 	SceSize         size;
 	SceUID          evfId; // Needs confirmation
-	char 		name[32];
+	char            name[32];
 	SceUInt         attr;
 	SceUInt         initPattern;
 	SceUInt         currentPattern;
