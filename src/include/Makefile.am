@@ -12,4 +12,5 @@ nobase_include_HEADERS = psp2/export.s psp2/import.S	\
 	psp2/moduleinfo.h psp2/motion.h psp2/pgf.h psp2/power.h psp2/rtc.h	\
 	psp2/screenshot.h psp2/system_param.h psp2/touch.h psp2/types.h		\
 	psp2/io/iofilemgr.h psp2/io/iofilemgr_dirent.h psp2/io/iofilemgr_stat.h	\
-	psp2/io/iofilemgr_fcntl.h
+	psp2/io/iofilemgr_fcntl.h psp2/net/net.h psp2/net/netctl.h		\
+	psp2/net/http.h
