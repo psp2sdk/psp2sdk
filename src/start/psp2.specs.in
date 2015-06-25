@@ -10,7 +10,7 @@
 %(old_cc1) %(cpu)
 
 *cc1plus:
-%(old_cc1plus) %(cpu)
+%(old_cc1plus) -I%(path)/include %(cpu)
 
 *link:
 %(old_link) -q -T%(path)/psp2.x%s -L%(path)/lib
