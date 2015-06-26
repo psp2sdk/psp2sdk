@@ -4,28 +4,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+set(NIDS
+    0x1520d408 0x5e880862 0x76a5d8ca 0x8a0bf859
+    0xa288adb9 0xcc6daba0
 
-*.o
-*.a
-*.m4
-*.log
+)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
+set(SRCS
+    SceSfmt607_stub.S
+)
 
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_psp2_stub(SceSfmt607 ${SRCS} ${NIDS})
