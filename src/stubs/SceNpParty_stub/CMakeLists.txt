@@ -4,28 +4,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+set(NIDS
+    0x0560d9a1 0x324c76f0 0x420c30e9 0x9f99adf7
+    0xb304962c 0xb6132502 0xf524ad2b 0xfb200a6d
+)
 
-*.o
-*.a
-*.m4
-*.log
+set(SRCS
+    SceNpPartyGameUtil_stub.S
+)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
-
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_psp2_stub(SceNpParty ${SRCS} ${NIDS})

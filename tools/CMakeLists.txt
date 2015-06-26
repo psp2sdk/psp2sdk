@@ -4,28 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+project(PSP2_FIXUP)
 
-*.o
-*.a
-*.m4
-*.log
+find_library(OpenSSL REQUIRED)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
-
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_subdirectory(psp2-fixup)

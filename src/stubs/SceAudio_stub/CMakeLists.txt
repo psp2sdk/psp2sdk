@@ -4,28 +4,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+set(NIDS
+    0x02db3f5f 0x12fb1767 0x5bc341e4 0x64167f11
+    0x69e2e6b5 0x940ce469 0x9a5370c4 0x9c8edaea
+    0xb8ba0d07
+)
 
-*.o
-*.a
-*.m4
-*.log
+set(SRCS
+    SceAudio_stub.S
+)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
-
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_psp2_stub(SceAudio ${SRCS} ${NIDS})

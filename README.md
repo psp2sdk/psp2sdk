@@ -36,6 +36,8 @@ Coders, editors for documents, testers who can use CLI are needed! Please join u
 
 [xerpi] (https://github.com/xerpi)
 
+[Ryp] (https://github.com/Ryp)
+
 Please add yourself to this list when you make changes on your fork and submit a pull request.
 
 ## Usage

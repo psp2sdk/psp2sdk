@@ -4,28 +4,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+set(NIDS
+    0x09af9bf8 0x12e4f99a 0x356b2931 0x446f171e
+    0x4c3a8d49 0x69324689 0x6abbd675 0x6ba4a521
+    0x76395d93 0x79ca5d3f 0xb886450e
+)
 
-*.o
-*.a
-*.m4
-*.log
+set(SRCS
+    SceHandwriting_stub.S
+)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
-
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_psp2_stub(SceHandwriting ${SRCS} ${NIDS})

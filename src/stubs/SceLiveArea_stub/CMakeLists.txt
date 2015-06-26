@@ -4,28 +4,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-!.gitignore
+set(NIDS
+    0x18066ba9 0x29c65c0b 0x7fe5b83f 0x833f5d0a
+    0xcfcede95 0xd330285d 0xd6ee2214 0xd6fd367f
+)
 
-*.o
-*.a
-*.m4
-*.log
+set(SRCS
+    SceLiveAreaUtil_stub.S
+)
 
-compile
-install-sh
-missing
-depcomp
-autom4te.cache
-config.status
-configure
-.deps
-Doxyfile
-Makefile.in
-Makefile
-psp2.specs
-
-psp2-fixup
-
-# Ryp custom
-*.kdev4*
-build
+add_psp2_stub(SceLiveArea ${SRCS} ${NIDS})
