@@ -31,18 +31,13 @@ SECTIONS
 
 	.rodata : { *(.rodata) } :text
 
-	.ARM.extab :
-	{
-		extab_top = .;
-		*(.ARM.extab* .gnu.linkonce.armextab.*)
-		extab_btm = .;
-	} :text
+	.ARM.extab : { *(.ARM.extab* .gnu.linkonce.armextab.*) } :text
 
 	.ARM.exidx :
 	{
-		exidx_top = .;
+		PROVIDE_HIDDEN (__exidx_start = .);
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-		exidx_btm = .;
+		PROVIDE_HIDDEN (__exidx_end = .);
 	} :text
 
 	.ctors :
