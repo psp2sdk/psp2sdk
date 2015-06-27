@@ -11,5 +11,7 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/include DESTINATION ${PROJECT_BINARY_DIR}/
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -mcpu=cortex-a9 -mfpu=neon-fp16 -nostdlib")
+
 add_subdirectory(start)
-# add_subdirectory(stubs)
+add_subdirectory(stubs)
