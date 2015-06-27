@@ -41,4 +41,4 @@ target_link_libraries(${FIXUP_BIN}
 target_compile_definitions(${FIXUP_BIN} PRIVATE -DPACKAGE_NAME="PSP2SDK") # FIXME
 target_compile_definitions(${FIXUP_BIN} PRIVATE -DPACKAGE_VERSION="0.0.1-master") # FIXME
 
-install(TARGETS ${FIXUP_BIN} DESTINATION ${PROJECT_BINARY_DIR}/bin)
+install(TARGETS ${FIXUP_BIN} DESTINATION bin)

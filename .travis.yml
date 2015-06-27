@@ -26,12 +26,14 @@ before_install:
  - git clone https://github.com/173210/psp2sdk.git src/html -qb gh-pages --single-branch
  - git -C src/html rm -qrf .
  #- export REV=`git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'` # Add this when the first release is out
- - export REV=`git describe --always`
+ #- export REV=`git describe --always`
+ - export REV=`printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"`
 
 script:
  # Compile src folder
  - mkdir -p src/build && pushd src/build
- - cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release && make install
+ - cmake .. -DCMAKE_INSTALL_PREFIX=/opt/psp2sdk -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release
+ - sudo make install
  - popd
  # Build documentation
  - pushd src
@@ -40,7 +42,8 @@ script:
 
  # Compile tools folder
  - mkdir -p tools/build && pushd tools/build
- - cmake .. -DCMAKE_BUILD_TYPE=Release && make install
+ - cmake .. -DCMAKE_INSTALL_PREFIX=/opt/psp2sdk -DCMAKE_BUILD_TYPE=Release
+ - sudo make install
  - popd
 
 after_success:

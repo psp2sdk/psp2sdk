@@ -33,7 +33,7 @@ macro(add_psp2_stub stubname sources nids)
         $<TARGET_OBJECTS:${STUB_NIDS}>
         ${NIDS_TARGETS})
 
-    install(TARGETS ${STUB_NAME} DESTINATION ${PROJECT_BINARY_DIR}/lib)
+    install(TARGETS ${STUB_NAME} DESTINATION lib)
 
 endmacro()
 

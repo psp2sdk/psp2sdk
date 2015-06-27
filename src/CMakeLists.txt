@@ -7,8 +7,6 @@
 cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 project(PSP2SDK)
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include DESTINATION ${PROJECT_BINARY_DIR}/include)
-
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -mcpu=cortex-a9 -mfpu=neon-fp16 -nostdlib")
@@ -21,3 +19,6 @@ unset(PACKAGE_NAME)
 
 add_subdirectory(start)
 add_subdirectory(stubs)
+
+install(DIRECTORY include DESTINATION . FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY include DESTINATION . FILES_MATCHING PATTERN "*.S")
