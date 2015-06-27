@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_SCREENSHOT_ERROR_INVALID_ARGUMENT		= 0x80102f01,
 	SCE_SCREENSHOT_ERROR_NO_MEMORY			= 0x80102f02,
@@ -63,4 +67,8 @@ int sceScreenshotDisable(void);
 //! Enable screnshot
 int sceScreenshotEnable(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_SCREENSHOT_H_ */

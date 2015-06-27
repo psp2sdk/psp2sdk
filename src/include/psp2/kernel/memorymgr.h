@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_KERNEL_MEMBLOCK_TYPE_USER_RW	= 0x0c20d060,
 	SCE_KERNEL_MEMBLOCK_TYPE_USER_RW_UNCACHE	= 0x0c208060,
@@ -54,4 +58,8 @@ int sceKernelFreeMemBlock(SceUID uid);
 int sceKernelGetMemBlockBase(SceUID uid, void **basep);
 
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_KERNEL_MEMORYMGR_H_ */

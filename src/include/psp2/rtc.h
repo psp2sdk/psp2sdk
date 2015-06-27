@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* struct/union */
 
 typedef struct SceRtcTime {
@@ -91,4 +95,8 @@ int sceRtcParseRFC3339(uint64_t *pUtc, const char *pszDateTime);
 // sceRtcGetTime64_t
 // sceRtcGetCurrentNetworkTick
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_RTC_H_ */

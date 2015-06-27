@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <psp2/io/stat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** Describes a single directory entry */
 typedef struct SceIoDirent {
 	/** File status. */
@@ -62,4 +66,8 @@ int sceIoDread(SceUID fd, SceIoDirent *dir);
   */
 int sceIoDclose(SceUID fd);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_IO_DRENT_H_ */

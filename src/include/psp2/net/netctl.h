@@ -14,6 +14,10 @@
 
 #include <psp2/net/net.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* defines */
 
 #define PSP2_NETCTL_INFO_CONFIG_NAME_LEN_MAX 64
@@ -114,4 +118,8 @@ int sceNetCtlAdhocDisconnect();
 int sceNetCtlAdhocGetPeerList(unsigned int *buflen, void *buf);
 int sceNetCtlAdhocGetInAddr(SceNetInAddr *inaddr);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_NET_CTL_H_ */

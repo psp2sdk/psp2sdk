@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* typedef */
 
 typedef SceUID SceFontLibHandle;
@@ -231,4 +235,8 @@ int sceFontSetAltCharacterCode(SceFontLibHandle libHandle, unsigned int charCode
 
 int sceFontFlush(SceFontHandle fontHandle);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_PGF_H_ */

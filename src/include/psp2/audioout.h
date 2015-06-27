@@ -12,6 +12,10 @@
 #ifndef _PSP2_AUDIOOUT_H_
 #define _PSP2_AUDIOOUT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_AUDIO_OUT_ERROR_NOT_OPENED		= 0x80260001,
 	SCE_AUDIO_OUT_ERROR_BUSY		= 0x80260002,
@@ -168,4 +172,8 @@ int sceAudioOutGetRestSample(int port);
  */
 int sceAudioOutGetAdopt(int type);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_AUDIOOUT_H_ */

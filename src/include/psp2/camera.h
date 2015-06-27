@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_CAMERA_ERROR_PARAM		        = 0x802e0000,
 	SCE_CAMERA_ERROR_ALREADY_INIT		= 0x802e0001,
@@ -111,4 +115,8 @@ int sceCameraGetEV(int devnum, int *pMode);
 int sceCameraSetEV(int devnum, int mode);
 int sceCameraGetDeviceLocation(int devnum, SceFVector3 *pLocation);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_CAMERA_H_ */
