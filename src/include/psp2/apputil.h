@@ -12,6 +12,10 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_APPUTIL_ERROR_PARAMETER			= 0x80100600,
 	SCE_APPUTIL_ERROR_NOT_INITIALIZED		= 0x80100601,
@@ -203,4 +207,8 @@ int sceAppUtilBgdlGetStatus(SceAppUtilBgdlStatus *stat);
 //! Launch web browser app
 int sceAppUtilLaunchWebBrowser(SceAppUtilWebBrowserParam *param);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_APPUTL_H_ */

@@ -14,8 +14,16 @@
 
 #include "gxm.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int sceGxtInitTexture(const SceGxmTexture *texture, const ScePVoid data, SceUInt8* data, int flag);
 const ScePVoid sceGxtGetDataAddress(const ScePVoid data);
 const SceSize sceGxtGetDataSize(const ScePVoid data);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_GXT_H_ */

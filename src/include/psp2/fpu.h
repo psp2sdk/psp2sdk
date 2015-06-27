@@ -12,6 +12,10 @@
 #ifndef _PSP2_FPU_H_
 #define _PSP2_FPU_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 float sceFpuLog2f(float x);
 float sceFpuSinf(float x);
 float sceFpuExp10f(float x);
@@ -26,5 +30,9 @@ float sceFpuAtan2f(float y, float x);
 float sceFpuCosf(float x);
 float sceFpuPowf(float base, float exponent);
 float sceFpuExpf(float x);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PSP2_FPU_H_ */

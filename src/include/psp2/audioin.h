@@ -12,6 +12,10 @@
 #ifndef _PSP2_AUDIOIN_H_
 #define _PSP2_AUDIOIN_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	//! Undefined error
 	SCE_AUDIO_IN_ERROR_FATAL		= 0x80260100,
@@ -69,4 +73,8 @@ int sceAudioInInput(int port, void *destPtr);
 int sceAudioInGetAdopt(int portType);
 int sceAudioInGetStatus(int select);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_AUDIOIN_H_ */

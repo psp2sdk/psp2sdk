@@ -12,12 +12,11 @@
 #ifndef _PSP2_DISPLAY_H_
 #define _PSP2_DISPLAY_H_
 
+#include <psp2/types.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <psp2/types.h>
-
 
 enum {
 	SCE_DISPLAY_ERROR_OK			= 0,
@@ -164,4 +163,4 @@ int sceDisplayUnregisterVblankStartCallback(SceUID uid);
 }
 #endif
 
-#endif
+#endif /* _PSP2_DISPLAY_H_ */

@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Error Codes
 
 enum {
@@ -1441,4 +1445,8 @@ int sceGxmDestroyRenderTarget(SceGxmRenderTarget *renderTarget);
 
 int sceGxmSetUniformDataF(void *uniformBuffer, const SceGxmProgramParameter *parameter, unsigned int componentOffset, unsigned int componentCount, const float *sourceData);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_GXM_ */

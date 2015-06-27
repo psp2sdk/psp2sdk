@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** 64-bit system clock type. */
 typedef SceUInt64 SceKernelSysClock;
 
@@ -1001,4 +1005,8 @@ typedef enum SceKernelIdListType {
  */
 SceKernelIdListType sceKernelGetThreadmgrUIDClass(SceUID uid);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_KERNEL_THREADMGR_H_ */

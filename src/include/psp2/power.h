@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* callback */
 typedef void (*ScePowerCallback)(int unknown, int powerInfo);
 
@@ -30,5 +34,8 @@ int scePowerIsLowBattery();
 int scePowerUnregisterCallback(int slot);
 int  scePowerGetBatteryFullCapacity(); //?
 
-
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_POWER_H_ */

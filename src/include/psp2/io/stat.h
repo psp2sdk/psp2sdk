@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** Access modes for st_mode in SceIoStat (confirm?). */
 enum {
 	/** Format bits mask */
@@ -151,4 +155,8 @@ int sceIoGetstat(const char *file, SceIoStat *stat);
   */
 int sceIoChstat(const char *file, SceIoStat *stat, int bits);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_IO_STAT_H_ */

@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	SCE_AUDIOENC_ERROR_API_FAIL		= 0x80860000,
 	SCE_AUDIOENC_ERROR_INVALID_TYPE		= 0x80860001,
@@ -119,4 +123,8 @@ int sceAudioencClearContext(SceAudioencCtrl *pCtrl);
 int sceAudioencGetOptInfo(SceAudioencCtrl *pCtrl);
 int sceAudioencGetInternalError(SceAudioencCtrl *pCtrl, int *pInternalError);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_AUDIOENC_H_ */
