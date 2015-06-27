@@ -31,11 +31,9 @@ add_executable(${FIXUP_BIN} ${FIXUP_SRCS} ${FIXUP_HDRS})
 
 #User includes dirs (won't hide warnings)
 target_include_directories(${FIXUP_BIN} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR})
-
-#External includes dirs (won't show warnings)
-target_include_directories(${FIXUP_BIN} SYSTEM PUBLIC
-    ${OPENSSL_INCLUDE_DIR})
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${OPENSSL_INCLUDE_DIR}
+)
 
 target_link_libraries(${FIXUP_BIN}
     ${OPENSSL_CRYPTO_LIBRARY} -lcrypto) # FIXME OPENSSL_CRYPTO_LIBRARY shouldn't be empty
