@@ -15,6 +15,7 @@ set(NIDS
 
 set(SRCS
     SceDisplay_stub.S
+    SceDisplayUser_stub.S
 )
 
 add_psp2_stub(SceDisplay ${SRCS} ${NIDS})
