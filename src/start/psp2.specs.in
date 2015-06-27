@@ -22,7 +22,7 @@
 -mcpu=cortex-a9 -mfpu=neon-fp16
 
 *startfile:
-%(path)/lib/crt0%O%s
+crt0%O%s
 
 *path:
 @prefix@

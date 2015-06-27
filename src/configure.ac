@@ -39,8 +39,7 @@ AC_CHECK_TYPES(uint16_t, , AC_MSG_ERROR(uint16_t not defined.),
 AC_CHECK_TYPES(uint32_t, , AC_MSG_ERROR(uint32_t not defined.),
 	[#include <stdint.h>])
 
-AC_OUTPUT([Doxyfile Makefile
-	include/Makefile libsysbase/Makefile start/Makefile stubs/Makefile
+AC_OUTPUT([Doxyfile Makefile include/Makefile start/Makefile stubs/Makefile
 	start/psp2.specs
 	stubs/SceNpUtility_stub/Makefile
 	stubs/SceHmac_stub/Makefile
