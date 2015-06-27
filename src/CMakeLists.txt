@@ -13,5 +13,11 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -mcpu=cortex-a9 -mfpu=neon-fp16 -nostdlib")
 
+set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+set(PACKAGE_VERSION $ENV{REV})
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile @ONLY)
+unset(PACKAGE_VERSION)
+unset(PACKAGE_NAME)
+
 add_subdirectory(start)
 add_subdirectory(stubs)

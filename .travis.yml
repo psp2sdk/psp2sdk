@@ -15,44 +15,31 @@ before_install:
 
  - git clone https://github.com/173210/psp2sdk.git src/html -qb gh-pages --single-branch
  - git -C src/html rm -qrf .
+ - export REV=`git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'`
 
 script:
- - export REV=dirty-$(git describe --always)
-
- - cd src
- - ./autogen.sh $FLAGS
+ # Compile src folder
+ - mkdir -p src/build && pushd src/build
+ - cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release
  - doxygen
  - make install
- - cd ..
+ - popd
 
- - cd tools
- - ./autogen.sh $FLAGS
+ # Compile tools folder
+ - mkdir -p tools/build && pushd tools/build
+ - cmake .. -DCMAKE_BUILD_TYPE=Release
  - make install
- - make clean
- - cd ../out
- - tar -c * -f ../psp2sdk-$REV-amd64-pc-linux-gnu.tar
- - cd ..
- - rm -Rf out
-
- - make -C src install
- - cd tools
- - ./autogen.sh $FLAGS --host=x86_64-w64-mingw32
- - make install
- - make clean
- - cd ..
- - cp /usr/x86_64-w64-mingw32/bin/libeay32.dll out/bin
- - zip -0rq psp2sdk-$REV-x86_64-w64-mingw32.zip out
- - rm -Rf out
+ - popd
 
 after_success:
- - curl -q -T psp2sdk-$REV-amd64-pc-linux-gnu.tar -u $FTP ftp://wololo.net/
- - curl -q -T psp2sdk-$REV-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
- - cd src/html
- - git add .
- - git config user.name "Travis CI"
- - git config user.email contact@travis-ci.com
- - git commit -qm $REV
- - git push -q https://$TOKEN@github.com/173210/psp2sdk.git
+ #- curl -q -T psp2sdk-$REV-amd64-pc-linux-gnu.tar -u $FTP ftp://wololo.net/
+ #- curl -q -T psp2sdk-$REV-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
+ #- cd src/html
+ #- git add .
+ #- git config user.name "Travis CI"
+ #- git config user.email contact@travis-ci.com
+ #- git commit -qm $REV
+ #- git push -q https://$TOKEN@github.com/173210/psp2sdk.git
 
 env:
  global:
