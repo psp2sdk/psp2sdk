@@ -8,21 +8,26 @@
 sudo: required
 
 before_install:
+ - sudo add-apt-repository -y "deb http://fr.archive.ubuntu.com/ubuntu/ trusty main universe"
  - sudo add-apt-repository -y ppa:terry.guo/gcc-arm-embedded
  - sudo add-apt-repository -y ppa:win-cross-dev/win-cross
  - sudo apt-get update -qq -y
- - sudo apt-get install -qq -y doxygen graphviz gcc-arm-none-eabi gcc-mingw-w64-x86-64 binutils-mingw-w64-x86-64 libssl-dev mingw64-openssl
+ - sudo apt-get install -qq -y doxygen graphviz gcc-arm-none-eabi libssl-dev
 
  - git clone https://github.com/173210/psp2sdk.git src/html -qb gh-pages --single-branch
  - git -C src/html rm -qrf .
- - export REV=`git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'`
+ #- export REV=`git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'` # Add this when the first release is out
+ - export REV=`git describe --always`
 
 script:
  # Compile src folder
  - mkdir -p src/build && pushd src/build
  - cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release
- - doxygen
  - make install
+ - popd
+ # Build documentation
+ - pushd src
+ - doxygen
  - popd
 
  # Compile tools folder
