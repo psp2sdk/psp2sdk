@@ -12,6 +12,10 @@
 #ifndef _PSP2_IO_DEVCTRL_H_
 #define _PSP2_IO_DEVCTRL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
   * Send a devctl command to a device.
   *
@@ -84,4 +88,8 @@ int sceIoIoctl(SceUID fd, unsigned int cmd, void *indata, int inlen, void *outda
   */
 int sceIoIoctlAsync(SceUID fd, unsigned int cmd, void *indata, int inlen, void *outdata, int outlen);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_IO_DEVCTRL_H_ */

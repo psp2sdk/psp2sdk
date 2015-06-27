@@ -15,6 +15,10 @@
 #include <psp2/types.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* struct */
 
 typedef struct SceMotionState {
@@ -61,4 +65,8 @@ int sceMotionGetMagnetometerState(void);
 int sceMotionStartSampling(void);
 int sceMotionStopSampling(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_MOTION_H_ */

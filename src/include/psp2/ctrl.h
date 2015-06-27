@@ -12,11 +12,11 @@
 #ifndef _PSP2_CTRL_H_
 #define _PSP2_CTRL_H_
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
 
 enum {
 	SCE_CTRL_ERROR_INVALID_ARG	= 0x80340001,

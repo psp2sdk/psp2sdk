@@ -11,6 +11,10 @@
 #ifndef _PSP2_NET_NET_H_
 #define _PSP2_NET_NET_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** Net Error Codes */
 enum NetErrorCodes {
 	PSP2_NET_ERROR_EPERM					= 0x80410101,
@@ -771,4 +775,8 @@ unsigned long long int sceNetNtohll(unsigned long long int net64);
 unsigned int sceNetNtohl(unsigned int net32);
 unsigned short int sceNetNtohs(unsigned short int net16);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_NET_NET_H_ */

@@ -12,6 +12,10 @@
 #ifndef _PSP2_IO_FCNTL_H_
 #define _PSP2_IO_FCNTL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Note: Not all of these sceIoOpen() flags are not compatible with the
    open() flags found in sys/unistd.h. */
 enum {
@@ -308,4 +312,8 @@ int sceIoChangeAsyncPriority(SceUID fd, int pri);
   */
 int sceIoSetAsyncCallback(SceUID fd, SceUID cb, void *argp);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_IO_FCNTL_H_ */

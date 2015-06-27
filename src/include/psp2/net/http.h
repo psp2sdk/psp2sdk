@@ -12,6 +12,10 @@
 #ifndef _PSP2_NET_HTTP_H_
 #define _PSP2_NET_HTTP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* defines */
 #define PSP2_HTTP_DEFAULT_RESOLVER_TIMEOUT		(1 * 1000 * 1000U)
 #define PSP2_HTTP_DEFAULT_RESOLVER_RETRY		(5U)
@@ -342,4 +346,8 @@ int sceHttpAddCookie(const char *url, const char *cookie, unsigned int cookieLen
 int sceHttpSetCookieRecvCallback(int id, SceHttpCookieRecvCallback cbfunc, void *userArg);
 int sceHttpSetCookieSendCallback(int id, SceHttpCookieSendCallback cbfunc, void *userArg);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_NET_HTTP_H_ */

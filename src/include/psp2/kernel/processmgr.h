@@ -15,6 +15,10 @@
 #include <psp2/kernel/threadmgr.h>
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	PSP2_KERNEL_PROCESS_PRIORITY_SYSTEM_HIGH	= 32,
 	PSP2_KERNEL_PROCESS_PRIORITY_SYSTEM_DEFAULT	= 96,
@@ -80,4 +84,8 @@ SceUInt32 sceKernelGetProcessTimeLow(void);
 */
 SceUInt64 sceKernelGetProcessTimeWide(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_KERNEL_PROCESSMGR_H_ */

@@ -14,6 +14,10 @@
 
 #include <psp2/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	//! Busy
 	SCE_APPMGR_ERROR_BUSY			= 0x80802000,
@@ -92,4 +96,8 @@ typedef struct sceAppMgrLoadExecOptParam {
 int sceAppMgrLoadExec(const char *appPath, char * const argv[],
 	const SceAppMgrExecOptParam *optParam);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _PSP2_APPMGR_H_ */
