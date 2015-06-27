@@ -255,7 +255,6 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 			scn->addrDiff = addr - scn->shdr.sh_addr;
 			scn->shdr.sh_addr = addr;
 			offset = sorts[i]->phdr.p_memsz;
-			scn->segOffsetDiff = offset - scn->segOffset;
 			scn->segOffset = offset;
 
 			if (scn->shdr.sh_type != SHT_NOBITS
@@ -275,8 +274,6 @@ int updateSegs(seg_t *segs, Elf32_Half segnum, const char *strtab)
 
 		for (j = 0; j < sorts[i]->shnum; j++) {
 			scn = sorts[i]->scns[j];
-
-			scn->segOffsetDiff = sorts[i]->phdr.p_memsz - scn->segOffset;
 			scn->segOffset = sorts[i]->phdr.p_memsz;
 
 			if (scn->shdr.sh_type == SHT_REL) {

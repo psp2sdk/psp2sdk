@@ -68,7 +68,8 @@ int updateRel(FILE *fp, scn_t *scns,
 			for (i = 0; i < scn->orgSize;
 				i += sizeof(Elf32_Rel), rel++)
 			{
-				rel->r_offset += dstScn->segOffsetDiff;
+				rel->r_offset += dstScn->shdr.sh_offset
+					- dstScn->orgOffset;
 
 				type = ELF32_R_TYPE(rel->r_info);
 				if (type != R_ARM_ABS32 && type != R_ARM_TARGET1)

@@ -14,7 +14,6 @@
 
 typedef struct {
 	Elf32_Sword addrDiff;
-	Elf32_Sword segOffsetDiff;
 	Elf32_Word orgOffset;
 	Elf32_Word orgSize;
 	Elf32_Half phndx;
