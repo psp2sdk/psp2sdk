@@ -18,10 +18,10 @@ env:
   - secure: "GVfqB9TOUv9N4ow+7dw3SoIjiJxlZ1EYQs5hD9oF7OvSY/YgSwB9UHizyJNsq/A3X7E2UsDURKJ4HaY3Pt04TsmSZIjvlQMAZ/gw/pGlkr1XcQfbK6Jt3qP389IYxtM6mhH/EkfI6aYWW2qFWkmqyws3YLX3z69TVO6pthFwSm55r+2PmH+r1XbHwgeNcIs9C/wYo1pngAGtkaJwy/g6418j21dKlSZUCGe4Jd7ZF7Qj8jLmALy1dTk5Gnl6Mgta6fMo6+caZzruTT+PwgpHKOQZ4s/6YhUeRoixCNirhzGlhyYPXXsBD+DniqtNK5Dy9KzTKdgy/khlP+E60D8P0JH3L1J/a8DahJuZQw/XWRne91AcTYBS84zzdRGXeLv8RUf4glLY3mAAinqGX5bhKq3Ctq1adAfG7XhRGCJDJ3hkRVRAp1qCropqUsjrcUlmGnr4JfBi/oNYKrR1gXT/OMMRYHXnq1OTVj/OXv0lJCUyR+RzDM+ehM08PXaRKLJrrU/v7HkfAJULxagv2nJ/U9UMDy0CUWZrgCIIbbJ6XOTyJUDoZaiTElFTuZkvVAlUXrrESOA21zTU8gE6KiQ0yhEQtDjljae9Vn2Zdfxn96EX6JsymEF3yWxSa21nobV5KGwfzTyHEX4/YVErpN/LSO60GKsxVLXYO4isRYlflms="
 
 before_install:
- - sudo add-apt-repository -y "deb http://fr.archive.ubuntu.com/ubuntu/ trusty main universe"
- - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
- - sudo apt-get update -qq
- - sudo apt-get install -qq doxygen graphviz gcc-arm-none-eabi libssl-dev
+ - sudo add-apt-repository -y ppa:kalakris/cmake
+ - sudo add-apt-repository -y ppa:terry.guo/gcc-arm-embedded
+ - sudo apt-get update -qq -y
+ - sudo apt-get install -qq cmake doxygen graphviz gcc-arm-none-eabi libssl-dev
 
  - git clone https://github.com/173210/psp2sdk.git src/html -qb gh-pages --single-branch
  - git -C src/html rm -qrf .
