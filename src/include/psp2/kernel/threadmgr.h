@@ -979,21 +979,21 @@ int sceKernelGetSystemInfo(SceKernelSystemInfo *info);
 
 /** Threadmgr types */
 typedef enum SceKernelIdListType {
-	PSP2_KERNEL_TMID_Thread = 1,
-	PSP2_KERNEL_TMID_Semaphore = 2,
-	PSP2_KERNEL_TMID_EventFlag = 3,
-	PSP2_KERNEL_TMID_Mbox = 4,
-	PSP2_KERNEL_TMID_Vpl = 5,
-	PSP2_KERNEL_TMID_Fpl = 6,
-	PSP2_KERNEL_TMID_Mpipe = 7,
-	PSP2_KERNEL_TMID_Callback = 8,
-	PSP2_KERNEL_TMID_ThreadEventHandler = 9,
-	PSP2_KERNEL_TMID_Alarm = 10,
-	PSP2_KERNEL_TMID_VTimer = 11,
-	PSP2_KERNEL_TMID_SleepThread = 64,
-	PSP2_KERNEL_TMID_DelayThread = 65,
-	PSP2_KERNEL_TMID_SuspendThread = 66,
-	PSP2_KERNEL_TMID_DormantThread = 67,
+	SCE_KERNEL_TMID_Thread = 1,
+	SCE_KERNEL_TMID_Semaphore = 2,
+	SCE_KERNEL_TMID_EventFlag = 3,
+	SCE_KERNEL_TMID_Mbox = 4,
+	SCE_KERNEL_TMID_Vpl = 5,
+	SCE_KERNEL_TMID_Fpl = 6,
+	SCE_KERNEL_TMID_Mpipe = 7,
+	SCE_KERNEL_TMID_Callback = 8,
+	SCE_KERNEL_TMID_ThreadEventHandler = 9,
+	SCE_KERNEL_TMID_Alarm = 10,
+	SCE_KERNEL_TMID_VTimer = 11,
+	SCE_KERNEL_TMID_SleepThread = 64,
+	SCE_KERNEL_TMID_DelayThread = 65,
+	SCE_KERNEL_TMID_SuspendThread = 66,
+	SCE_KERNEL_TMID_DormantThread = 67,
 } SceKernelIdListType;
 
 /**
