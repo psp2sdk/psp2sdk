@@ -32,7 +32,7 @@ before_install:
 script:
  # Compile src folder
  - mkdir -p src/build && pushd src/build
- - cmake .. -DCMAKE_INSTALL_PREFIX=/opt/psp2sdk -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release
+ - cmake .. -DCMAKE_INSTALL_PREFIX=/opt/psp2sdk -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-arm-none-eabi-psp2.cmake -DCMAKE_BUILD_TYPE=Release
  - sudo make install
  - popd
  # Build documentation
