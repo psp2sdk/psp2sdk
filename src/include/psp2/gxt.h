@@ -23,10 +23,10 @@ extern "C" {
 
 //! GXT error codes
 enum SceGxtErrorCode {
-	SCE_OK = 0,
-	SCE_GXT_ERROR_INVALID_ALIGNMENT,
-	SCE_GXT_ERROR_INVALID_VALUE,
-	SCE_GXT_ERROR_INVALID_POINTER
+	PSP2_OK = 0,
+	PSP2_GXT_ERROR_INVALID_ALIGNMENT,
+	PSP2_GXT_ERROR_INVALID_VALUE,
+	PSP2_GXT_ERROR_INVALID_POINTER
 };
 
 //! Header for a GXT file
@@ -54,8 +54,8 @@ typedef struct SceGxtTextureInfo {
  * @brief Checks if a pointer looks like a GXT file.
  *
  * @param gxt A pointer to the GXT data
- * @retval SCE_OK The data structure passes GXT header validation
- * @retval SCE_GXT_ERROR_INVALID_VALUE Magic or version invalid
+ * @retval PSP2_OK The data structure passes GXT header validation
+ * @retval PSP2_GXT_ERROR_INVALID_VALUE Magic or version invalid
  */
 SceGxtErrorCode sceGxtCheckData(const void *gxt);
 
@@ -98,10 +98,10 @@ uint32_t sceGxtGetTextureCount(const void *gxt);
  * @param gxt pointer to the GXT data
  * @param textureData A pointer to the start of the texture data
  * @param paletteIndex The index of the palette
- * @retval SCE_OK
- * @retval SCE_GXT_ERROR_INVALID_ALIGNMENT
- * @retval SCE_GXT_ERROR_INVALID_VALUE
- * @retval SCE_GXT_ERROR_INVALID_POINTER
+ * @retval PSP2_OK
+ * @retval PSP2_GXT_ERROR_INVALID_ALIGNMENT
+ * @retval PSP2_GXT_ERROR_INVALID_VALUE
+ * @retval PSP2_GXT_ERROR_INVALID_POINTER
  */
 SceGxtErrorCode sceGxtSetPalette(SceGxmTexture *texture,
 				const void *gxt,
