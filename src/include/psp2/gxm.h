@@ -1009,13 +1009,14 @@ typedef struct SceGxmDepthStencilSurface {
 	unsigned int backgroundControl;
 } SceGxmDepthStencilSurface;
 
+//! Represents an auxiliary surface
 typedef struct SceGxmAuxiliarySurface {
-	SceGxmColorFormat colorFormat;
-	SceGxmColorSurfaceType type;
-	unsigned int width;
-	unsigned int height;
-	unsigned int stride;
-	void *data;
+	uint32_t colorFormat; //!< Format of auxiliary surface data from SceGxmColorFormat
+	uint32_t type; //!< Memory layout of the surface data from SceGxmColorSurfaceType
+	uint32_t width; //!< Surface width
+	uint32_t height; //!< Surface height
+	uint32_t stride; //!< Surface stride in bytes
+	void *data; //!< A pointer to the surface data
 } SceGxmAuxiliarySurface;
 
 typedef struct SceGxmNotification {
