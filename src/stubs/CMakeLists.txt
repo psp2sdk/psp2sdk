@@ -10,7 +10,7 @@ macro(add_psp2_stub stubname sources nids)
     set(STUB_HEAD "${STUB_NAME}_head")
     set_source_files_properties(${sources} PROPERTIES LANGUAGE C)
     # FUNC objects
-    foreach(NID ${nids})
+    foreach(NID ${NIDS})
         set(CURRENT_TARGET "${STUB_NAME}_${NID}")
         add_library(${CURRENT_TARGET} OBJECT ${sources})
         target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${NID})
@@ -36,17 +36,17 @@ macro(add_psp2_libc_stub stubname sources fnids vnids)
     set(STUB_HEAD "${STUB_NAME}_head")
     set_source_files_properties(${sources} PROPERTIES LANGUAGE C)
     # FUNC objects
-    foreach(FNID ${fnids})
-        set(CURRENT_TARGET "${STUB_NAME}_${FNID}")
+    foreach(FNID ${FNIDS})
+        set(CURRENT_TARGET "${STUB_NAME}_f${FNID}")
         add_library(${CURRENT_TARGET} OBJECT ${sources})
         target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${FNID})
         list(APPEND FNIDS_TARGETS $<TARGET_OBJECTS:${CURRENT_TARGET}>)
     endforeach()
     # VAR objects
-    foreach(VNID ${vnids})
-        set(CURRENT_TARGET "${STUB_NAME}_${VNID}")
+    foreach(VNID ${VNIDS})
+        set(CURRENT_TARGET "${STUB_NAME}_v${VNID}")
         add_library(${CURRENT_TARGET} OBJECT ${sources})
-        target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${VNID})
+        target_compile_definitions(${CURRENT_TARGET} PRIVATE -DVAR=${VNID})
         list(APPEND VNIDS_TARGETS $<TARGET_OBJECTS:${CURRENT_TARGET}>)
     endforeach()
     # HEAD object
@@ -59,7 +59,7 @@ macro(add_psp2_libc_stub stubname sources fnids vnids)
     add_library(${STUB_NAME} STATIC
         $<TARGET_OBJECTS:${STUB_HEAD}>
         $<TARGET_OBJECTS:${STUB_NIDS}>
-        ${FNIDS_TARGETS})
+        ${FNIDS_TARGETS}
         ${VNIDS_TARGETS})
     install(TARGETS ${STUB_NAME} DESTINATION lib)
 endmacro()
