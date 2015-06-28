@@ -128,7 +128,7 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 
 		dstScn = scns + scn->shdr.sh_info;
 
-		for (i = 0; i < scn->orgSize; i += sizeof(rel)) {
+		for (i = 0; i < scn->orgSize; i += sizeof(*rel)) {
 			type = ELF32_R_TYPE(rel->r_info);
 			sym = symtab + ELF32_R_SYM(rel->r_info);
 
