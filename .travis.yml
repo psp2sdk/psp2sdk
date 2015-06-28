@@ -46,10 +46,10 @@ after_success:
  - curl -q -T psp2sdk-$REV-x86_64-w64-mingw32.zip -u $FTP ftp://wololo.net/
  # Commit documentation on gh-pages, removing all history to prevent bloating
  - pushd $HOME
- - git config user.name "Travis CI"
- - git config user.email contact@travis-ci.com
  - git clone -qb gh-pages --single-branch https://${TOKEN}@github.com/psp2dev/psp2sdk.git gh-pages
  - pushd gh-pages
+ - git config user.name "Travis CI"
+ - git config user.email contact@travis-ci.com
  - git rm -rf *
  - cp -r $TRAVIS_BUILD_DIR/src/html/* .
  - git add -f .
