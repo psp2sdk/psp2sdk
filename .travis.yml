@@ -52,7 +52,7 @@ after_success:
  - git config user.name "Travis CI"
  - git config user.email contact@travis-ci.com
  - git commit -qm $REV
- - git push -q https://$TOKEN@github.com/173210/psp2sdk.git
+ - git push -q https://$TOKEN@github.com/psp2dev/psp2sdk.git
 
 env:
  global:

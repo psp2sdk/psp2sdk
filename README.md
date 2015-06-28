@@ -7,7 +7,7 @@ The free SDK for PSP2, aiming to integrate with devkitARM
 Want to help out? Awesome.
 
 1. Fork it.
-2. Make your changes / improvements / bug fixes etc (and ensure that you adhere to the [project style guide / specs](https://github.com/173210/psp2sdk/wiki) whilst doing so).
+2. Make your changes / improvements / bug fixes etc (and ensure that you adhere to the [project style guide / specs](https://github.com/pspdev/psp2sdk/wiki) whilst doing so).
 3. Submit a pull request.
 4. Win.
 
