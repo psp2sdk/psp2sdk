@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file gxt.h
  * @brief Header file which defines GXT variables and functions
  *
  * The GXT library facilitates the runtime manipulation of GXT files
@@ -21,7 +21,7 @@ extern "C" {
 
 #include <psp2/gxm.h>
 
-//! GXT error codes
+/** GXT error codes */
 enum SceGxtErrorCode {
 	SCE_OK = 0,
 	SCE_GXT_ERROR_INVALID_ALIGNMENT,
@@ -29,79 +29,81 @@ enum SceGxtErrorCode {
 	SCE_GXT_ERROR_INVALID_POINTER
 };
 
-//! Header for a GXT file
+/** Header for a GXT file */
 typedef struct SceGxtHeader {
-	uint32_t tag; //!< GXT Identifier
-	uint32_t version; //!< Version number
-	uint32_t numTextures; //!< Number of textures
-	uint32_t dataOffset; //!< Offset to the texture data
-	uint32_t dataSize; //!< Total size of the texture data
-	uint32_t numP4Palettes; //!< Number of 16 entry palettes
-	uint32_t numP8Palettes; //!< Number of 256 entry palettes
-	uint32_t pad; //!< Padding
+	uint32_t tag;		//!< GXT Identifier
+	uint32_t version;	//!< Version number
+	uint32_t numTextures;	//!< Number of textures
+	uint32_t dataOffset;	//!< Offset to the texture data
+	uint32_t dataSize;	//!< Total size of the texture data
+	uint32_t numP4Palettes;	//!< Number of 16 entry palettes
+	uint32_t numP8Palettes;	//!< Number of 256 entry palettes
+	uint32_t pad;		//!< Padding
 } SceGxtHeader;
 
-//! This structure contains information about each texture in the GXT file
+/** This structure contains information about each texture in the GXT file */
 typedef struct SceGxtTextureInfo {
-	uint32_t dataOffset; //!< Offset to the texture data
-	uint32_t dataSize; //!< Size of the texture data
-	uint32_t paletteIndex; //!< Index of the palette
-	uint32_t flags; //!< Flags
-	uint32_t controlWords[4]; //!< Texture control words
+	uint32_t dataOffset;		//!< Offset to the texture data
+	uint32_t dataSize;		//!< Size of the texture data
+	uint32_t paletteIndex;		//!< Index of the palette
+	uint32_t flags;			//!< Flags
+	uint32_t controlWords[4];	//!< Texture control words
 } SceGxtTextureInfo;
 
 /**
- * @brief Checks if a pointer looks like a GXT file.
+ * Checks if a pointer is a valid GXT file.
  *
- * @param gxt A pointer to the GXT data
- * @retval SCE_OK The data structure passes GXT header validation
- * @retval SCE_GXT_ERROR_INVALID_VALUE Magic or version invalid
+ * @param	gxt	pointer to the GXT data
+ *
+ * @retval	SCE_OK
+ * @retval	SCE_GXT_ERROR_INVALID_VALUE Magic or version invalid
  */
 SceGxtErrorCode sceGxtCheckData(const void *gxt);
 
 /**
- * @brief Gets the start address of the texture data within a GXT file.
+ * Gets the start address of the texture data.
  *
- * @param gxt A pointer to the GXT data
+ * @param	gxt	pointer to the GXT data
  * @return A pointer to the start of the texture data
  */
 const void *sceGxtGetDataAddress(const void *gxt);
 
 /**
- * @brief Gets the size of the texture data within a GXT file.
+ * Gets the size of the texture data.
  *
- * @param gxt A pointer to the GXT data
+ * @param	gxt	pointer to the GXT data
  * @return The size of the texture data in bytes
  */
 uint32_t sceGxtGetDataSize(const void *gxt);
 
 /**
- * @brief Gets the header size of a GXT file.
+ * Gets the header size of a GXT file.
  *
- * @param gxt A pointer to the GXT data
+ * @param	gxt	pointer to the GXT data
  * @return The size of the header in bytes
  */
 uint32_t sceGxtGetHeaderSize(const void *gxt);
 
 /**
- * @brief Gets the number of textures in a GXT file.
+ * Gets the texture count in a GXT file.
  *
- * @param gxt A pointer to the GXT data
+ * @param	gxt	pointer to the GXT data
  * @return The number of textures.
  */
 uint32_t sceGxtGetTextureCount(const void *gxt);
 
 /**
- * @brief Sets the palette for the given texture.
+ * Sets the palette of a given texture.
  *
- * @param texture pointer to the texture
- * @param gxt pointer to the GXT data
- * @param textureData A pointer to the start of the texture data
- * @param paletteIndex The index of the palette
- * @retval SCE_OK
- * @retval SCE_GXT_ERROR_INVALID_ALIGNMENT
- * @retval SCE_GXT_ERROR_INVALID_VALUE
- * @retval SCE_GXT_ERROR_INVALID_POINTER
+ * @param	texture		pointer to the texture
+ * @param	gxt 		pointer to the GXT data
+ * @param	textureData 	pointer to the start of texture data
+ * @param	paletteIndex 	palette index
+ *
+ * @retval	SCE_OK
+ * @retval	SCE_GXT_ERROR_INVALID_ALIGNMENT
+ * @retval	SCE_GXT_ERROR_INVALID_VALUE
+ * @retval	SCE_GXT_ERROR_INVALID_POINTER
  */
 SceGxtErrorCode sceGxtSetPalette(SceGxmTexture *texture,
 				const void *gxt,
