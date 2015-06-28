@@ -5,36 +5,63 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 macro(add_psp2_stub stubname sources nids)
-
     set(STUB_NAME "${stubname}_stub")
     set(STUB_NIDS "${STUB_NAME}_NIDS")
     set(STUB_HEAD "${STUB_NAME}_head")
     set_source_files_properties(${sources} PROPERTIES LANGUAGE C)
-
     # FUNC objects
-    foreach(NID ${NIDS})
+    foreach(NID ${nids})
         set(CURRENT_TARGET "${STUB_NAME}_${NID}")
         add_library(${CURRENT_TARGET} OBJECT ${sources})
         target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${NID})
         list(APPEND NIDS_TARGETS $<TARGET_OBJECTS:${CURRENT_TARGET}>)
     endforeach()
-
     # HEAD object
     add_library(${STUB_HEAD} OBJECT ${sources})
     target_compile_definitions(${STUB_HEAD} PRIVATE -DHEAD)
-
     # NIDS object
     add_library(${STUB_NIDS} OBJECT ${sources})
     target_compile_definitions(${STUB_NIDS} PRIVATE -DNIDS)
-
     # STUB library
     add_library(${STUB_NAME} STATIC
         $<TARGET_OBJECTS:${STUB_HEAD}>
         $<TARGET_OBJECTS:${STUB_NIDS}>
         ${NIDS_TARGETS})
-
     install(TARGETS ${STUB_NAME} DESTINATION lib)
+endmacro()
 
+macro(add_psp2_libc_stub stubname sources fnids vnids)
+    set(STUB_NAME "${stubname}_stub")
+    set(STUB_NIDS "${STUB_NAME}_NIDS")
+    set(STUB_HEAD "${STUB_NAME}_head")
+    set_source_files_properties(${sources} PROPERTIES LANGUAGE C)
+    # FUNC objects
+    foreach(FNID ${fnids})
+        set(CURRENT_TARGET "${STUB_NAME}_${FNID}")
+        add_library(${CURRENT_TARGET} OBJECT ${sources})
+        target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${FNID})
+        list(APPEND FNIDS_TARGETS $<TARGET_OBJECTS:${CURRENT_TARGET}>)
+    endforeach()
+    # VAR objects
+    foreach(VNID ${vnids})
+        set(CURRENT_TARGET "${STUB_NAME}_${VNID}")
+        add_library(${CURRENT_TARGET} OBJECT ${sources})
+        target_compile_definitions(${CURRENT_TARGET} PRIVATE -DFUNC=${VNID})
+        list(APPEND VNIDS_TARGETS $<TARGET_OBJECTS:${CURRENT_TARGET}>)
+    endforeach()
+    # HEAD object
+    add_library(${STUB_HEAD} OBJECT ${sources})
+    target_compile_definitions(${STUB_HEAD} PRIVATE -DHEAD)
+    # NIDS object
+    add_library(${STUB_NIDS} OBJECT ${sources})
+    target_compile_definitions(${STUB_NIDS} PRIVATE -DNIDS)
+    # STUB library
+    add_library(${STUB_NAME} STATIC
+        $<TARGET_OBJECTS:${STUB_HEAD}>
+        $<TARGET_OBJECTS:${STUB_NIDS}>
+        ${FNIDS_TARGETS})
+        ${VNIDS_TARGETS})
+    install(TARGETS ${STUB_NAME} DESTINATION lib)
 endmacro()
 
 add_subdirectory(SceAppMgr_stub)
