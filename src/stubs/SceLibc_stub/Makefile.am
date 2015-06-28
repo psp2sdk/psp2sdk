@@ -5,9 +5,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 PREFIX = _SceLibc-0001_
-ENTRIES_PREFIX = $(PREFIX)F00_
+FENTRIES_PREFIX = $(PREFIX)F00_
+VENTRIES_PREFIX = $(PREFIX)V00_
 
-NIDS = 0x006b54ba 0x0289b8b3 0x055fcbc9 0x07f229db 	\
+FNIDS = 0x006b54ba 0x0289b8b3 0x055fcbc9 0x07f229db 	\
 	0x09c38de4 0x0a451b11 0x0d5200cb 0x0d9e3b1c 	\
 	0x0dd22ac1 0x0de9509b 0x0e29d27a 0x0e9bd318 	\
 	0x0fbfa054 0x106927fe 0x1118b49f 0x1218642b 	\
@@ -92,19 +93,22 @@ NIDS = 0x006b54ba 0x0289b8b3 0x055fcbc9 0x07f229db 	\
 	0xf7915685 0xf894eccb 0xf97b8ca3 0xfa961fb5 	\
 	0xfba69bc2 0xfbeb657e 0xfcaaa73c 0xfd5dd98c 	\
 	0xfdfeb000 0xfe83f2e4 0xfec1502e 0xff6f77c7 	\
-	0xffdb6965 0xfffbe239 0x01b05132 0x036d0f07 	\
-	0x116f3da9 0x2a72f684 0x2c8dbeb7 0x338fe545 	\
-	0x36878958 0x3ce6109d 0x415162dd 0x48aeef2a 	\
-	0x5289bbc0 0x5d8c1282 0x66b7406c 0x677cde35 	\
-	0x710b5f33 0x7d35108b 0x8a0f308c 0x94ce931c 	\
-	0xd662e07c 0xddf9bb09 0xe5620a03 0xf708906e
+	0xffdb6965 0xfffbe239
 
-ENTRIES = $(addsuffix .o,$(addprefix $(ENTRIES_PREFIX),$(subst 0x,,$(NIDS))))
+VNIDS = 0x01b05132 0x036d0f07 0x116f3da9 0x2a72f684	\
+	0x2c8dbeb7 0x338fe545 0x36878958 0x3ce6109d	\
+	0x415162dd 0x48aeef2a 0x5289bbc0 0x5d8c1282	\
+	0x66b7406c 0x677cde35 0x710b5f33 0x7d35108b	\
+	0x8a0f308c 0x94ce931c 0xd662e07c 0xddf9bb09	\
+	0xe5620a03 0xf708906e
+
+FENTRIES = $(addsuffix .o,$(addprefix $(FENTRIES_PREFIX),$(subst 0x,,$(FNIDS))))
+VENTRIES = $(addsuffix .o,$(addprefix $(VENTRIES_PREFIX),$(subst 0x,,$(VNIDS))))
 
 lib_LIBRARIES = libc_stub.a
 libc_stub_a_SOURCES = SceLibc_stub.S
 am_libc_stub_a_OBJECTS =	\
-	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
+	$(PREFIX)head.o $(PREFIX)NIDS.o $(FENTRIES) $(VENTRIES)
 
 $(PREFIX)head.o: $(libc_stub_a_SOURCES)
 	$(COMPILE) -DHEAD $< -c -o $@
@@ -112,5 +116,8 @@ $(PREFIX)head.o: $(libc_stub_a_SOURCES)
 $(PREFIX)NIDS.o: $(libc_stub_a_SOURCES)
 	$(COMPILE) -DNIDS $< -c -o $@
 
-$(ENTRIES): $(libc_stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
+$(FENTRIES): $(libc_stub_a_SOURCES)
+	$(COMPILE) -DFUNC=$(subst $(FENTRIES_PREFIX),0x,$*) $< -c -o $@
+
+$(VENTRIES): $(libc_stub_a_SOURCES)
+	$(COMPILE) -DVAR=$(subst $(VENTRIES_PREFIX),0x,$*) $< -c -o $@

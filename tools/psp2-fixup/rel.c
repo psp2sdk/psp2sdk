@@ -68,8 +68,7 @@ int updateRel(FILE *fp, scn_t *scns,
 			for (i = 0; i < scn->orgSize;
 				i += sizeof(Elf32_Rel), rel++)
 			{
-				rel->r_offset += dstScn->shdr.sh_offset
-					- dstScn->orgOffset;
+				rel->r_offset += dstScn->addrDiff;
 
 				type = ELF32_R_TYPE(rel->r_info);
 				if (type != R_ARM_ABS32 && type != R_ARM_TARGET1)
@@ -90,7 +89,7 @@ int updateRel(FILE *fp, scn_t *scns,
 				}
 
 				*(Elf32_Word *)((uintptr_t)dstScn->content
-					+ rel->r_offset - dstScn->shdr.sh_offset)
+					+ rel->r_offset - dstScn->shdr.sh_addr)
 						+= scns[st_shndx].addrDiff;
 			}
 		}
@@ -137,7 +136,7 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 			PSP2_R_SET_TYPE(cur, type);
 			PSP2_R_SET_DATSEG(cur, dstScn->phndx);
 			PSP2_R_SET_OFFSET(cur, rel->r_offset
-				- segs[dstScn->phndx].phdr.p_offset);
+				- segs[dstScn->phndx].phdr.p_vaddr);
 
 			if (sym->st_shndx != SHN_ABS
 				&& (type == R_ARM_ABS32 || type == R_ARM_TARGET1))
@@ -146,7 +145,7 @@ int convRelToRela(scn_t *scns, seg_t *segs, const Elf32_Sym *symtab,
 					return EINVAL;
 
 				addend = *(Elf32_Word *)((uintptr_t)dstScn->content
-					+ rel->r_offset - dstScn->shdr.sh_offset);
+					+ rel->r_offset - dstScn->shdr.sh_addr);
 			} else {
 				addend = sym->st_value;
 				if (type == R_ARM_CALL)

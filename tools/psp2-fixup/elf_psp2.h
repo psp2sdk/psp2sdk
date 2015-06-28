@@ -23,7 +23,7 @@ typedef struct {
 
 typedef struct {
 	uint8_t size;
-	uint8_t unk0[3];
+	uint8_t unk[3];
 	uint32_t head;
 	uint32_t stub;
 	uint32_t nid;

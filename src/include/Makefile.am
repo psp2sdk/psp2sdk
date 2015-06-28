@@ -14,4 +14,4 @@ nobase_include_HEADERS = psp2/export.s psp2/import.S	\
 	psp2/fpu.h psp2/gxm.h psp2/moduleinfo.h psp2/motion.h psp2/pgf.h	\
 	psp2/power.h psp2/rtc.h psp2/screenshot.h psp2/system_param.h	\
 	psp2/touch.h psp2/types.h	\
-	errno.h
+	errno.h stdio.h
