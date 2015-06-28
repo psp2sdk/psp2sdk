@@ -6,11 +6,15 @@
 
 include(CMakeForceCompiler)
 
+# Setup arch info
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR cortex-a9)
 set(CMAKE_CROSSCOMPILING ON)
 CMAKE_FORCE_C_COMPILER(arm-none-eabi-gcc GNU)
 CMAKE_FORCE_CXX_COMPILER(arm-none-eabi-g++ GNU)
+
+# Set compilation flags
+set(CMAKE_C_FLAGS "-mcpu=cortex-a9 -mfpu=neon-fp16" CACHE STRING "" FORCE)
 
 # Do a no-op access on the CMAKE_TOOLCHAIN_FILE variable
 # so that CMake will not issue a warning on it being unused.

@@ -11,7 +11,7 @@ project(PSP2SDK)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Set compilation flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -mcpu=cortex-a9 -mfpu=neon-fp16 -nostdlib")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -nostdlib")
 
 # Configure Doxygen file
 set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
