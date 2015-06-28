@@ -24,10 +24,13 @@ typedef struct {
 
 typedef struct {
 	scn_t *relFstub;
+	scn_t *relVstub;
 	scn_t *relEnt;
 	scn_t *relStub;
 	scn_t *fnid;
 	scn_t *fstub;
+	scn_t *vnid;
+	scn_t *vstub;
 	scn_t *ent;
 	scn_t *stub;
 	scn_t *mark;

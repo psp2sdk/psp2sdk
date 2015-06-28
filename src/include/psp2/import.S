@@ -75,6 +75,50 @@ _NID_\name = \nid
 #endif
 .endm
 
+.macro PSP2_IMPORT_VAR module, moduleNum, num, nid, name
+#ifdef NIDS
+	.global	_NID_\name
+_NID_\name = \nid
+#elif defined(VAR)
+.if VAR == \nid
+	.section .sceVStub.rodata, "a", %progbits
+	.align	2
+	.word	0
+
+	.section .sceRefs.rodata, "a", %progbits
+	.align	2
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+
+	.section .sceVNID.rodata, "a", %progbits
+	.align	2
+	.word	0
+
+	.section .sceStubs.text.\module\().\name, "ax", %progbits
+	.align	2
+	.global	\name
+	.type	\name, %object
+\name:
+	mvn	r0, #0
+	bx	lr
+	nop
+	.word	0
+	.size	\name, .-\name
+
+	.section .sce_libgen_mark, "", %progbits
+	.align	2
+	.word	0x00008014
+	.word	_\module\()_\moduleNum\()_stub_head
+	.word	\name
+	.word	\nid
+	.word	_NID_\name
+.endif
+#endif
+.endm
+
 .macro PSP2_IMPORT_FUNC_WITH_ALIAS module, moduleNum, num, nid, name, alias
 	PSP2_IMPORT_FUNC module, moduleNum, num, nid, name
 #ifdef FUNC

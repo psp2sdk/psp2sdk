@@ -15,11 +15,11 @@
 #include "rel.h"
 #include "stub.h"
 
-// fstubOffset and markOffset should be relative to segment
-static int addStub(Psp2_Rela *relaFstub, const scn_t *fstub,
+// stubOffset should be relative to segment
+static int addStub(Psp2_Rela *relaStub, const scn_t *stub,
 	Elf32_Word *fnid, const scn_t *relMark, const scn_t *mark,
-	Elf32_Addr fstubOffset, Elf32_Addr markOffset,
-	const scn_t *scns, const seg_t *segs,
+	Elf32_Addr stubOffset, Elf32_Addr stubMarkAddr,
+	sce_libgen_mark_stub *stubMark, const scn_t *scns, const seg_t *segs,
 	const char *strtab, const Elf32_Sym *symtab)
 {
 	const Elf32_Rel *rel;
@@ -28,16 +28,16 @@ static int addStub(Psp2_Rela *relaFstub, const scn_t *fstub,
 	Elf32_Half symseg;
 	Elf32_Addr addend;
 
-	if (relaFstub == NULL || fstub == NULL || fnid == NULL
+	if (relaStub == NULL || stub == NULL || fnid == NULL
 		|| relMark == NULL || relMark->content == NULL
-		|| mark == NULL || mark->content == NULL
+		|| mark == NULL || mark->content == NULL || stubMark == NULL
 		|| scns == NULL || symtab == NULL)
 	{
 		return EINVAL;
 	}
 
 	rel = findRelByOffset(relMark,
-		markOffset + offsetof(sce_libgen_mark_stub, stub), strtab);
+		stubMarkAddr + offsetof(sce_libgen_mark_stub, stub), strtab);
 	if (rel == NULL)
 		return errno;
 
@@ -45,11 +45,11 @@ static int addStub(Psp2_Rela *relaFstub, const scn_t *fstub,
 	sym = symtab + ELF32_R_SYM(rel->r_info);
 	symseg = scns[sym->st_shndx].phndx;
 
-	PSP2_R_SET_SHORT(relaFstub, 0);
-	PSP2_R_SET_SYMSEG(relaFstub, symseg);
-	PSP2_R_SET_TYPE(relaFstub, type);
-	PSP2_R_SET_DATSEG(relaFstub, fstub->phndx);
-	PSP2_R_SET_OFFSET(relaFstub, fstubOffset);
+	PSP2_R_SET_SHORT(relaStub, 0);
+	PSP2_R_SET_SYMSEG(relaStub, symseg);
+	PSP2_R_SET_TYPE(relaStub, type);
+	PSP2_R_SET_DATSEG(relaStub, stub->phndx);
+	PSP2_R_SET_OFFSET(relaStub, stubOffset);
 
 	if (type == R_ARM_ABS32 || type == R_ARM_TARGET1) {
 		if (mark->content == NULL)
@@ -61,11 +61,9 @@ static int addStub(Psp2_Rela *relaFstub, const scn_t *fstub,
 		addend = sym->st_value;
 
 	addend -= segs[symseg].phdr.p_vaddr;
-	PSP2_R_SET_ADDEND(relaFstub, addend);
+	PSP2_R_SET_ADDEND(relaStub, addend);
 
-	*fnid = *(Elf32_Word *)((uintptr_t)mark->content
-		+ markOffset - mark->shdr.sh_addr
-		+ offsetof(sce_libgen_mark_stub, nid));
+	*fnid = stubMark->nid;
 
 	return 0;
 }
@@ -79,15 +77,17 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 		sce_libgen_mark_head head;
 		sce_libgen_mark_stub stub;
 	} *p;
+	sce_libgen_mark_stub *stubMark;
 	sceLib_stub *stubHeads;
-	Psp2_Rela *relaFstubEnt, *relaStubEnt;
-	Elf32_Off offset, fnidOffset, fstubOffset, stubOffset;
+	Psp2_Rela *relaFstubEnt, *relaVstubEnt, *relaStubEnt;
+	Elf32_Off fnidOffset, fstubOffset, vnidOffset, vstubOffset;
+	Elf32_Off offset, stubOffset;
 	Elf32_Rel *rel, *relMarkEnt;
 	Elf32_Sym *sym;
-	Elf32_Word i, type, *fnidEnt;
+	Elf32_Word i, type, stubMarkAddr, *fnidEnt, *vnidEnt;
 	Elf32_Half symseg;
 	Elf32_Addr addend;
-	int res;
+	int res, impFunc, impVar;
 
 	if (sceScns == NULL || fp == NULL || scns == NULL || segs == NULL
 		|| strtab == NULL || symtab == NULL)
@@ -95,21 +95,9 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 		return EINVAL;
 	}
 
-	sceScns->relFstub->content = malloc(sceScns->relFstub->shdr.sh_size);
-	if (sceScns->relFstub->content == NULL) {
-		perror(strtab + sceScns->relFstub->shdr.sh_name);
-		return errno;
-	}
-
 	sceScns->relStub->content = malloc(sceScns->relStub->shdr.sh_size);
-	if (sceScns->relFstub->content == NULL) {
+	if (sceScns->relStub->content == NULL) {
 		perror(strtab + sceScns->relStub->shdr.sh_name);
-		return errno;
-	}
-
-	sceScns->fnid->content = malloc(sceScns->fnid->shdr.sh_size);
-	if (sceScns->fnid->content == NULL) {
-		perror(strtab + sceScns->fnid->shdr.sh_name);
 		return errno;
 	}
 
@@ -129,13 +117,58 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 	if (res)
 		return res;
 
-	relaFstubEnt = sceScns->relFstub->content;
+	if (sceScns->fnid != NULL
+		&& sceScns->fstub != NULL && sceScns->relFstub != NULL)
+	{
+		impFunc = 1;
+
+		sceScns->relFstub->content = malloc(sceScns->relFstub->shdr.sh_size);
+		if (sceScns->relFstub->content == NULL) {
+			perror(strtab + sceScns->relFstub->shdr.sh_name);
+			return errno;
+		}
+
+		sceScns->fnid->content = malloc(sceScns->fnid->shdr.sh_size);
+		if (sceScns->fnid->content == NULL) {
+			perror(strtab + sceScns->fnid->shdr.sh_name);
+			return errno;
+		}
+
+		relaFstubEnt = sceScns->relFstub->content;
+		fnidEnt = sceScns->fnid->content;
+		fnidOffset = sceScns->fnid->segOffset;
+		fstubOffset = sceScns->fstub->segOffset;
+	} else
+		impFunc = 0;
+
+
+	if (sceScns->vnid != NULL
+		&& sceScns->vstub != NULL && sceScns->relVstub != NULL)
+	{
+		impVar = 1;
+
+		sceScns->relVstub->content = malloc(sceScns->relVstub->shdr.sh_size);
+		if (sceScns->relVstub->content == NULL) {
+			perror(strtab + sceScns->relVstub->shdr.sh_name);
+			return errno;
+		}
+
+		sceScns->vnid->content = malloc(sceScns->vnid->shdr.sh_size);
+		if (sceScns->vnid->content == NULL) {
+			perror(strtab + sceScns->vnid->shdr.sh_name);
+			return errno;
+		}
+
+		relaVstubEnt = sceScns->relVstub->content;
+		vnidEnt = sceScns->vnid->content;
+		vnidOffset = sceScns->vnid->segOffset;
+		vstubOffset = sceScns->vstub->segOffset;
+	} else
+		impVar = 0;
+
 	relaStubEnt = sceScns->relStub->content;
-	fnidEnt = sceScns->fnid->content;
 	stubHeads = sceScns->stub->content;
 	p = sceScns->mark->content;
-	fnidOffset = sceScns->fnid->segOffset;
-	fstubOffset = sceScns->fstub->segOffset;
 	stubOffset = sceScns->stub->segOffset;
 	offset = 0;
 	while (offset < sceScns->mark->shdr.sh_size) {
@@ -171,29 +204,57 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 
 			relaStubEnt++;
 
-			// Resolve function NID table
-			PSP2_R_SET_SHORT(relaStubEnt, 0);
-			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fnid->phndx);
-			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
-			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
-			PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
-				+ offsetof(sceLib_stub, funcNids));
-			PSP2_R_SET_ADDEND(relaStubEnt, fnidOffset);
-			relaStubEnt++;
+			if (impFunc) {
+				// Resolve function NID table
+				PSP2_R_SET_SHORT(relaStubEnt, 0);
+				PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fnid->phndx);
+				PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+				PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+				PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
+					+ offsetof(sceLib_stub, funcNids));
+				PSP2_R_SET_ADDEND(relaStubEnt, fnidOffset);
+				relaStubEnt++;
 
-			// Resolve function stub table
-			PSP2_R_SET_SHORT(relaStubEnt, 0);
-			PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fstub->phndx);
-			PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
-			PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
-			PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
-				+ offsetof(sceLib_stub, funcStubs));
-			PSP2_R_SET_ADDEND(relaStubEnt, fstubOffset);
-			relaStubEnt++;
+				// Resolve function stub table
+				PSP2_R_SET_SHORT(relaStubEnt, 0);
+				PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->fstub->phndx);
+				PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+				PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+				PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
+					+ offsetof(sceLib_stub, funcStubs));
+				PSP2_R_SET_ADDEND(relaStubEnt, fstubOffset);
+				relaStubEnt++;
+			} else {
+				stubHeads->funcNids = 0;
+				stubHeads->funcStubs = 0;
+			}
+
+			if (impVar) {
+				// Resolve variable NID table
+				PSP2_R_SET_SHORT(relaStubEnt, 0);
+				PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->vnid->phndx);
+				PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+				PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+				PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
+					+ offsetof(sceLib_stub, varNids));
+				PSP2_R_SET_ADDEND(relaStubEnt, vnidOffset);
+				relaStubEnt++;
+
+				// Resolve variable stub table
+				PSP2_R_SET_SHORT(relaStubEnt, 0);
+				PSP2_R_SET_SYMSEG(relaStubEnt, sceScns->vstub->phndx);
+				PSP2_R_SET_TYPE(relaStubEnt, R_ARM_ABS32);
+				PSP2_R_SET_DATSEG(relaStubEnt, sceScns->stub->phndx);
+				PSP2_R_SET_OFFSET(relaStubEnt, stubOffset
+					+ offsetof(sceLib_stub, varStubs));
+				PSP2_R_SET_ADDEND(relaStubEnt, vstubOffset);
+				relaStubEnt++;
+			} else {
+				stubHeads->varNids = 0;
+				stubHeads->varStubs = 0;
+			}
 
 			// TODO: Support other types
-			stubHeads->varNids = 0;
-			stubHeads->varStubs = 0;
 			stubHeads->unkNids = 0;
 			stubHeads->unkStubs = 0;
 
@@ -219,20 +280,39 @@ int updateStubs(sceScns_t *sceScns, FILE *fp,
 				if (addend != sceScns->mark->shdr.sh_addr + offset)
 					goto cont;
 
-				res = addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
-					sceScns->relMark, sceScns->mark,
-					fstubOffset,
-					relMarkEnt->r_offset
-						- offsetof(sce_libgen_mark_stub, head),
-					scns, segs, strtab, symtab);
-				if (res)
-					return res;
+				stubMarkAddr = relMarkEnt->r_offset
+					- offsetof(sce_libgen_mark_stub, head);
+				stubMark = (void *)((uintptr_t)sceScns->mark->content
+					+ stubMarkAddr - sceScns->mark->shdr.sh_addr);
+				if (impFunc && stubMark->unk[0] == 1) {
+					res = addStub(relaFstubEnt, sceScns->fstub, fnidEnt,
+						sceScns->relMark, sceScns->mark,
+						fstubOffset, stubMarkAddr,
+						stubMark, scns, segs,
+						strtab, symtab);
+					if (res)
+						return res;
 
-				relaFstubEnt++;
-				fnidEnt++;
-				fstubOffset += sizeof(Elf32_Addr);
-				fnidOffset += sizeof(Elf32_Word);
-				stubHeads->funcNum++;
+					relaFstubEnt++;
+					fnidEnt++;
+					fstubOffset += sizeof(Elf32_Addr);
+					fnidOffset += sizeof(Elf32_Word);
+					stubHeads->funcNum++;
+				} else if (impVar) {
+					res = addStub(relaVstubEnt, sceScns->vstub, vnidEnt,
+						sceScns->relMark, sceScns->mark,
+						vstubOffset, stubMarkAddr,
+						stubMark, scns, segs,
+						strtab, symtab);
+					if (res)
+						return res;
+
+					relaVstubEnt++;
+					vnidEnt++;
+					vstubOffset += sizeof(Elf32_Addr);
+					vnidOffset += sizeof(Elf32_Word);
+					stubHeads->varNum++;
+				}
 cont:
 				relMarkEnt++;
 			}
@@ -249,7 +329,10 @@ cont:
 		p = (void *)((uintptr_t)p + p->size);
 	}
 
-	sceScns->relFstub->shdr.sh_type = SHT_PSP2_RELA;
+	if (impFunc)
+		sceScns->relFstub->shdr.sh_type = SHT_PSP2_RELA;
+	if (impVar)
+		sceScns->relVstub->shdr.sh_type = SHT_PSP2_RELA;
 	sceScns->relStub->shdr.sh_type = SHT_PSP2_RELA;
 
 	return 0;

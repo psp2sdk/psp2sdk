@@ -136,16 +136,22 @@ int getSceScns(sceScns_t *sceScns, scn_t *scns, Elf32_Half shnum,
 	sceScns->mark = scns + sceScns->relMark->shdr.sh_info;
 
 	sceScns->relFstub = findScnByName(scns, shnum, strtab,
-		".rel.sceFStub.rodata", path);
-	if (sceScns->relFstub == NULL)
-		return errno;
+		".rel.sceFStub.rodata", NULL);
 
-	sceScns->fstub = scns + sceScns->relFstub->shdr.sh_info;
+	sceScns->fstub = sceScns->relFstub == NULL ?
+		NULL : scns + sceScns->relFstub->shdr.sh_info;
+
+	sceScns->relVstub = findScnByName(scns, shnum, strtab,
+		".rel.sceVStub.rodata", NULL);
+
+	sceScns->vstub = sceScns->relVstub == NULL ?
+		NULL : scns + sceScns->relVstub->shdr.sh_info;
 
 	sceScns->fnid = findScnByName(scns, shnum, strtab,
-		".sceFNID.rodata", path);
-	if (sceScns->fnid == NULL)
-		return errno;
+		".sceFNID.rodata", NULL);
+
+	sceScns->vnid = findScnByName(scns, shnum, strtab,
+		".sceVNID.rodata", NULL);
 
 	sceScns->relEnt = findScnByName(scns, shnum, strtab,
 		".rel.sceLib.ent", path);
