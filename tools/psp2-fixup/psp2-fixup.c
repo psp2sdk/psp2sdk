@@ -50,6 +50,9 @@ static int parse(int argc, char * const argv[],
 		argc--;
 	}
 
+	if (*src == NULL || *dst == NULL)
+		return EINVAL;
+
 	return 0;
 }
 
