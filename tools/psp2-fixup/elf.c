@@ -28,7 +28,7 @@ int openElf(elf_t *dst, const char *path)
 	dst->path = path;
 
 	dst->fp = fopen(path, "rb");
-	if (path == NULL) {
+	if (dst->fp == NULL) {
 		perror(path);
 		return errno;
 	}
