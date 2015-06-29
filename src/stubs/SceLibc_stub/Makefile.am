@@ -111,13 +111,13 @@ am_libc_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(FENTRIES) $(VENTRIES)
 
 $(PREFIX)head.o: $(libc_stub_a_SOURCES)
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PREFIX)NIDS.o: $(libc_stub_a_SOURCES)
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(FENTRIES): $(libc_stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(FENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(FENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(VENTRIES): $(libc_stub_a_SOURCES)
-	$(COMPILE) -DVAR=$(subst $(VENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DVAR=$(subst $(VENTRIES_PREFIX),0x,$*) $< -c -o $@

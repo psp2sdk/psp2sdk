@@ -27,19 +27,19 @@ am_libSceDisplay_stub_a_OBJECTS =	\
 	$(DISPLAY_ENTRIES) $(DISPLAYUSER_ENTRIES)
 
 $(DISPLAY_PREFIX)head.o: SceDisplay_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(DISPLAY_PREFIX)NIDS.o: SceDisplay_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(DISPLAY_ENTRIES): SceDisplay_stub.S
-	$(COMPILE) -DFUNC=$(subst $(DISPLAY_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(DISPLAY_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(DISPLAYUSER_PREFIX)head.o: SceDisplayUser_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(DISPLAYUSER_PREFIX)NIDS.o: SceDisplayUser_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(DISPLAYUSER_ENTRIES): SceDisplayUser_stub.S
-	$(COMPILE) -DFUNC=$(subst $(DISPLAYUSER_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(DISPLAYUSER_ENTRIES_PREFIX),0x,$*) $< -c -o $@

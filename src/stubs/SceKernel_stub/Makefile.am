@@ -167,82 +167,82 @@ am_libSceKernel_stub_a_OBJECTS =	\
 	$(THREADMGRCOREDUMPTIME_PREFIX)head.o $(THREADMGRCOREDUMPTIME_PREFIX)NIDS.o $(THREADMGRCOREDUMPTIME_ENTRIES)
 
 $(LIBKERNEL_PREFIX)head.o: SceLibKernel_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(LIBKERNEL_PREFIX)NIDS.o: SceLibKernel_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(LIBKERNEL_ENTRIES): SceLibKernel_stub.S
-	$(COMPILE) -DFUNC=$(subst $(LIBKERNEL_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(LIBKERNEL_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(DEBUGLED_PREFIX)head.o: SceDebugLed_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(DEBUGLED_PREFIX)NIDS.o: SceDebugLed_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(DEBUGLED_ENTRIES): SceDebugLed_stub.S
-	$(COMPILE) -DFUNC=$(subst $(DEBUGLED_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(DEBUGLED_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(DIPSW_PREFIX)head.o: SceDipsw_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(DIPSW_PREFIX)NIDS.o: SceDipsw_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(DIPSW_ENTRIES): SceDipsw_stub.S
-	$(COMPILE) -DFUNC=$(subst $(DIPSW_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(DIPSW_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(IOFILEMGR_PREFIX)head.o: SceIofilemgr_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(IOFILEMGR_PREFIX)NIDS.o: SceIofilemgr_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(IOFILEMGR_ENTRIES): SceIofilemgr_stub.S
-	$(COMPILE) -DFUNC=$(subst $(IOFILEMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(IOFILEMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(MODULEMGR_PREFIX)head.o: SceModulemgr_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(MODULEMGR_PREFIX)NIDS.o: SceModulemgr_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(MODULEMGR_ENTRIES): SceModulemgr_stub.S
-	$(COMPILE) -DFUNC=$(subst $(MODULEMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(MODULEMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(PROCESSMGR_PREFIX)head.o: SceProcessmgr_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PROCESSMGR_PREFIX)NIDS.o: SceProcessmgr_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(PROCESSMGR_ENTRIES): SceProcessmgr_stub.S
-	$(COMPILE) -DFUNC=$(subst $(PROCESSMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(PROCESSMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(SYSMEM_ENTRIES_PREFIX)head.o: SceSysmem_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(SYSMEM_ENTRIES_PREFIX)NIDS.o: SceSysmem_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(SYSMEM_ENTRIES): SceSysmem_stub.S
-	$(COMPILE) -DFUNC=$(subst $(SYSMEM_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(SYSMEM_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(THREADMGR_PREFIX)head.o: SceThreadmgr_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(THREADMGR_PREFIX)NIDS.o: SceThreadmgr_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(THREADMGR_ENTRIES): SceThreadmgr_stub.S
-	$(COMPILE) -DFUNC=$(subst $(THREADMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(THREADMGR_ENTRIES_PREFIX),0x,$*) $< -c -o $@
 
 $(THREADMGRCOREDUMPTIME_PREFIX)head.o: SceThreadmgrCoredumpTime_stub.S
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(THREADMGRCOREDUMPTIME_PREFIX)NIDS.o: SceThreadmgrCoredumpTime_stub.S
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(THREADMGRCOREDUMPTIME_ENTRIES): SceThreadmgrCoredumpTime_stub.S
-	$(COMPILE) -DFUNC=$(subst $(THREADMGRCOREDUMPTIME_ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(THREADMGRCOREDUMPTIME_ENTRIES_PREFIX),0x,$*) $< -c -o $@

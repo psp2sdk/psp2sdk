@@ -22,10 +22,10 @@ am_libScePgf_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
 $(PREFIX)head.o: $(libScePgf_stub_a_SOURCES)
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PREFIX)NIDS.o: $(libScePgf_stub_a_SOURCES)
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(ENTRIES): $(libScePgf_stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@

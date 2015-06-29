@@ -299,10 +299,10 @@ libstdc++_stub.a: $(libstdc___stub_a_OBJECTS)
 	$(AM_V_at)$(RANLIB) $@
 
 $(PREFIX)head.o: $(libstdc___stub_a_SOURCES)
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PREFIX)NIDS.o: $(libstdc___stub_a_SOURCES)
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(ENTRIES): $(libstdc___stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@

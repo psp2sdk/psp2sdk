@@ -23,10 +23,10 @@ am_libScePspnetAdhoc_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
 $(PREFIX)head.o: $(libScePspnetAdhoc_stub_a_SOURCES)
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PREFIX)NIDS.o: $(libScePspnetAdhoc_stub_a_SOURCES)
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(ENTRIES): $(libScePspnetAdhoc_stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@

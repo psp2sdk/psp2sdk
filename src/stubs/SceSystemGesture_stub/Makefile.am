@@ -21,10 +21,10 @@ am_libSceSystemGesture_stub_a_OBJECTS =	\
 	$(PREFIX)head.o $(PREFIX)NIDS.o $(ENTRIES)
 
 $(PREFIX)head.o: $(libSceSystemGesture_stub_a_SOURCES)
-	$(COMPILE) -DHEAD $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DHEAD $< -c -o $@
 
 $(PREFIX)NIDS.o: $(libSceSystemGesture_stub_a_SOURCES)
-	$(COMPILE) -DNIDS $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DNIDS $< -c -o $@
 
 $(ENTRIES): $(libSceSystemGesture_stub_a_SOURCES)
-	$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
+	$(AM_V_CC)$(COMPILE) -DFUNC=$(subst $(ENTRIES_PREFIX),0x,$*) $< -c -o $@
