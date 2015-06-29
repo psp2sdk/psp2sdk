@@ -168,7 +168,7 @@ PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xaee7fdd1, sceGxmTextureSetHeight
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb042a4d2, sceGxmSetBackDepthFunc
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb0bd52f3, sceGxmTextureGetStride
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb0f1e4ec, sceGxmInitialize
-PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb291c959, sceGxmGetRenderTargetMemSize
+PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb291c959, sceGxmGetRenderTargetMemSizes
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb32917f0, sceGxmSetYuvProfile
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb452f1fb, sceGxmPrecomputedFragmentStateSetUniformBuffer
 PSP2_IMPORT_FUNC SceGxm, 0001, F00, 0xb627de66, sceGxmTerminate
