@@ -51,7 +51,7 @@
 
 _BEGIN_STD_C
 
-typedef struct { } FILE;
+typedef struct __FILE FILE;
 
 #ifdef __CYGWIN__
 typedef _fpos64_t fpos_t;
