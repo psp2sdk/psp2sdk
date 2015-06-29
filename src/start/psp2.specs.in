@@ -22,7 +22,7 @@
 -mcpu=cortex-a9 -mfpu=neon-fp16
 
 *startfile:
-crt0%O%s
+psp2/crt0%O%s
 
 *multilib:
 psp2 !mthumb !mfloat-abi=hard;psp2/thumb mthumb !mfloat-abi=hard;psp2/fpu !mthumb mfloat-abi=hard;
