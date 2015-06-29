@@ -1179,7 +1179,7 @@ typedef struct SceGxmRenderTargetParams {
 	unsigned int multisampleLocations;
 	void *hostMem;
 	SceSize hostMemSize;
-	int driverMemBlock;
+	SceUID driverMemBlock;
 } SceGxmRenderTargetParams;
 
 /* prototypes */
@@ -1441,7 +1441,7 @@ void sceGxmPrecomputedDrawSetParamsInstanced(SceGxmPrecomputedDraw *precomputedD
 int sceGxmGetRenderTargetMemSizes(const SceGxmRenderTargetParams *params, unsigned int *hostMemSize, unsigned int *driverMemSize);
 int sceGxmCreateRenderTarget(const SceGxmRenderTargetParams *params, SceGxmRenderTarget **renderTarget);
 int sceGxmRenderTargetGetHostMem(const SceGxmRenderTarget *renderTarget, void **hostMem);
-int sceGxmRenderTargetGetDriverMemBlock(const SceGxmRenderTarget *renderTarget, int *driverMemBlock);
+int sceGxmRenderTargetGetDriverMemBlock(const SceGxmRenderTarget *renderTarget, SceUID *driverMemBlock);
 int sceGxmDestroyRenderTarget(SceGxmRenderTarget *renderTarget);
 
 int sceGxmSetUniformDataF(void *uniformBuffer, const SceGxmProgramParameter *parameter, unsigned int componentOffset, unsigned int componentCount, const float *sourceData);
