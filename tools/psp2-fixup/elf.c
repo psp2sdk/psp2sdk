@@ -70,7 +70,7 @@ int openElf(elf_t *dst, const char *path)
 	}
 
 	res = loadScn(dst->fp, dst->symtab,
-		dst->strtab->content + dst->symtab->shdr.sh_name);
+		(void *)((uintptr_t)dst->strtab->content + dst->symtab->shdr.sh_name));
 	if (res) {
 		free(dst->scns);
 		free(dst->strtab->content);
