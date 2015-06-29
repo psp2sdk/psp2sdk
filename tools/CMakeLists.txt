@@ -7,6 +7,6 @@
 cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 project(PSP2_FIXUP)
 
-find_library(OpenSSL REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 add_subdirectory(psp2-fixup)

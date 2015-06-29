@@ -18,7 +18,7 @@ typedef struct {
 	Elf32_Word orgSize;
 	Elf32_Half phndx;
 	Elf32_Word segOffset;
-	void *content;
+	char *content;
 	Elf32_Shdr shdr;
 } scn_t;
 
